@@ -4,7 +4,7 @@ import BaseTile from './BaseTiles';
 function AppContent(props){
     return (
         <div class="app-content">
-            <BaseTile title={props.news.title} text={props.news.text} />
+            <BaseTile textArray={props.news} title="News" />
         </div>
     );
 }

@@ -2,10 +2,11 @@ import React from 'react';
 import './TilesStyle.css';
 
 export default function BaseTile (props) {
+
     return (
         <div class="base-tile">
             <TileHeader text={props.title} />
-            <TileContent text={props.text} />
+            <TileContent textArray={props.textArray} />
         </div>
     );
 }
@@ -22,7 +23,13 @@ function TileHeader(props){
 function TileContent(props) {
     return (
         <div class="tile-content">
-            <p>{props.text}</p>
+         {
+            props.textArray.map(elem => {
+                return (
+                        <p>{elem.text}</p>
+                );
+            })
+        }
         </div>
     );
 }

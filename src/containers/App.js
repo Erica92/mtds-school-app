@@ -56,9 +56,9 @@ class App extends React.Component {
             <div>
                 <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" user={user1} />
                 {
-                    !isLoading && news.length > 0 ? news.map(message => {
-                        return (<AppContent news={message} />);
-                    }): <div>ciaone</div>
+                    !isLoading && news.length > 0 ? 
+                        (<AppContent news={news} />)
+                    : ( <div>ciaone</div> )
                 } 
             </div>
         );
