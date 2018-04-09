@@ -33,3 +33,16 @@ function TileContent(props) {
         </div>
     );
 }
+
+export function SquareTile(props) {
+    return (
+        <div className="square-tile clickable">
+            <div className="square-tile-image" >
+                <img src={props.imageSrc} />
+            </div>
+            <div className="square-tile-description">
+                <span>{props.title}</span>
+            </div>
+        </div>
+    );
+}

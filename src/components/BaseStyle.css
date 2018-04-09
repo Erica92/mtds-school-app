@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 * {
     padding: 0px;
     margin: 0px;
     border: 0px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .header-bar {
@@ -37,7 +40,7 @@
     width: 200px;
     float: right;
     padding: 10px;
-    font-family: "Segoe UI",Arial,sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .profile-header:hover {
