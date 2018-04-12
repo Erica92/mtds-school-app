@@ -5,7 +5,7 @@ export default function BaseTile (props) {
 
     return (
         <div class="base-tile">
-            <TileHeader text={props.title} />
+            <TileHeader text={props.title} toggleImg={require("../images/launch_white_18x18.png")} />
             <TileContent textArray={props.textArray} />
         </div>
     );
@@ -14,8 +14,10 @@ export default function BaseTile (props) {
 function TileHeader(props){
     return (
         <div class="tile-header">
-            <span>{props.text}</span>
-            <span class="toggle">X</span>
+            <div class="tile-header-title">
+                <span>{props.text}</span>
+            </div>
+            <span class="toggle clickable"><img src={props.toggleImg} /></span>
         </div>
     );
 }
@@ -41,7 +43,7 @@ export function SquareTile(props) {
                 <img src={props.imageSrc} />
             </div>
             <div className="square-tile-description">
-                <span>{props.title}</span>
+                <span>{props.title}</span>							
             </div>
         </div>
     );

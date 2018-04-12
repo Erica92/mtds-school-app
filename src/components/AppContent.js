@@ -7,6 +7,7 @@ function AppContent(props){
         <div class="app-content">
             <BaseTile textArray={props.news} title="News" />
             <SquareTile imageSrc={require("./../images/classroom-128.png")} title="My Classes" />
+            <SquareTile imageSrc={require("./../images/classroom-128.png")} title="My Classes" />
         </div>
     );
 }

@@ -19,6 +19,15 @@
     border-radius: 2px 2px 0px 0px;
 }
 
+.tile-header-title {
+    display: table;
+}
+
+.tile-header-title span {
+    vertical-align: middle;
+    display: table-cell;
+}
+
 .tile-content{
     padding: 10px 10px 10px 10px;
 }
@@ -66,4 +75,9 @@
 
 .clickable {
     cursor: pointer;
+}
+
+.toggle {
+    display: inline-block;
+    float: right;
 }
