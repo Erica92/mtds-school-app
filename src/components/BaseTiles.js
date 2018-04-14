@@ -4,27 +4,27 @@ import './TilesStyle.css';
 export default function BaseTile (props) {
 
     return (
-        <div class="base-tile">
+        <div className="base-tile">
             <TileHeader text={props.title} toggleImg={require("../images/launch_white_18x18.png")} />
             <TileContent textArray={props.textArray} />
         </div>
     );
 }
 
-function TileHeader(props){
+export function TileHeader(props){
     return (
-        <div class="tile-header">
-            <div class="tile-header-title">
+        <div className="tile-header">
+            <div className="tile-header-title">
                 <span>{props.text}</span>
             </div>
-            <span class="toggle clickable"><img src={props.toggleImg} /></span>
+            <span className="toggle clickable"><img src={props.toggleImg} /></span>
         </div>
     );
 }
 
 function TileContent(props) {
     return (
-        <div class="tile-content">
+        <div className="tile-content">
          {
             props.textArray.map(elem => {
                 return (

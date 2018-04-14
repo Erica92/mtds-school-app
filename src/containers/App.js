@@ -10,12 +10,14 @@ class App extends React.Component {
         
         this.state = {
          isLoading: true,
-         news: []
+         news: [],
+         classList : []
         };
     }
     
     componentDidMount(){
     	this.fetchData();
+        this.fetchDataClassesList();
     }
     
     fetchData(){
@@ -48,16 +50,26 @@ class App extends React.Component {
         console.log("messages:"+this.state.news);
     }
     
+    fetchDataClassesList(){
+        fetch("http://localhost:8080/api/v1/teacher/classes?id=T1")
+            .then(response => response.json())
+            .then( (result) => this.setState({
+                isLoading: false,
+                classList: result
+            })
+        );
+    }
+    
     render(){
-        const {isLoading, news} = this.state;
-        console.log("end"+news.length);
+        const {isLoading, news, classList} = this.state;
+        console.log("classList length"+classList.length);
         //<AppContent news={message} /> />
         return (
             <div>
                 <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" user={user1} />
                 {
                     !isLoading && news.length > 0 ? 
-                        (<AppContent news={news} />)
+                        (<AppContent news={news} classList={classList}/>)
                     : ( <div>ciaone</div> )
                 } 
             </div>
@@ -105,10 +117,4 @@ fetch("https://api.whatdoestrumpthink.com/api/v1/quotes")
             isLoading: false,
             news
         }));
-*/
-
-/*
-!isLoading && news.length > 0 ? news.map(message => {
-                        return (<AppContent news={message} />);
-                    }): <div>ciaone</div>
 */
