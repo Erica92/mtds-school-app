@@ -11,13 +11,15 @@ class App extends React.Component {
         this.state = {
          isLoading: true,
          news: [],
-         classList : []
+         classList : [],
+         notifications: []
         };
     }
     
     componentDidMount(){
     	this.fetchData();
         this.fetchDataClassesList();
+        this.fetchDataNotifications();
     }
     
     fetchData(){
@@ -60,8 +62,20 @@ class App extends React.Component {
         );
     }
     
+    fetchDataNotifications(){
+        fetch("http://localhost:8080/api/v1/teacher/notifications?id=T1")
+            .then(response => response.json())
+            .then( (result) => this.setState({
+                isLoading: false,
+                notifications: result
+            })
+        );
+        
+        console.log(this.state.notifications);
+    }
+    
     render(){
-        const {isLoading, news, classList} = this.state;
+        const {isLoading, news, classList, notifications} = this.state;
         console.log("classList length"+classList.length);
         //<AppContent news={message} /> />
         return (
@@ -69,7 +83,7 @@ class App extends React.Component {
                 <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" user={user1} />
                 {
                     !isLoading && news.length > 0 ? 
-                        (<AppContent news={news} classList={classList}/>)
+                        (<AppContent news={news} classList={classList} notificationList={notifications}/>)
                     : ( <div>ciaone</div> )
                 } 
             </div>

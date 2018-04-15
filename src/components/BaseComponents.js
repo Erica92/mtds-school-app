@@ -35,3 +35,14 @@ export function BlockDescription(props){
 		</div>
 	);
 }
+
+
+export function BaseRow(props) {
+    return (
+        <div>
+            <div className="row-title">{props.title}</div>
+            <div className="row-content">{props.text}</div>
+            <div className="row-content-right">{props.date}</div>
+        </div>
+    );
+}

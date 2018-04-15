@@ -77,3 +77,16 @@
     padding-left: 20px;
     padding-right: 20px;
 }
+
+.row-title {
+    font-weight: bold;
+}
+
+.row-content {
+    display: inline-block;
+}
+
+.row-content-right {
+    display: inline-block;
+    float: right;
+}
