@@ -39,7 +39,7 @@ export function BlockDescription(props){
 
 export function BaseRow(props) {
     return (
-        <div>
+        <div className="row">
             <div className="row-title">{props.title}</div>
             <div className="row-content">{props.text}</div>
             <div className="row-content-right">{props.date}</div>

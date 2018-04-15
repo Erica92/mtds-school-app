@@ -78,8 +78,14 @@
     padding-right: 20px;
 }
 
+.row {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: #000000 solid 1px;
+}
 .row-title {
     font-weight: bold;
+    padding-bottom: 5px;
 }
 
 .row-content {
@@ -89,4 +95,9 @@
 .row-content-right {
     display: inline-block;
     float: right;
+}
+
+.centered-div{
+    text-align: center;
+    width: 100%;
 }

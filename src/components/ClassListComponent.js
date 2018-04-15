@@ -1,9 +1,16 @@
 import React from 'react';
 import './TilesStyle.css';
 import {TileHeader} from './BaseTiles';
+import './BaseStyle.css';
 
 export default function ClassListComponent(props){
-    let rows = props.classList.map(classElem => (<div>{classElem.ClassID}</div>));
+    let rows = props.classList.map(classElem => (
+        <div className="row clickable">
+            <div className="centered-div">
+                {classElem.ClassID}
+            </div>
+        </div>
+    ));
                                     
     return (
         <div className="base-tile">
