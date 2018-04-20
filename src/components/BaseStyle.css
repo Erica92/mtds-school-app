@@ -101,3 +101,8 @@
     text-align: center;
     width: 100%;
 }
+
+.row:hover {
+    background-color: #42A5F5;
+    color: #ffffff;
+}

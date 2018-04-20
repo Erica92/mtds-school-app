@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import AppHeader from '../components/AppHeader';
 import AppContent from '../components/AppContent';
+import ClassDetailsPage from '../components/ClassDetailsPage';
 
 class App extends React.Component {
     
@@ -9,48 +10,37 @@ class App extends React.Component {
         super(props);
         
         this.state = {
-         isLoading: true,
-         news: [],
-         classList : [],
-         notifications: []
+            isLoading: true,
+            news: [],
+            classList : [],
+            notifications: [],
+            pageState: "HomePage",
+            prevPageState: "HomePage"
         };
+        
+        this.goToPage = this.goToPage.bind(this);
     }
     
     componentDidMount(){
-    	this.fetchData();
+    	//this.fetchData();
         this.fetchDataClassesList();
         this.fetchDataNotifications();
+        //getClassesList(this.setState);
+        
     }
     
-    fetchData(){
+    goToPage(nextPage){
+        var currentPage = this.state.pageState;
         
-        fetch("https://api.whatdoestrumpthink.com/api/v1/quotes")
-          .then(response => response.json())
-          .then( result => result.messages.personalized.map(elem => (
-            {
-                title: "News",
-                text: elem   
-            })))
-        .then(news => this.setState({
-            isLoading: false,
-            news
-        }));
-
-           /* {
-                messages: {
-                    personalized: `${quote.messages.personalized}`,
-                    non_personalized: `${quote.messages.non_personalized}`
-                }
-            }
-        ))
-        .then(messages => this.setState({
-            messages,
-            isLoading: false
-        }))
-        .catch(error => console.log('parsing failed', error));*/
+        console.log("changing page - going from "+currentPage+" to "+nextPage);
         
-        console.log("messages:"+this.state.news);
+        this.setState({
+            pageState: nextPage,
+            prevPage: currentPage
+        });
     }
+    
+
     
     fetchDataClassesList(){
         fetch("http://localhost:8080/api/v1/teacher/classes?id=T1")
@@ -76,16 +66,25 @@ class App extends React.Component {
     
     render(){
         const {isLoading, news, classList, notifications} = this.state;
-        console.log("classList length"+classList.length);
+        console.log("Rendering App - classList length"+classList.length+" state:"+this.state.pageState);
+        
+        var componentToRender = null;
+        if(isLoading){
+            componentToRender = (<div>ciaone</div>);
+        } else {
+            if(this.state.pageState === "HomePage"){
+                componentToRender = (<AppContent news={news} classList={classList} notificationList={notifications} goToPage={this.goToPage} />);
+            } else if(this.state.pageState === "ClassPage"){
+                componentToRender = (<ClassDetailsPage goToPage={this.goToPage} />);
+            }
+        }
+        
+        
         //<AppContent news={message} /> />
         return (
             <div>
                 <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" user={user1} />
-                {
-                    !isLoading && news.length > 0 ? 
-                        (<AppContent news={news} classList={classList} notificationList={notifications}/>)
-                    : ( <div>ciaone</div> )
-                } 
+                {componentToRender} 
             </div>
         );
     }

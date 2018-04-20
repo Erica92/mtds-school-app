@@ -48,3 +48,7 @@ export function SquareTile(props) {
         </div>
     );
 }
+
+export function SectionTitleTile(props) {
+    return ( <div className="section-title-tile">{props.text}</div>);
+}

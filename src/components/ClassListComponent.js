@@ -5,8 +5,8 @@ import './BaseStyle.css';
 
 export default function ClassListComponent(props){
     let rows = props.classList.map(classElem => (
-        <div className="row clickable">
-            <div className="centered-div">
+        <div className="row clickable" onClick={() => props.goToPage("ClassPage")}>
+            <div className="centered-div" >
                 {classElem.ClassID}
             </div>
         </div>
