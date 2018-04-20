@@ -8,9 +8,9 @@ export default function ClassDetailsPage(props) {
         <div class="app-content">
             <SectionTitleTile text={props.sectionTitle} />    
             <div className="squared-tile-block">
-                <SquareTile title="Program" onClick={()=>props.goToPage("Program")} />
-                <SquareTile title="Schedule" onClick={()=>props.goToPage("Schedule")} />
-                <SquareTile title="Grades" onClick={()=>props.goToPage("Grades")} />
+                <SquareTile title="Program" onClick={()=>props.goToPage("ProgramPage")} />
+                <SquareTile title="Schedule" onClick={()=>props.goToPage("SchedulePage")} />
+                <SquareTile title="Grades" onClick={()=>props.goToPage("GradesPage")} />
             </div>
         </div>
     );

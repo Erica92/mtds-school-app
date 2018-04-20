@@ -13,6 +13,7 @@ class App extends React.Component {
             isLoading: true,
             news: [],
             classList : [],
+            selectedClass : null,
             notifications: [],
             pageState: "HomePage",
             prevPageState: "HomePage"
@@ -23,9 +24,10 @@ class App extends React.Component {
     
     componentDidMount(){
     	//this.fetchData();
-        this.fetchDataClassesList();
+        this.fetchDataClassesList("T1");
         this.fetchDataNotifications();
         //getClassesList(this.setState);
+        console.log("componentDidMount!!!");
         
     }
     
@@ -42,8 +44,8 @@ class App extends React.Component {
     
 
     
-    fetchDataClassesList(){
-        fetch("http://localhost:8080/api/v1/teacher/classes?id=T1")
+    fetchDataClassesList(teacherID){
+        fetch("http://localhost:8080/api/v1/teacher/classes?id="+teacherID)
             .then(response => response.json())
             .then( (result) => this.setState({
                 isLoading: false,
@@ -83,7 +85,7 @@ class App extends React.Component {
         //<AppContent news={message} /> />
         return (
             <div>
-                <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" user={user1} />
+                <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" user={user1} goToPage={this.goToPage} />
                 {componentToRender} 
             </div>
         );
