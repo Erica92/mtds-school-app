@@ -20,6 +20,7 @@ class App extends React.Component {
         };
         
         this.goToPage = this.goToPage.bind(this);
+        this.selectClass = this.selectClass.bind(this);
     }
     
     componentDidMount(){
@@ -42,6 +43,10 @@ class App extends React.Component {
         });
     }
     
+    selectClass(selectedElem){
+        console.log("selected class:"+selectedElem);
+        this.setState({selectedClass: selectedElem});
+    }
 
     
     fetchDataClassesList(teacherID){
@@ -75,9 +80,10 @@ class App extends React.Component {
             componentToRender = (<div>ciaone</div>);
         } else {
             if(this.state.pageState === "HomePage"){
-                componentToRender = (<AppContent news={news} classList={classList} notificationList={notifications} goToPage={this.goToPage} />);
+                componentToRender = (<AppContent news={news} classList={classList} 
+                                     notificationList={notifications} goToPage={this.goToPage} selectClass={this.selectClass} />);
             } else if(this.state.pageState === "ClassPage"){
-                componentToRender = (<ClassDetailsPage goToPage={this.goToPage} />);
+                componentToRender = (<ClassDetailsPage goToPage={this.goToPage} selectedClass={this.state.selectedClass} />);
             }
         }
         

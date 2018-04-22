@@ -11,7 +11,7 @@ function AppContent(props){
         <div class="app-content">
             <NotificationListComponent title="Notifications" notificationList={props.notificationList} />
             
-            <ClassListComponent classList={props.classList} title="My Classes" goToPage={props.goToPage} />
+            <ClassListComponent classList={props.classList} title="My Classes" goToPage={props.goToPage} selectClass={props.selectClass}/>
         </div>
     );
 }
