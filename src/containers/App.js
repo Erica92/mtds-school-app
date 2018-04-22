@@ -43,7 +43,7 @@ class App extends React.Component {
         });
     }
     
-    selectClass(selectedElem){
+    selectClass(selectedElem, callBack){
         console.log("selected class:"+selectedElem);
         this.setState({selectedClass: selectedElem});
     }
