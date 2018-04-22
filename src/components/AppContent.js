@@ -8,7 +8,7 @@ import ClassDetailsPage from './ClassDetailsPage';
 
 function AppContent(props){
     return (
-        <div class="app-content">
+        <div className="app-content">
             <NotificationListComponent title="Notifications" notificationList={props.notificationList} />
             
             <ClassListComponent classList={props.classList} title="My Classes" goToPage={props.goToPage} selectClass={props.selectClass}/>

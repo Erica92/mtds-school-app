@@ -5,7 +5,7 @@ import './BaseStyle.css';
 
 export default function ClassListComponent(props){
     let rows = props.classList.map(classElem => (
-        <div className="row clickable" onClick={() => props.selectClass(classElem.ClassID, props.goToPage("ClassPage"))}>
+        <div className="row clickable" onClick={() => props.selectClass(classElem, props.goToPage("ClassPage"))} key={classElem.ClassID} >
             <div className="centered-div" >
                 {classElem.ClassID}
             </div>

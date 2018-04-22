@@ -20,6 +20,7 @@ class App extends React.Component {
         };
         
         this.goToPage = this.goToPage.bind(this);
+        this.goToPrevPage = this.goToPrevPage.bind(this);
         this.selectClass = this.selectClass.bind(this);
     }
     
@@ -39,8 +40,13 @@ class App extends React.Component {
         
         this.setState({
             pageState: nextPage,
-            prevPage: currentPage
+            prevPageState: currentPage
         });
+    }
+    
+    goToPrevPage(){
+        console.log("go to prev page");
+        this.goToPage(this.state.prevPageState);
     }
     
     selectClass(selectedElem, callBack){
@@ -71,6 +77,8 @@ class App extends React.Component {
         console.log(this.state.notifications);
     }
     
+    //http://localhost:8080/api/v1/teacher/agenda?id=T1&scope=day&class=C1
+    
     render(){
         const {isLoading, news, classList, notifications} = this.state;
         console.log("Rendering App - classList length"+classList.length+" state:"+this.state.pageState);
@@ -81,9 +89,11 @@ class App extends React.Component {
         } else {
             if(this.state.pageState === "HomePage"){
                 componentToRender = (<AppContent news={news} classList={classList} 
-                                     notificationList={notifications} goToPage={this.goToPage} selectClass={this.selectClass} />);
+                                     notificationList={notifications} goToPage={this.goToPage} 
+                                     selectClass={this.selectClass} />);
             } else if(this.state.pageState === "ClassPage"){
-                componentToRender = (<ClassDetailsPage goToPage={this.goToPage} selectedClass={this.state.selectedClass} />);
+                componentToRender = (<ClassDetailsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
+                                     selectedClass={this.state.selectedClass} />);
             }
         }
         

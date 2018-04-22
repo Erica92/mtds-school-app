@@ -6,7 +6,7 @@ import {SquareTile} from './BaseTiles';
 export default function ClassDetailsPage(props) {
     return (
         <div class="app-content">
-            <SectionTitleTile text={props.selectedClass} />    
+            <SectionTitleTile text={"Class "+props.selectedClass.ClassID} goToPrevPage={props.goToPrevPage} />    
             <div className="squared-tile-block">
                 <SquareTile title="Program" onClick={()=>props.goToPage("ProgramPage")} />
                 <SquareTile title="Schedule" onClick={()=>props.goToPage("SchedulePage")} />
