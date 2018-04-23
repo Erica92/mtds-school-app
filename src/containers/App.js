@@ -78,6 +78,7 @@ class App extends React.Component {
     }
     
     //http://localhost:8080/api/v1/teacher/agenda?id=T1&scope=day&class=C1
+    //http://localhost:8080/api/v1/teacher/grades?id=T5&class=C5&subject=SubjectName5
     
     render(){
         const {isLoading, news, classList, notifications} = this.state;

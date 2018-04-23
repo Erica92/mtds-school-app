@@ -52,7 +52,9 @@ export function SquareTile(props) {
 export function SectionTitleTile(props) {
     return ( 
         <div className="section-title-tile">
-            <span className="clickable" onClick={() => props.goToPrevPage()} >back</span>{props.text}
+            <span className="clickable" onClick={() => props.goToPrevPage()} >back</span>
+            <div>{props.title}</div>
+            <div>{props.subtitle}</div>
         </div>
     );
 }

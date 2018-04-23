@@ -7,7 +7,7 @@ export default function ClassListComponent(props){
     let rows = props.classList.map(classElem => (
         <div className="row clickable" onClick={() => props.selectClass(classElem, props.goToPage("ClassPage"))} key={classElem.ClassID} >
             <div className="centered-div" >
-                {classElem.ClassID}
+                {classElem.ClassID}-{classElem.Subject}
             </div>
         </div>
     ));
