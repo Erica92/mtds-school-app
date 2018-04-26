@@ -24,7 +24,7 @@ export default function GradesListComponent(props){
 }
 
 function GradeRow(props){
-    let row = props
+    //let row = props.gradesList.map(grade => );
     return ({
         
     });

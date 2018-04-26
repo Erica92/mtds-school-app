@@ -4,7 +4,7 @@ import './TilesStyle.css';
 export default function BaseTile (props) {
 
     return (
-        <div className="base-tile">
+        <div className="base-tile limit-max-height">
             <TileHeader text={props.title} toggleImg={require("../images/launch_white_18x18.png")} />
             <TileContent textArray={props.textArray} />
         </div>
