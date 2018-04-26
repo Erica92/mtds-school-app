@@ -14,7 +14,8 @@ export default class ClassDetailsPage extends React.Component {
             studentClassList: {
                 data: [],
                 isLoading: true
-            }
+            },
+            classDetails: this.props.selectedClass
         }
     }
     
@@ -26,12 +27,12 @@ export default class ClassDetailsPage extends React.Component {
     render(){
         return (
             <div className="app-content">
-                <SectionTitleTile title={"Class "+this.props.selectedClass.ClassID} subtitle={this.props.selectedClass.Subject} goToPrevPage={this.props.goToPrevPage} />    
+                <SectionTitleTile title={"Class "+this.state.classDetails.ClassID} subtitle={this.state.classDetails.Subject} goToPrevPage={this.props.goToPrevPage} />    
                 <div className="squared-tile-block">
                     <SquareTile title="Program" onClick={()=>this.props.goToPage("ProgramPage")} />
                     <SquareTile title="Schedule" onClick={()=>this.props.goToPage("SchedulePage")} />
                     <SquareTile title="Grades" onClick={()=>this.props.goToPage("GradesPage")} />
-                    <StudentListComponent studentList={this.state.studentClassList.data} />
+                    <StudentListComponent studentList={this.state.studentClassList.data} onClickElem={this.props.goToPage} />
                 </div>
             </div>
         );

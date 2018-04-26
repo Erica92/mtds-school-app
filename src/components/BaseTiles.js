@@ -38,7 +38,7 @@ function TileContent(props) {
 
 export function SquareTile(props) {
     return (
-        <div className="square-tile clickable">
+        <div className="square-tile clickable" onClick={() => props.onClick()} >
             <div className="square-tile-image" >
                 <img src={props.imageSrc} />
             </div>

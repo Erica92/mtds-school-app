@@ -1,11 +1,12 @@
 import React from 'react';
-import {BaseRow} from './BaseComponents';
+import {BaseRow, BasePersonComponent} from './BaseComponents';
 import {TileHeader} from './BaseTiles';
 import './BaseStyle.css';
 
 export default function StudentListComponent(props){
     var studentRows = props.studentList.map(elem => (
-        <BaseRow title={elem.FirstName} text={elem.LastName} date={elem.GPA} key={elem.Username} />
+        <BasePersonComponent user={elem} onClick={props.onClickElem} />
+        //<BaseRow title={elem.FirstName} text={elem.LastName} date={elem.GPA} key={elem.Username} />
     ));
     
     return (

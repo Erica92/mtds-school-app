@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import AppHeader from '../components/AppHeader';
 import AppContent from '../components/AppContent';
 import ClassDetailsPage from '../components/ClassDetailsPage';
+import GradesPage from '../components/GradesPage';
 
 class App extends React.Component {
     
@@ -11,6 +12,7 @@ class App extends React.Component {
         
         this.state = {
             isLoading: true,
+            teacherID: "T1",
             news: [],
             classList : [],
             selectedClass : null,
@@ -95,6 +97,9 @@ class App extends React.Component {
             } else if(this.state.pageState === "ClassPage"){
                 componentToRender = (<ClassDetailsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
                                      selectedClass={this.state.selectedClass} />);
+            } else if(this.state.pageState === "GradesPage"){
+                componentToRender = (<GradesPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
+                                     selectedClass={this.state.selectedClass} teacher={this.state.teacherID} />);
             }
         }
         

@@ -14,6 +14,19 @@ export default function BaseProfileComponent(props) {
     );
 }
 
+export function BasePersonComponent(props) {
+    return (
+        <div className="profile-header" onClick={ () => props.onClick() }>
+			<div className="profile-header-sx">
+				<Avatar avatarUrl={props.user.avatarUrl} />	
+			</div>
+			<div className="profile-header-dx">
+				<BlockTitle text={props.user.LastName +" "+ props.user.FirstName} />
+			</div>
+		</div>
+    );
+}
+
 export function Avatar(props){
 	return (
 		<img className="Avatar" src={props.avatarUrl} />

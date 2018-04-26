@@ -4,11 +4,11 @@ import {TileHeader} from './BaseTiles';
 import './BaseStyle.css';
 import {BaseProfileComponent} from './BaseComponents';
 
-export default function ClassListComponent(props){
-    let rows = props.classList.map(classElem => (
-        <div className="row clickable" onClick={() => props.selectClass(classElem, props.goToPage("ClassPage"))} key={classElem.ClassID} >
+export default function GradesListComponent(props){
+    let rows = props.studentGradesList.map(studentElem => (
+        <div className="row clickable" key={studentElem.Student.Username} >
             <div className="centered-div" >
-                {classElem.ClassID}-{classElem.Subject}
+                {studentElem.Student.FirstName}-{studentElem.Student.LastName}-{studentElem.Grade.Grade}
             </div>
         </div>
     ));
@@ -21,4 +21,11 @@ export default function ClassListComponent(props){
             </div>
         </div>
     );
+}
+
+function GradeRow(props){
+    let row = props
+    return ({
+        
+    });
 }
