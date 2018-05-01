@@ -15,11 +15,11 @@ export default function AgendaComponent(props) {
         let teachClass = scheduleList[i].TeachClass;
         let rowsSchedule = scheduleList[i].Schedule.map(elem => (
             <div>
+                <span>{elem.StartTime}</span>
+                <span>{elem.EndTime}</span>
                 <span>Lesson</span>
                 <span>Class {teachClass.ClassID}</span>
                 <span>{teachClass.Subject}</span>
-                <span>{elem.StartTime}</span>
-                <span>{elem.EndTime}</span>
             </div>
         ));
         agendaList.push(rowsSchedule);
@@ -27,9 +27,9 @@ export default function AgendaComponent(props) {
     
     let rowsAppointments = props.appointmentList.map(elem => (
         <div>
-            <span>Appointment</span>
             <span>{Utils.formatTimeFromJSON(elem.StartTime)}</span>
             <span>{Utils.formatTimeFromJSON(elem.EndTime)}</span>
+            <span>Appointment</span>
             <span>{elem.ParentID}</span>
         </div>
     ));

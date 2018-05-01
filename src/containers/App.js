@@ -4,6 +4,7 @@ import AppHeader from '../components/AppHeader';
 import AppContent from '../components/AppContent';
 import ClassDetailsPage from '../components/ClassDetailsPage';
 import GradesPage from '../components/GradesPage';
+import SchedulePage from '../components/SchedulePage';
 import * as CONSTANTS from '../api/apiUtils';
 
 class App extends React.Component {
@@ -125,6 +126,9 @@ class App extends React.Component {
                                      selectedClass={this.state.selectedClass} />);
             } else if(this.state.pageState === "GradesPage"){
                 componentToRender = (<GradesPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
+                                     selectedClass={this.state.selectedClass} teacher={this.state.teacherID} />);
+            } else if(this.state.pageState === "SchedulePage"){
+                componentToRender = (<SchedulePage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
                                      selectedClass={this.state.selectedClass} teacher={this.state.teacherID} />);
             }
         }
