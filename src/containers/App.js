@@ -22,7 +22,7 @@ class App extends React.Component {
             schedule: [],
             appointments: [],
             pageState: "HomePage",
-            prevPageState: "HomePage"
+            prevPageState: ["HomePage"]
         };
         
         this.goToPage = this.goToPage.bind(this);
@@ -43,18 +43,31 @@ class App extends React.Component {
     
     goToPage(nextPage){
         var currentPage = this.state.pageState;
+        var newPrevPageState = this.state.prevPageState;
+        newPrevPageState.push(currentPage);
         
         console.log("changing page - going from "+currentPage+" to "+nextPage);
         
         this.setState({
             pageState: nextPage,
-            prevPageState: currentPage
+            prevPageState: newPrevPageState
         });
     }
     
     goToPrevPage(){
         console.log("go to prev page");
-        this.goToPage(this.state.prevPageState);
+        var currentPage = this.state.pageState;
+        var prevPageState = this.state.prevPageState;
+        console.log("prevPageState;"+prevPageState);
+        var prevPage = prevPageState.pop();
+        console.log("prevPageState;"+prevPageState);
+        
+        console.log("changing page - going from "+currentPage+" to "+prevPage);
+        
+        this.setState({
+            pageState: prevPage,
+            prevPageState: prevPageState
+        });
     }
     
     selectClass(selectedElem, callBack){
