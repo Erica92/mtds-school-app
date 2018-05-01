@@ -4,6 +4,7 @@ import AppHeader from '../components/AppHeader';
 import AppContent from '../components/AppContent';
 import ClassDetailsPage from '../components/ClassDetailsPage';
 import GradesPage from '../components/GradesPage';
+import * as CONSTANTS from '../api/apiUtils';
 
 class App extends React.Component {
     
@@ -17,6 +18,8 @@ class App extends React.Component {
             classList : [],
             selectedClass : null,
             notifications: [],
+            schedule: [],
+            appointments: [],
             pageState: "HomePage",
             prevPageState: "HomePage"
         };
@@ -30,6 +33,8 @@ class App extends React.Component {
     	//this.fetchData();
         this.fetchDataClassesList("T1");
         this.fetchDataNotifications();
+        this.fetchDataSchedule(this.state.teacherID, "day");
+        this.fetchDataAppointments(this.state.teacherID, "day");
         //getClassesList(this.setState);
         console.log("componentDidMount!!!");
         
@@ -79,6 +84,26 @@ class App extends React.Component {
         console.log(this.state.notifications);
     }
     
+    fetchDataSchedule(teacherID, scope){
+        fetch(CONSTANTS.HOST+"/api/v1/teacher/agenda?id="+teacherID+"&scope="+scope)
+            .then(response => response.json())
+            .then( (result) => this.setState({
+                isLoading: false,
+                schedule: result
+            })
+        );
+    }
+    
+      fetchDataAppointments(teacherID, scope){
+        fetch(CONSTANTS.HOST+"/api/v1/teacher/appointments?id="+teacherID+"&scope="+scope)
+            .then(response => response.json())
+            .then( (result) => this.setState({
+                isLoading: false,
+                appointments: result
+            })
+        );
+    }
+    
     //http://localhost:8080/api/v1/teacher/agenda?id=T1&scope=day&class=C1
     //http://localhost:8080/api/v1/teacher/grades?id=T5&class=C5&subject=SubjectName5
     
@@ -92,6 +117,7 @@ class App extends React.Component {
         } else {
             if(this.state.pageState === "HomePage"){
                 componentToRender = (<AppContent news={news} classList={classList} 
+                                     scheduleList={this.state.schedule} appointmentList={this.state.appointments}
                                      notificationList={notifications} goToPage={this.goToPage} 
                                      selectClass={this.selectClass} />);
             } else if(this.state.pageState === "ClassPage"){

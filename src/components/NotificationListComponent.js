@@ -5,7 +5,7 @@ import './BaseStyle.css';
 
 export default function NotificationListComponent(props) {
     let rows = props.notificationList.map(elem => (
-        <BaseRow title={elem.Title} text={elem.Description} date={elem.StartDate} key={elem.Title} />
+        <BaseRow title={elem.Title} text={elem.Description} date={new Date(elem.StartDate).toLocaleDateString()} key={elem.Title} />
     ));
                                     
     return (

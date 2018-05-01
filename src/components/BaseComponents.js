@@ -18,10 +18,10 @@ export function BasePersonComponent(props) {
     return (
         <div className="profile-header" onClick={ () => props.onClick() }>
 			<div className="profile-header-sx">
-				<Avatar avatarUrl={props.user.avatarUrl} />	
+				<Avatar avatarUrl={props.avatarUrl} />	
 			</div>
 			<div className="profile-header-dx">
-				<BlockTitle text={props.user.LastName +" "+ props.user.FirstName} />
+				<BlockTitle text={props.LastName +" "+ props.FirstName} />
 			</div>
 		</div>
     );

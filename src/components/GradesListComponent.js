@@ -6,9 +6,10 @@ import {BaseProfileComponent} from './BaseComponents';
 
 export default function GradesListComponent(props){
     let rows = props.studentGradesList.map(studentElem => (
-        <div className="row clickable" key={studentElem.Student.Username} >
+        <div className="row clickable" key={studentElem.BasicStudent.Username} >
             <div className="centered-div" >
-                {studentElem.Student.FirstName}-{studentElem.Student.LastName}-{studentElem.Grade.Grade}
+                {studentElem.BasicStudent.FirstName} - {studentElem.BasicStudent.LastName}
+                <GradeRow gradesList={studentElem.Grade} />
             </div>
         </div>
     ));
@@ -24,8 +25,11 @@ export default function GradesListComponent(props){
 }
 
 function GradeRow(props){
-    //let row = props.gradesList.map(grade => );
-    return ({
-        
-    });
+    let row = props.gradesList.map(grade => <span>{Math.round(grade.Grade * 100) / 100}</span>);
+                                   
+    return (
+        <div>
+            {row}
+        </div>
+    );
 }

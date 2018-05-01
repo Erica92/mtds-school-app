@@ -8,7 +8,7 @@ export default class GradesPage extends React.Component {
         super(props);
         
         this.state = {
-            studentsGrades: {
+            studentsGradesList: {
                 data: [],
                 isLoading: true
             },
@@ -27,7 +27,7 @@ export default class GradesPage extends React.Component {
             <div className="app-content">
                 <SectionTitleTile title={"Grades for Class "+this.state.selectedClass.ClassID} subtitle={this.state.selectedClass.Subject} goToPrevPage={this.props.goToPrevPage} />    
                 <div className="squared-tile-block">
-                    <GradesListComponent studentGradesList={this.state.studentsGrades.data} />
+                    <GradesListComponent studentGradesList={this.state.studentsGradesList.data} />
                 </div>
             </div>
         );
@@ -37,7 +37,7 @@ export default class GradesPage extends React.Component {
         fetch(CONSTANTS.HOST+"/api/v1/teacher/grades?id="+teacherID+"&class="+classID+"&subject="+subject+"&object=student")
             .then(response => response.json())
             .then( (result) => this.setState({
-                studentsGrades: {
+                studentsGradesList: {
                     data: result,
                     isLoading: false
                 }
