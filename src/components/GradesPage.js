@@ -19,7 +19,7 @@ export default class GradesPage extends React.Component {
     
     componentDidMount(){
         console.log("componentDidMount!!!");
-        this.fetchDataStudentGrades("T1", this.state.selectedClass.ClassID, this.state.selectedClass.Subject);
+        this.fetchDataStudentGrades(this.state.teacher, this.state.selectedClass.ClassID, this.state.selectedClass.Subject);
     }
     
     render(){

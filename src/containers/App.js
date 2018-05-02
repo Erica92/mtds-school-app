@@ -5,6 +5,7 @@ import AppContent from '../components/AppContent';
 import ClassDetailsPage from '../components/ClassDetailsPage';
 import GradesPage from '../components/GradesPage';
 import SchedulePage from '../components/SchedulePage';
+import TeacherPersonalDataPage from './TeacherPersonalDataPage';
 import * as CONSTANTS from '../api/apiUtils';
 
 class App extends React.Component {
@@ -32,7 +33,7 @@ class App extends React.Component {
     
     componentDidMount(){
     	//this.fetchData();
-        this.fetchDataClassesList("T1");
+        this.fetchDataClassesList(this.state.teacherID);
         this.fetchDataNotifications();
         this.fetchDataSchedule(this.state.teacherID, "day");
         this.fetchDataAppointments(this.state.teacherID, "day");
@@ -87,7 +88,7 @@ class App extends React.Component {
     }
     
     fetchDataNotifications(){
-        fetch("http://localhost:8080/api/v1/teacher/notifications?id=T1")
+        fetch("http://localhost:8080/api/v1/teacher/notifications?id="+this.state.teacherID)
             .then(response => response.json())
             .then( (result) => this.setState({
                 isLoading: false,
@@ -101,9 +102,9 @@ class App extends React.Component {
     fetchDataSchedule(teacherID, scope){
         fetch(CONSTANTS.HOST+"/api/v1/teacher/agenda?id="+teacherID+"&scope="+scope)
             .then(response => response.json())
-            .then( (result) => this.setState({
-                isLoading: false,
-                schedule: result
+            .then( (result) => ( result == null )? 
+                 this.setState({isLoading: false, schedule: []})
+                : this.setState({isLoading: false, schedule: result
             })
         );
     }
@@ -143,6 +144,9 @@ class App extends React.Component {
             } else if(this.state.pageState === "SchedulePage"){
                 componentToRender = (<SchedulePage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
                                      selectedClass={this.state.selectedClass} teacher={this.state.teacherID} />);
+            } else if(this.state.pageState === "PersonalDataPage"){
+                componentToRender = (<TeacherPersonalDataPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
+                                     teacherID={this.state.teacherID} />);
             }
         }
         
@@ -150,7 +154,7 @@ class App extends React.Component {
         //<AppContent news={message} /> />
         return (
             <div>
-                <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" user={user1} goToPage={this.goToPage} />
+                <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" user={user1} goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} onClickToggle={function(){}} />
                 {componentToRender} 
             </div>
         );
@@ -169,32 +173,3 @@ var user1 = {
     fullName: 'Mario Rossi'
 }
 
-//API FETCH
-//https://api.whatdoestrumpthink.com/api/v1/quotes
-
-/*
-in this way it automatically create a js obj like the json
-
-fetch("https://api.whatdoestrumpthink.com/api/v1/quotes")
-          .then(response => response.json())
-          .then( (result) => this.setState({
-            isLoading: false,
-            news: result.messages.personalized
-        }));
-*/
-
-/*
-        fetch("https://api.whatdoestrumpthink.com/api/v1/quotes")
-          .then(response => response.json())
-          .then( result => result.messages.map(elem => (
-            {
-                news: {
-                    title: "ciao",
-                    text: elem.personalized
-                }
-            })))
-        .then(news => this.setState({
-            isLoading: false,
-            news
-        }));
-*/

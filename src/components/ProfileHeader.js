@@ -6,7 +6,7 @@ import './BaseStyle.css';
 function ProfileHeader(props){
     return (
         <div className="dropdown">
-            <div className="profile-header" onClick={ () => props.onClick() }>
+            <div className="profile-header" onClick={ () => props.onClickToggle() }>
                 <div className="profile-header-sx">
                     <Avatar avatarUrl={props.user.avatarUrl} />	
                 </div>
@@ -16,7 +16,7 @@ function ProfileHeader(props){
                 </div>
             </div>
             <div class="dropdown-content">
-                <a href="#">Personal Data</a>
+                <a href="#" onClick={() => props.goToPage("PersonalDataPage") } >Personal Data</a>
                 <a href="#">Logout</a>
             </div>
         </div>
