@@ -12,6 +12,11 @@ export default class App extends React.Component {
     
     constructor(props) {
         super(props);
+        
+        this.state = {
+            authenticated: false,
+            userType: "T"
+        }
     }
     
     componentDidMount(){
@@ -23,7 +28,9 @@ export default class App extends React.Component {
             <Switch>
                 <Route exact path="/" component={HomePage}/>
                 <Route exact path="/login" component={LoginPage}/>
-                <Route exact path="/teacherPortal" component={TeacherApp}/>
+                {this.state.userType === "T" &&
+                    <Route exact path="/teacherPortal" component={TeacherApp}/>
+                }
                 <Route component={NoMatchPage}/>
             </Switch>
         );
