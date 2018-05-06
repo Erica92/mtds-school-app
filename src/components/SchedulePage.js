@@ -4,6 +4,7 @@ import './TilesStyle.css';
 import {TileHeader} from './BaseTiles';
 import './BaseStyle.css';
 import * as CONSTANTS from '../api/apiUtils';
+import * as Utils from '../utils/Utils';
 
 export default class SchedulePage extends React.Component {
     constructor(props) {
@@ -34,8 +35,8 @@ export default class SchedulePage extends React.Component {
                 rows = scheduleList[i].Schedule.map(elem => (
                     <div>
                         <span>{elem.Day}</span>
-                        <span>{elem.StartTime}</span>
-                        <span>{elem.EndTime}</span>
+                        <span>{Utils.formatTimeFromJSON(elem.StartTime)}</span>
+                        <span>{Utils.formatTimeFromJSON(elem.EndTime)}</span>
                     </div>
                 ));
             }

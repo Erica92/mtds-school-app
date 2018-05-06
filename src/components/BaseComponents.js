@@ -1,4 +1,5 @@
 import React from 'react';
+import './Spinner.css';
 
 export default function BaseProfileComponent(props) {
     return (
@@ -57,5 +58,11 @@ export function BaseRow(props) {
             <div className="row-content">{props.text}</div>
             <div className="row-content-right">{props.date}</div>
         </div>
+    );
+}
+
+export function Spinner(props) {
+    return (
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
     );
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Spinner} from '../components/BaseComponents';
 import AppHeader from '../components/AppHeader';
 import AppContent from '../components/AppContent';
 import ClassDetailsPage from '../components/ClassDetailsPage';
@@ -15,7 +16,7 @@ class TeacherApp extends React.Component {
         
         this.state = {
             isLoading: true,
-            teacherID: "T1",
+            teacherID: "T2",
             news: [],
             classList : [],
             selectedClass : null,
@@ -128,7 +129,7 @@ class TeacherApp extends React.Component {
         
         var componentToRender = null;
         if(isLoading){
-            componentToRender = (<div>ciaone</div>);
+            componentToRender = (<Spinner />);
         } else {
             if(this.state.pageState === "HomePage"){
                 componentToRender = (<AppContent news={news} classList={classList} 
