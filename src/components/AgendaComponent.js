@@ -15,8 +15,8 @@ export default function AgendaComponent(props) {
         let teachClass = scheduleList[i].TeachClass;
         let rowsSchedule = scheduleList[i].Schedule.map(elem => (
             <div>
-                <span>{elem.StartTime}</span>
-                <span>{elem.EndTime}</span>
+                <span>{Utils.formatTimeFromJSON(elem.StartTime)}</span>
+                <span>{Utils.formatTimeFromJSON(elem.EndTime)}</span>
                 <span>Lesson</span>
                 <span>Class {teachClass.ClassID}</span>
                 <span>{teachClass.Subject}</span>

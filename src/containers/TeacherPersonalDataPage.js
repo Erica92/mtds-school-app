@@ -37,27 +37,27 @@ export default class TeacherPersonalDataPage extends React.Component {
                         <div className="input-group">
                             <img alt="profile pic" src={this.state.teacherInfo.ProfilePic} className="personal-pic" />
                             //<input type="hidden" value={this.state.teacherInfo.Username} />
-                            <InputText label="Username" name="Username" value={this.state.teacherInfo.Username} />
-                            <InputText label="First Name" name="FirstName" value={this.state.teacherInfo.FirstName} />
-                            <InputText label="Last Name" name="LastName" value={this.state.teacherInfo.LastName} />
-                            <InputText label="Date Of Birth" name="DateOfBirth" value={this.state.teacherInfo.DateOfBirth} />
-                            <InputText label="Place Of Birth" name="PlaceOfBirth" value={this.state.teacherInfo.PlaceOfBirth} />
-                            <InputText label="Nationality" name="Nationality" value={this.state.teacherInfo.Nationality} />
-                            <InputText label="Fiscal Code" name="FiscalCode" value={this.state.teacherInfo.FiscalCode} />
+                            <InputText label="Username" name="Username" value={this.state.teacherInfo.Username} disabled />
+                            <InputText label="First Name" name="FirstName" value={this.state.teacherInfo.FirstName} disabled />
+                            <InputText label="Last Name" name="LastName" value={this.state.teacherInfo.LastName} disabled />
+                            <InputText label="Date Of Birth" name="DateOfBirth" value={this.state.teacherInfo.DateOfBirth} disabled />
+                            <InputText label="Place Of Birth" name="PlaceOfBirth" value={this.state.teacherInfo.PlaceOfBirth} disabled />
+                            <InputText label="Nationality" name="Nationality" value={this.state.teacherInfo.Nationality} disabled />
+                            <InputText label="Fiscal Code" name="FiscalCode" value={this.state.teacherInfo.FiscalCode} disabled />
                         </div>
                         <div className="input-group">
                             <InputText className="editable" onChange={this.handleInputChange}
-                                label="Email" name="Email" value={this.state.teacherInfo.Email} disabled />
+                                label="Email" name="Email" value={this.state.teacherInfo.Email} />
                             <InputText className="editable" onChange={this.handleInputChange}
-                                label="Phone Number" name="PhoneNumber" value={this.state.teacherInfo.PhoneNumber} disabled />
+                                label="Phone Number" name="PhoneNumber" value={this.state.teacherInfo.PhoneNumber} />
                             <InputText className="editable" onChange={this.handleInputChange}
-                                label="Address" name="Address" value={this.state.teacherInfo.Address} disabled />
+                                label="Address" name="Address" value={this.state.teacherInfo.Address} />
                         </div>
                         <div className="input-group">
-                            <InputText className="editable" label="Graduation Degree" name="GradDegree" value={this.state.teacherInfo.GradDegree} disabled />
-                            <InputText className="editable" label="Graduation Field Of Study" name="GradFieldOfStudy" value={this.state.teacherInfo.GradFieldOfStudy} disabled />
-                            <InputText className="editable" label="Graduation Grade" name="GradGrade" value={this.state.teacherInfo.GradGrade} disabled />
-                            <InputText className="editable" label="Graduation School" name="GradSchool" value={this.state.teacherInfo.GradSchool} disabled />
+                            <InputText className="editable" label="Graduation Degree" name="GradDegree" value={this.state.teacherInfo.GradDegree} />
+                            <InputText className="editable" label="Graduation Field Of Study" name="GradFieldOfStudy" value={this.state.teacherInfo.GradFieldOfStudy} />
+                            <InputText className="editable" label="Graduation Grade" name="GradGrade" value={this.state.teacherInfo.GradGrade} />
+                            <InputText className="editable" label="Graduation School" name="GradSchool" value={this.state.teacherInfo.GradSchool} />
                             <InputText label="Seniority Level" name="SeniorityLevel" value={this.state.teacherInfo.SeniorityLevel} disabled />
                         </div>
                         <input type="submit" value="Submit" />
@@ -82,19 +82,17 @@ export default class TeacherPersonalDataPage extends React.Component {
     postTeacherInfo(){
         //var form = new FormData(document.getElementById('DataForm'));
         var data = JSON.stringify(this.state.teacherInfo);
-        console.log(data);
         
-        var teacher = this.state.teacherInfo;
-        var form_data = new FormData();
-
-        for ( var key in teacher ) {
-            form_data.append(key, teacher[key]);
-            console.log("key:"+key+" teacherkey:"+teacher[key]);
-        }
+        console.log(data);
         
         fetch(CONSTANTS.HOST+"/api/v1/teacher/info", {
             method: "POST",
-            body: form_data
+            mode: 'no-cors',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: data
         })/*.then((res) => res.json())
             .then((data) =>  console.log(data))
             .catch((err)=>console.log(err))*/

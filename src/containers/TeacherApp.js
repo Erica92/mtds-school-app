@@ -7,6 +7,7 @@ import ClassDetailsPage from '../components/ClassDetailsPage';
 import GradesPage from '../components/GradesPage';
 import SchedulePage from '../components/SchedulePage';
 import TeacherPersonalDataPage from './TeacherPersonalDataPage';
+import ProgramPage from './ProgramPage';
 import * as CONSTANTS from '../api/apiUtils';
 
 class TeacherApp extends React.Component {
@@ -16,7 +17,7 @@ class TeacherApp extends React.Component {
         
         this.state = {
             isLoading: true,
-            teacherID: "T2",
+            teacherID: "T1",
             news: [],
             classList : [],
             selectedClass : null,
@@ -110,7 +111,7 @@ class TeacherApp extends React.Component {
         );
     }
     
-      fetchDataAppointments(teacherID, scope){
+    fetchDataAppointments(teacherID, scope){
         fetch(CONSTANTS.HOST+"/api/v1/teacher/appointments?id="+teacherID+"&scope="+scope)
             .then(response => response.json())
             .then( (result) => this.setState({
@@ -148,6 +149,9 @@ class TeacherApp extends React.Component {
             } else if(this.state.pageState === "PersonalDataPage"){
                 componentToRender = (<TeacherPersonalDataPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
                                      teacherID={this.state.teacherID} />);
+            } else if(this.state.pageState === "ProgramPage"){
+                componentToRender = (<ProgramPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
+                                     classDetails={this.state.selectedClass} />);
             }
         }
         

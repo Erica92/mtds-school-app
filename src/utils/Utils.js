@@ -7,5 +7,7 @@ export function formatTimeFromJSON(jsonDate){
     var hours = jsDate.getHours();
     var min = jsDate.getMinutes();
     
+    min = min < 10 ? "0"+min : min;
+    
     return (hours+":"+min);
 }
