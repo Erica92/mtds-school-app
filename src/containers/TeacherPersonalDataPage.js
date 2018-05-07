@@ -87,13 +87,13 @@ export default class TeacherPersonalDataPage extends React.Component {
         
         fetch(CONSTANTS.HOST+"/api/v1/teacher/info", {
             method: "POST",
-            mode: 'no-cors',
+            mode: 'cors',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
             body: data
-        })/*.then((res) => res.json())
+        });/*.then((res) => res.json())
             .then((data) =>  console.log(data))
             .catch((err)=>console.log(err))*/
     }
