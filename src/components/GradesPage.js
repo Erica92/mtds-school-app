@@ -2,6 +2,7 @@ import React from 'react';
 import {SectionTitleTile} from './BaseTiles';
 import GradesListComponent from './GradesListComponent';
 import * as CONSTANTS from '../api/apiUtils';
+import {Spinner} from './BaseComponents';
 
 export default class GradesPage extends React.Component {
     constructor(props) {
@@ -23,6 +24,7 @@ export default class GradesPage extends React.Component {
     }
     
     render(){
+        const isLoading = this.state.isLoading;
         return (
             <div className="app-content">
                 <SectionTitleTile title={"Grades for Class "+this.state.selectedClass.ClassID} subtitle={this.state.selectedClass.Subject} goToPrevPage={this.props.goToPrevPage} />    
