@@ -26,11 +26,17 @@ export default function GradesListComponent(props){
 }
 
 function GradeRow(props){
-    let row = props.gradesList.map(grade => <span>{Math.round(grade.Grade * 100) / 100}</span>);
+    let row = props.gradesList.map(grade => (
+        <span className="basic-grade-container">
+            <span className="basic-grade">{Math.round(grade.Grade * 100) / 100}</span>
+        </span>));
                                    
     return (
         <div className="row-content">
             {row}
+            <span>
+                <img src={require("../images/add_circle_outline_grey_36x36.png")} />
+            </span>
         </div>
     );
 }

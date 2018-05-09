@@ -17,7 +17,7 @@ export function TileHeader(props){
             <div className="tile-header-title">
                 <span>{props.text}</span>
             </div>
-            <span className="toggle clickable"><img src={props.toggleImg} /></span>
+            <span className="toggle clickable" onClick={() => props.toggleOnClick()} ><img src={props.toggleImg} /></span>
         </div>
     );
 }

@@ -19,7 +19,7 @@ export default class ProgramPage extends React.Component {
             <div className="app-content">
                 <SectionTitleTile title={"Program of "+this.state.classDetails.Subject} subtitle={"Class "+this.state.classDetails.ClassID} goToPrevPage={this.props.goToPrevPage} />    
                 <div className="base-tile">
-                    <TileHeader text="Program description" toggleImg={require("../images/launch_white_18x18.png")} />
+                    <TileHeader text="Program description" toggleImg={require("../images/mode_edit_white_24x24.png")} />
                     <div className="tile-content">        
                         <pre>
                             {this.state.classDetails.Program}

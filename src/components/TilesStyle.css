@@ -23,7 +23,7 @@
 }
 
 .tile-header-title {
-    display: table;
+    display: inline-block;
 }
 
 .tile-header-title span {
