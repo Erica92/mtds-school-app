@@ -8,6 +8,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - run the following commands:
 ```
 npm install
+npm install react-router-dom
 npm start
 ```
 - visit http://127.0.0.1:3000 in a web browser
