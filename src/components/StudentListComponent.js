@@ -5,7 +5,7 @@ import './BaseStyle.css';
 
 export default function StudentListComponent(props){
     var studentRows = props.studentList.map(elem => (
-        <BasePersonComponent FirstName={elem.FirstName} LastName={elem.LastName} onClick={props.onClickElem} />
+        <BasePersonComponent FirstName={elem.FirstName} LastName={elem.LastName} avatarUrl={elem.ProfilePic} onClick={props.onClickElem} />
         //<BaseRow title={elem.FirstName} text={elem.LastName} date={elem.GPA} key={elem.Username} />
     ));
     

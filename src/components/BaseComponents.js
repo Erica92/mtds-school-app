@@ -17,12 +17,13 @@ export default function BaseProfileComponent(props) {
 
 export function BasePersonComponent(props) {
     return (
-        <div className="profile-header" onClick={ () => props.onClick() }>
-			<div className="profile-header-sx">
+        <div className="profile-block" onClick={ () => props.onClick() }>
+			<div className="profile-block-sx">
 				<Avatar avatarUrl={props.avatarUrl} />	
 			</div>
-			<div className="profile-header-dx">
-				<BlockTitle text={props.LastName +" "+ props.FirstName} />
+			<div className="profile-block-dx">
+				<BlockTitle text={props.LastName} />
+                <BlockTitle text={props.FirstName} />
 			</div>
 		</div>
     );

@@ -21,7 +21,9 @@ export default class ProgramPage extends React.Component {
                 <div className="base-tile">
                     <TileHeader text="Program description" toggleImg={require("../images/launch_white_18x18.png")} />
                     <div className="tile-content">        
-                        {this.state.classDetails.Program}
+                        <pre>
+                            {this.state.classDetails.Program}
+                        </pre>
                     </div>
                 </div>
             </div>
