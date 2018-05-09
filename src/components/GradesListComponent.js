@@ -3,6 +3,8 @@ import './TilesStyle.css';
 import {TileHeader} from './BaseTiles';
 import './BaseStyle.css';
 import {BaseProfileComponent, BasePersonComponent} from './BaseComponents';
+import {ModalInsertSingleGrade} from './ModalComponents';
+import * as Modals from './ModalComponents';
 
 export default function GradesListComponent(props){
     let rows = props.studentGradesList.map(studentElem => (
@@ -21,6 +23,7 @@ export default function GradesListComponent(props){
             <div className="tile-content">        
                 {rows}
             </div>
+            <ModalInsertSingleGrade />
         </div>
     );
 }
@@ -33,10 +36,13 @@ function GradeRow(props){
                                    
     return (
         <div className="row-content">
-            {row}
-            <span>
+            <div className="grades-row-container">
+                {row}
+            </div>
+            <span onClick={() => Modals.openModal("singleGradeModal")}>
                 <img src={require("../images/add_circle_outline_grey_36x36.png")} />
             </span>
         </div>
     );
 }
+
