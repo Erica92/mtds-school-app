@@ -15,19 +15,31 @@ export default class App extends React.Component {
         
         this.state = {
             authenticated: false,
+            username: "",
             userType: "T"
         }
+        
+        this.getAuth = this.getAuth.bind(this);
     }
     
     componentDidMount(){
         
     }
     
+    getAuth(data){
+        this.setState={
+            authenticated: true,
+            username: data,
+            userType: 'T',
+        }
+        console.log("data:"+data);
+    }
+    
     render(){
         return (
             <Switch>
                 <Route exact path="/" component={HomePage}/>
-                <Route exact path="/login" component={LoginPage}/>
+                <Route exact path="/login" render={props =>(<LoginPage auth={this.getAuth} />)}/>
                 {this.state.userType === "T" &&
                     <Route exact path="/teacherPortal" component={TeacherApp}/>
                 }
@@ -35,6 +47,7 @@ export default class App extends React.Component {
             </Switch>
         );
     }
+    
     
 }
 
@@ -45,3 +58,37 @@ var user1 = {
     role: 'teacher',
     fullName: 'Mario Rossi'
 }
+
+
+
+/*function requireAuth(nextState, replace) {
+  if (!userExists()) {
+    replace({
+      pathname: '/signin',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
+
+export const renderRoutes = () => (
+  <Router history={browserHistory}>
+      <Route path="protectedRoute" component={Protected} onEnter={requireAuth} />
+      <Route path="signin" component={SignIn} />
+    </Route>
+  </Router>
+);
+Then, in the SignIn component, you can redirect after a successful sign in like this:
+
+signInFunction({params}, (err, res) => {
+  // Now in the sign in callback
+  if (err)
+    alert("Please try again")
+  else {
+    const location = this.props.location
+    if (location.state && location.state.nextPathname) {
+      browserHistory.push(location.state.nextPathname)
+    } else {
+      browserHistory.push('/')
+    }
+  }
+})*/

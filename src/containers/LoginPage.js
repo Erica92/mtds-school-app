@@ -13,7 +13,7 @@ export default class LoginPage extends React.Component{
     }
     
     componentDidMount(){
-        
+        this.props.auth("ciao");
     }
     
     //here you can put other functions for login
