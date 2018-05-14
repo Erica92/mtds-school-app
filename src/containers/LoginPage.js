@@ -6,14 +6,15 @@ export default class LoginPage extends React.Component{
         super(props);
         this.state={
           username:'',
-          password:''
+          password:'',
+          userType: ''
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     
     componentDidMount(){
-        this.props.auth("ciao");
+        
     }
     
     //here you can put other functions for login
@@ -28,6 +29,9 @@ export default class LoginPage extends React.Component{
      handleSubmit(event) {
        alert('login');
        event.preventDefault();
+         
+         //here is passing data to the father
+         this.props.auth(true, this.state.username, this.state.userType);
      }
     
     render(){

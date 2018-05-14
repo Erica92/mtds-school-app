@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter , Route, Link , Switch } from "react-router-dom";
+import { BrowserRouter , Route, Link , Switch, Redirect } from "react-router-dom";
 import AppHeader from '../components/AppHeader';
 import AppContent from '../components/AppContent';
 import TeacherApp from './TeacherApp';
@@ -20,19 +20,36 @@ export default class App extends React.Component {
         }
         
         this.getAuth = this.getAuth.bind(this);
+        this.isAuthenticated = this.isAuthenticated.bind(this);
     }
     
     componentDidMount(){
         
     }
     
-    getAuth(data){
-        this.setState={
-            authenticated: true,
-            username: data,
-            userType: 'T',
+    getAuth(flagAuth, username, userType){
+        if(flagAuth){
+            this.setState={
+                authenticated: flagAuth,
+                username: username,
+                userType: userType,
+            }
+        } else {
+            this.setState={
+                authenticated: false,
+                username: '',
+                userType: '',
+            }
         }
-        console.log("data:"+data);
+        console.log("state:"+this.state.authenticated + this.state.username + this.state.userType);
+    }
+    
+    isAuthenticated(){
+        if(this.state.userType && this.state.username && this.state.authenticated){
+            return true
+        } else {
+            return <Redirect to="/login" />;
+        }
     }
     
     render(){
@@ -40,9 +57,7 @@ export default class App extends React.Component {
             <Switch>
                 <Route exact path="/" component={HomePage}/>
                 <Route exact path="/login" render={props =>(<LoginPage auth={this.getAuth} />)}/>
-                {this.state.userType === "T" &&
-                    <Route exact path="/teacherPortal" component={TeacherApp}/>
-                }
+                <Route exact path="/teacherPortal" component={TeacherApp} onEnter={this.isAuthenticated}/>
                 <Route component={NoMatchPage}/>
             </Switch>
         );
@@ -92,3 +107,5 @@ signInFunction({params}, (err, res) => {
     }
   }
 })*/
+
+//https://reacttraining.com/react-router/web/example/auth-workflow

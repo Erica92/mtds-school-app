@@ -8,11 +8,14 @@ import * as Modals from './ModalComponents';
 
 export default function GradesListComponent(props){
     let rows = props.studentGradesList.map(studentElem => (
-        <div className="row clickable" key={studentElem.BasicStudent.Username} >
+        <div className="" key={studentElem.BasicStudent.Username} >
             <div>
                 <BasePersonComponent FirstName={studentElem.BasicStudent.FirstName} LastName={studentElem.BasicStudent.LastName}
                     avatarUrl={studentElem.BasicStudent.ProfilePic} />
                 <GradeRow gradesList={studentElem.Grade} />
+                <ModalInsertSingleGrade student={studentElem.BasicStudent} 
+                    handleInputChange={props.handleInputChange} handleSubmitSingleGrade={props.handleSubmitSingleGrade} 
+                    handleDayClick={props.handleDayClick} />
             </div>
         </div>
     ));
@@ -23,7 +26,6 @@ export default function GradesListComponent(props){
             <div className="tile-content">        
                 {rows}
             </div>
-            <ModalInsertSingleGrade />
         </div>
     );
 }
@@ -39,7 +41,7 @@ function GradeRow(props){
             <div className="grades-row-container">
                 {row}
             </div>
-            <span onClick={() => Modals.openModal("singleGradeModal")}>
+            <span className="clickable" onClick={() => Modals.openModal("singleGradeModal")}>
                 <img src={require("../images/add_circle_outline_grey_36x36.png")} />
             </span>
         </div>

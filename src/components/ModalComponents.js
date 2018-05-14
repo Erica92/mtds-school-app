@@ -6,18 +6,22 @@ import 'react-day-picker/lib/style.css';
 
 export function ModalInsertSingleGrade(props){
     const FORMAT = 'MM/DD/YYYY';
-    
+    //<DayPickerInput dayPickerProps={{todayButton: 'Today'}} onDayClick={props.handleDayClick} />
     return (
         <div id="singleGradeModal" class="modal">
           <div class="modal-content">
             <span class="close" onClick={() => closeModals("singleGradeModal")} >&times;</span>
-            <div>
-                <div>{props.FirstName} {props.LastName}</div>
+            <form id="SingleGradeForm" method="POST" onSubmit={props.handleSubmitSingleGrade} >
+                <div>Insert Grade</div>
+                <div>Student: {props.student.FirstName} {props.student.LastName}</div>
+                <input type="hidden" name="StudentID" value={props.student.StudentID} />
                 <div>
-                    <DayPickerInput />
+                    <label>Date</label>
+                    <input type="date" name="Date" onChange={props.handleInputChange} />
                 </div>
                 <div>
-                    <select>
+                    <label>Type of Grade</label>
+                    <select name="Type" onChange={props.handleInputChange} >
                         <option value="Homework">Homework</option>
                         <option value="Oral">Oral</option>
                         <option value="Quiz">Quiz</option>
@@ -25,9 +29,16 @@ export function ModalInsertSingleGrade(props){
                     </select>
                 </div>
                 <div>
-                     <input type="textarea" />
+                    <input type="number" name="Grade" step="0.01" min="0" max="10" onChange={props.handleInputChange} />
                 </div>
-            </div>
+                <div>
+                    <label>Remarks</label>
+                    <textarea name="Remarks" onChange={props.handleInputChange} />
+                </div>
+                <div>
+                    <input type="submit" value="Submit" />
+                </div>
+            </form>
           </div>
         </div>
     );
@@ -37,7 +48,7 @@ export function openModal(modalId){
     var modal = document.getElementById(modalId);
     modal.style.display = 'block';
 }
-function closeModals(modalId){
+export function closeModals(modalId){
     var modal = document.getElementById(modalId);
     modal.style.display = "none";
 }
