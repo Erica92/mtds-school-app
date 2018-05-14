@@ -23,6 +23,8 @@ export default class GradesPage extends React.Component {
         this.handleSubmitSingleGrade = this.handleSubmitSingleGrade.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
+        this.createModalSingleGradeObject = this.createModalSingleGradeObject.bind(this);
+        
     }
     
     componentDidMount(){
@@ -38,7 +40,7 @@ export default class GradesPage extends React.Component {
                 <div className="squared-tile-block">
                     <GradesListComponent studentGradesList={this.state.studentsGradesList.data} 
                         handleSubmitSingleGrade={this.handleSubmitSingleGrade} handleInputChange={this.handleInputChange}
-                        handleDayClick={this.handleDayClick} />
+                        handleDayClick={this.handleDayClick} createObject={this.createModalSingleGradeObject} />
                 </div>
             </div>
         );
@@ -60,8 +62,8 @@ export default class GradesPage extends React.Component {
         //var form = new FormData(document.getElementById('DataForm'));
         var array = new Array();
         array.push(this.state.gradeMod);
-        //var request = {Grade: array}
-        var data = JSON.stringify(array);
+        var request = {Grades: array}
+        var data = JSON.stringify(request);
         
         console.log(data);
         
@@ -73,9 +75,9 @@ export default class GradesPage extends React.Component {
               'Content-Type': 'application/json'
             },
             body: data
-        }).then((res) => res.json())
+        })/*.then((res) => res.json())
             .then((data) =>  console.log(data))
-            .catch((err)=>console.log(err));
+            .catch((err)=>console.log(err));*/
     }
     
     handleSubmitSingleGrade(event) {
@@ -85,6 +87,8 @@ export default class GradesPage extends React.Component {
         gradeModTemp["Subject"] = this.state.selectedClass.Subject;
         console.log("gradeModTemp.Date:"+gradeModTemp.Date);
         gradeModTemp["Year"] = Utils.dateStringToDate(gradeModTemp.Date).getFullYear();
+        gradeModTemp["Semester"] = "1";
+        
         console.log("Utils.dateStringToDate(gradeModTemp.Date)"+Utils.dateStringToDate(gradeModTemp.Date));
         this.setState({
           gradeMod: gradeModTemp
@@ -104,6 +108,12 @@ export default class GradesPage extends React.Component {
 
         this.setState({
           gradeMod: gradeModTemp
+        });
+    }
+    
+    createModalSingleGradeObject(username){
+         this.setState({
+          gradeMod: {StudentID: username}
         });
     }
     
