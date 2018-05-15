@@ -23,7 +23,7 @@ export function formatDateToString(dateToFormat){
 export function dateStringToDate(dateString){
     var dateSplitted = dateString.split("-");
     var year = dateSplitted[0];
-    var month = dateSplitted[1];
+    var month = dateSplitted[1] - 1;
     var day = dateSplitted[2];
     var dt = new Date(year, month, day);
     

@@ -11,8 +11,10 @@ function AppContent(props){
     return (
         <div className="app-content">
             <NotificationListComponent title="Notifications" notificationList={props.notificationList} />
-            <AgendaComponent title="Agenda" appointmentList={props.appointmentList} scheduleList={props.scheduleList} />
-            <ClassListComponent classList={props.classList} title="My Classes" goToPage={props.goToPage} selectClass={props.selectClass}/>
+            <AgendaComponent title="Agenda" appointmentList={props.appointmentList} 
+                scheduleList={props.scheduleList} goToPage={props.goToPage} />
+            <ClassListComponent classList={props.classList} title="My Classes" 
+                goToPage={props.goToPage} selectClass={props.selectClass}/>
         </div>
     );
 }

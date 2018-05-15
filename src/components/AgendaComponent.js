@@ -38,7 +38,7 @@ export default function AgendaComponent(props) {
                                     
     return (
         <div className="base-tile limit-max-height">
-            <TileHeader text={props.title} toggleImg={require("../images/launch_white_18x18.png")} />
+            <TileHeader text={props.title} toggleImg={require("../images/launch_white_24x24.png")} toggleOnClick={() => props.goToPage("CalendarPage")}/>
             <div className="tile-content">        
                 {agendaList}
             </div>

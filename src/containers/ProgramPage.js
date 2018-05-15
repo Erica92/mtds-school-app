@@ -10,7 +10,7 @@ export default class ProgramPage extends React.Component {
         super(props);
         
         this.state = {
-            classDetails: this.props.classDetails
+            classDetails: this.props.classDetails,
         }
     }
     

@@ -8,6 +8,7 @@ import GradesPage from '../components/GradesPage';
 import SchedulePage from '../components/SchedulePage';
 import TeacherPersonalDataPage from './TeacherPersonalDataPage';
 import ProgramPage from './ProgramPage';
+import CalendarPage from './CalendarPage';
 import * as CONSTANTS from '../api/apiUtils';
 
 class TeacherApp extends React.Component {
@@ -152,6 +153,8 @@ class TeacherApp extends React.Component {
             } else if(this.state.pageState === "ProgramPage"){
                 componentToRender = (<ProgramPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
                                      classDetails={this.state.selectedClass} />);
+            } else if(this.state.pageState === "CalendarPage"){
+                componentToRender = (<CalendarPage />);
             }
         }
         

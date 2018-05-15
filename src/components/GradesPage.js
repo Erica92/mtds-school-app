@@ -87,7 +87,8 @@ export default class GradesPage extends React.Component {
         gradeModTemp["Subject"] = this.state.selectedClass.Subject;
         console.log("gradeModTemp.Date:"+gradeModTemp.Date);
         gradeModTemp["Year"] = Utils.dateStringToDate(gradeModTemp.Date).getFullYear();
-        gradeModTemp["Semester"] = "1";
+        gradeModTemp["Semester"] = 1;
+        gradeModTemp["Date"] = Utils.dateStringToDate(gradeModTemp.Date).toJSON();
         
         console.log("Utils.dateStringToDate(gradeModTemp.Date)"+Utils.dateStringToDate(gradeModTemp.Date));
         this.setState({

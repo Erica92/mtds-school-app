@@ -29,6 +29,7 @@ export function ModalInsertSingleGrade(props){
                     </select>
                 </div>
                 <div>
+                    <label>Grade</label>
                     <input type="number" name="Grade" step="0.01" min="0" max="10" onChange={props.handleInputChange} />
                 </div>
                 <div>
