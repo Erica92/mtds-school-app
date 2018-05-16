@@ -8,7 +8,17 @@ window.jQuery = $;
 require('fullcalendar');
 
 export default class Calendar extends React.Component {
-  render() {
+  
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            eventList: this.props.eventList
+        }
+        
+    }
+    
+    render() {
     return (<div id="calendar"></div>);
   }
   componentDidMount() {
@@ -18,6 +28,7 @@ export default class Calendar extends React.Component {
 				center: 'title',
 				right: 'month,agendaWeek,agendaDay'
 			},
+            events: this.state.eventList,
 			editable: true,
 			droppable: true, // this allows things to be dropped onto the calendar
 			drop: function() {
