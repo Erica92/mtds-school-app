@@ -1,5 +1,7 @@
 import React from 'react';
 import './Calendar.css';
+import {Bootstrap, Grid, Row, Col} from 'react-bootstrap';
+import '../../node_modules/fullcalendar/dist/fullcalendar.min.css';
 
 import $ from 'jquery';
 window.jQuery = $;
@@ -7,7 +9,7 @@ require('fullcalendar');
 
 export default class Calendar extends React.Component {
   render() {
-    return <div id="calendar"></div>;
+    return (<div id="calendar"></div>);
   }
   componentDidMount() {
     $('#calendar').fullCalendar({
