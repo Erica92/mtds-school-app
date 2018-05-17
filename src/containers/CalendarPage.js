@@ -19,6 +19,7 @@ export default class CalendarPage extends React.Component {
         }
         
         teacherAPI.fetchDataTeacherAppointments = teacherAPI.fetchDataTeacherAppointments.bind(this);
+        teacherAPI.fetchDataSchedule = teacherAPI.fetchDataSchedule.bind(this);
     }
     
     componentDidMount(){
@@ -47,6 +48,16 @@ export default class CalendarPage extends React.Component {
         );
     }
     
+    /*fetchAllData(){
+        return Promise.all([this.fetchDataTeacherAppointments(this.props.teacherID), this.fetchDataSchedule(this.props.teacherID, 'day')])
+    }
+            
+    fetchAllData()
+      .then(([students, scores]) => {
+        // both have loaded!
+        console.log(students, scores);
+    })*/
+            
     makeCalendarEventList(){
         let eventList = this.state.appointmentsList.map( elem => 
             ({

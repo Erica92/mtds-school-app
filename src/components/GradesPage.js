@@ -75,9 +75,18 @@ export default class GradesPage extends React.Component {
               'Content-Type': 'application/json'
             },
             body: data
-        })/*.then((res) => res.json())
+        }).then(function(response){
+            if(response.ok){
+                //TODO handle update page
+            } else {
+                //TODO eventually handle error messages
+            }
+        });
+        
+        /*.then((res) => res.json())
             .then((data) =>  console.log(data))
             .catch((err)=>console.log(err));*/
+        
     }
     
     handleSubmitSingleGrade(event) {
@@ -101,7 +110,20 @@ export default class GradesPage extends React.Component {
     handleInputChange(event) {
         console.log("handleInputChange: "+event);
         const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        
+        var value = '';
+        switch(target.type){
+            case 'checkbox':
+                value = target.checked;
+                break;
+            case 'number':
+                value = parseFloat(target.value);
+                break;
+            default:
+                value = target.value;
+                break;
+        }
+
         const name = target.name;
         
         let gradeModTemp = this.state.gradeMod;
