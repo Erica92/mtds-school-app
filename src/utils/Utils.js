@@ -29,3 +29,32 @@ export function dateStringToDate(dateString){
     
     return dt;
 }
+
+export function goToPage(nextPage){
+    var currentPage = this.state.pageState;
+    var newPrevPageState = this.state.prevPageState;
+    newPrevPageState.push(currentPage);
+
+    console.log("changing page - going from "+currentPage+" to "+nextPage);
+
+    this.setState({
+        pageState: nextPage,
+        prevPageState: newPrevPageState
+    });
+}
+    
+export function goToPrevPage(){
+    console.log("go to prev page");
+    var currentPage = this.state.pageState;
+    var prevPageState = this.state.prevPageState;
+    console.log("prevPageState;"+prevPageState);
+    var prevPage = prevPageState.pop();
+    console.log("prevPageState;"+prevPageState);
+
+    console.log("changing page - going from "+currentPage+" to "+prevPage);
+
+    this.setState({
+        pageState: prevPage,
+        prevPageState: prevPageState
+    });
+}

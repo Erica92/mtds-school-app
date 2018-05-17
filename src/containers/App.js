@@ -4,6 +4,7 @@ import { BrowserRouter , Route, Link , Switch, Redirect } from "react-router-dom
 import AppHeader from '../components/AppHeader';
 import AppContent from '../components/AppContent';
 import TeacherApp from './TeacherApp';
+import ParentApp from './ParentApp';
 import LoginPage from './LoginPage';
 import HomePage from './HomePage';
 import NoMatchPage from './NoMatchPage';
@@ -58,6 +59,7 @@ export default class App extends React.Component {
                 <Route exact path="/" component={HomePage}/>
                 <Route exact path="/login" render={props =>(<LoginPage auth={this.getAuth} />)}/>
                 <Route exact path="/teacherPortal" component={TeacherApp} onEnter={this.isAuthenticated}/>
+                <Route exact path="/parentPortal" component={ParentApp} onEnter={this.isAuthenticated}/>
                 <Route component={NoMatchPage}/>
             </Switch>
         );
