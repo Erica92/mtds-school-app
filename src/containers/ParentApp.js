@@ -23,6 +23,11 @@ export default class ParentApp extends React.Component {
             prevPageState: ["HomePage"]
         }
         
+        this.menuList = [{linkLabel: "Personal Data", linkName:"PersonalDataPage", icon:""},
+                          {linkLabel: "Appointments", linkName:"AppointmentsPage", icon:""},
+                          {linkLabel: "Payments", linkName:"PaymentsPage", icon:""},
+                          {linkLabel: "Logout", linkName:"#", icon:""}];
+        
         Utils.goToPage = Utils.goToPage.bind(this);
         Utils.goToPrevPage = Utils.goToPrevPage.bind(this);
         
@@ -54,7 +59,9 @@ export default class ParentApp extends React.Component {
                                      
         return (
             <div>
-                <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" user={user1}            goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage} onClickToggle={function(){}} />
+                <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" 
+                                     user={user1} menuList={this.menuList}    
+                                     goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage} onClickToggle={function(){}} />
                 {componentToRender} 
             </div>
         );

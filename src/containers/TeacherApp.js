@@ -29,6 +29,9 @@ class TeacherApp extends React.Component {
             prevPageState: ["HomePage"]
         };
         
+        this.menuList = [{linkLabel: "Personal Data", linkName:"PersonalDataPage", icon:""},
+                          {linkLabel: "Logout", linkName:"#", icon:""}];
+        
         this.goToPage = this.goToPage.bind(this);
         this.goToPrevPage = this.goToPrevPage.bind(this);
         this.selectClass = this.selectClass.bind(this);
@@ -162,7 +165,9 @@ class TeacherApp extends React.Component {
         //<AppContent news={message} /> />
         return (
             <div>
-                <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" user={user1} goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} onClickToggle={function(){}} />
+                <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" 
+                                     user={user1} menuList={this.menuList}
+                                     goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} onClickToggle={function(){}} />
                 {componentToRender} 
             </div>
         );
