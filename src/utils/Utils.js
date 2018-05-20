@@ -58,3 +58,8 @@ export function goToPrevPage(){
         prevPageState: prevPageState
     });
 }
+
+//this was created because there was a "this" misunderstanding with fullCalendar
+export function updateSelectedEvent(calEvent){
+    this.setState({selectedEvent: calEvent});
+}

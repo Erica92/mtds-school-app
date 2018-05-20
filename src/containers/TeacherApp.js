@@ -30,6 +30,7 @@ class TeacherApp extends React.Component {
         };
         
         this.menuList = [{linkLabel: "Personal Data", linkName:"PersonalDataPage", icon:""},
+                         {linkLabel: "Calendar", linkName:"CalendarPage", icon:""},
                           {linkLabel: "Logout", linkName:"#", icon:""}];
         
         this.goToPage = this.goToPage.bind(this);

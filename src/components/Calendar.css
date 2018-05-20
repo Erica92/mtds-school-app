@@ -47,6 +47,6 @@
 	}
 
 	#calendar {
-		float: right;
 		width: 900px;
+        margin: auto;
 	}

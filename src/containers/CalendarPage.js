@@ -34,7 +34,7 @@ export default class CalendarPage extends React.Component {
         
         if(!isLoading){
             if(this.state.eventList.length == 0){
-                var eventList = this.makeCalendarEventList();
+                var eventList = this.makeCalendarEventList(this.state.appointmentsList, '#ff6600');
                 toRender = (<Calendar appointmentsList={this.state.appointmentsList} eventList={eventList} />);
             }
         } else {
@@ -58,15 +58,15 @@ export default class CalendarPage extends React.Component {
         console.log(students, scores);
     })*/
             
-    makeCalendarEventList(){
-        let eventList = this.state.appointmentsList.map( elem => 
+    makeCalendarEventList(list, color){
+        let eventList = list.map( elem => 
             ({
                 id: elem.AppointmentID,
-                title: 'Appontment with '+elem.ParentID,
+                title: elem.Remarks,
                 start: elem.StartTime,
                 end: elem.EndTime,
                 allDay: elem.FullDay,
-                color: '#ff6600'
+                color: color
             }));
         return eventList;
     }

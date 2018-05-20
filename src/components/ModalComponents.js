@@ -45,6 +45,55 @@ export function ModalInsertSingleGrade(props){
     );
 }
 
+export function ModalViewEvent(props){
+    return(
+        <div id="viewEventModal" className="modal">
+            <div class="modal-content modal-small">
+                <span class="close" onClick={() => closeModals("viewEventModal")} >&times;</span>
+                <form id="SingleGradeForm" method="POST" onSubmit={props.handleSubmitEvent} >        
+                    <h1>{props.event.title}</h1>
+                    <label>Full Day Event</label>
+                    <input type="checkbox" disabled />
+
+                    <label>Start Date and time</label>
+                    <input type="datetime" disabled />
+
+                    <label>End Date and time</label>
+                    <input type="datetime" disabled />
+                        
+                </form>
+            </div>       
+        </div>
+    );
+}
+
+export function ModalAddEvent(props){
+    return(
+        <div id="addEventModal" className="modal">
+            <div class="modal-content modal-small">
+                <span class="close" onClick={() => closeModals("addEventModal")} >&times;</span>
+                <h1>Add New Event</h1>
+                <label>Title</label>
+                <input type="text" name="title" onChange={props.handleInputChange} />
+                    
+                <label>Full Day Event</label>
+                <input type="checkbox" name="fullday" onChange={props.handleInputChange} />
+
+                <label>Start Date and time</label>
+                <input type="datetime-local" name="startDate" onChange={props.handleInputChange} />
+
+                <label>End Date and time</label>
+                <input type="datetime-local" name="endDate" onChange={props.handleInputChange} />
+                    
+                <label>Note</label>
+                <textarea name="note" />
+                
+                <input type="submit" value="Add Event" />
+            </div>       
+        </div>
+    );
+}
+
 export function openModal(modalId){
     var modal = document.getElementById(modalId);
     modal.style.display = 'block';
