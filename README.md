@@ -11,6 +11,8 @@ npm install
 npm install react-router-dom
 npm install react-day-picker
 npm install fullcalendar
+npm install jquery
+npm install react-bootstrap
 npm start
 ```
 - visit http://127.0.0.1:3000 in a web browser
