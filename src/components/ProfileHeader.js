@@ -4,6 +4,8 @@ import {Avatar, BlockTitle, BlockDescription} from './BaseComponents';
 import './BaseStyle.css';
 
 function ProfileHeader(props){
+    //{linkLabel: "Personal Data", linkName:"PersonalDataPage", icon:""}
+    let linkList = props.menuList.map((elem) => (<a href="#" onClick={() => props.goToPage(elem.linkName) } >{elem.linkLabel}</a>));
     return (
         <div className="dropdown">
             <div className="profile-header" onClick={ () => props.onClickToggle() }>
@@ -16,8 +18,7 @@ function ProfileHeader(props){
                 </div>
             </div>
             <div class="dropdown-content">
-                <a href="#" onClick={() => props.goToPage("PersonalDataPage") } >Personal Data</a>
-                <a href="#">Logout</a>
+                {linkList}
             </div>
         </div>
     );

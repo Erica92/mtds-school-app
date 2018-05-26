@@ -13,9 +13,11 @@ export default class CalendarPage extends React.Component {
         super(props);
         
         this.state = {
+            teacherID: this.props.teacherID,
             appointmentsList: [],
             isLoading: true,
-            eventList: []
+            eventList: [],
+            classList: this.props.classList
         }
         
         teacherAPI.fetchDataTeacherAppointments = teacherAPI.fetchDataTeacherAppointments.bind(this);
@@ -35,7 +37,8 @@ export default class CalendarPage extends React.Component {
         if(!isLoading){
             if(this.state.eventList.length == 0){
                 var eventList = this.makeCalendarEventList(this.state.appointmentsList, '#ff6600');
-                toRender = (<Calendar appointmentsList={this.state.appointmentsList} eventList={eventList} />);
+                toRender = (<Calendar appointmentsList={this.state.appointmentsList} 
+                            eventList={eventList} classList={this.state.classList} teacherID={this.state.teacherID} />);
             }
         } else {
             toRender = <Spinner />                    

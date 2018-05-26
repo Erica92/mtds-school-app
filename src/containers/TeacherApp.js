@@ -158,7 +158,8 @@ class TeacherApp extends React.Component {
                 componentToRender = (<ProgramPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
                                      classDetails={this.state.selectedClass} />);
             } else if(this.state.pageState === "CalendarPage"){
-                componentToRender = (<CalendarPage teacherID={this.state.teacherID} />);
+                componentToRender = (<CalendarPage teacherID={this.state.teacherID} 
+                                     classList={this.state.classList} />);
             }
         }
         

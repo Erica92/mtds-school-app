@@ -19,3 +19,13 @@ export function fetchDataSchedule(teacherID, scope){
         })
     );
 }
+
+export function fetchDataStudentClass(classID){
+    fetch(CONSTANTS.HOST+"/api/v1/class/students?class="+classID)
+        .then(response => response.json())
+        .then( (result) => this.setState({
+            studentClassList: result,
+            isLoading: false
+        })
+    );
+}
