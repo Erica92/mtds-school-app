@@ -14,10 +14,12 @@ export default class ParentApp extends React.Component {
         super(props);
         
         this.state = {
+            parentID: "P1",
             isLoading: true,
-            parentID: 'P1',
+            allLoaded: false,
             notificationList: [],           
             studentList: [],
+            appointmentList: [],
             selectedStudent: {},
             pageState: "HomePage",
             prevPageState: ["HomePage"]
@@ -33,24 +35,26 @@ export default class ParentApp extends React.Component {
         
         ApiCalls.fetchDataNotifications = ApiCalls.fetchDataNotifications.bind(this);
         ApiCalls.fetchDataParentStudents = ApiCalls.fetchDataParentStudents.bind(this);
+        ApiCalls.fetchDataParentAppointments = ApiCalls.fetchDataParentAppointments.bind(this);
         
     }
     
     componentDidMount(){
-        ApiCalls.fetchDataNotifications(this.props.parentID);
-        ApiCalls.fetchDataParentStudents(this.props.parentID);
+        this.getFetchAll().then(() => this.setState({allLoaded: true}));
     }
     
     render(){
         
         var componentToRender = null;
-        if(this.state.isLoading){
+        if(!this.state.allLoaded){
             componentToRender = (<Spinner />);
         } else {
             if(this.state.pageState === "HomePage"){
-                componentToRender = (<ParentDashboard notificationList={this.state.notificationList}
-                                     studentList={this.state.studentList} goToPage={this.goToPage} 
-                                     selectedStudent={this.state.selectedStudent} />);
+                componentToRender = (<ParentDashboard notificationList={this.state.notificationList} 
+                                        appointmentList={this.state.appointmentList}
+                                        studentList={this.state.studentList}
+                                        selectedStudent={this.state.selectedStudent}
+                                        goToPage={Utils.goToPage} />);
             } /*else if(this.state.pageState === "ClassPage"){
                 componentToRender = (<ClassDetailsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
                                      selectedClass={this.state.selectedClass} />);
@@ -66,6 +70,15 @@ export default class ParentApp extends React.Component {
             </div>
         );
     }
+        
+    getFetchAll(){
+        return Promise.all([
+            ApiCalls.fetchDataNotifications(this.state.parentID),
+            ApiCalls.fetchDataParentStudents(this.state.parentID),
+            ApiCalls.fetchDataParentAppointments(this.state.parentID),
+        ])
+    }
+
 }
         
 var user1 = {

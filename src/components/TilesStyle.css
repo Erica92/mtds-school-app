@@ -6,12 +6,21 @@
     border-radius: 2px;
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
     margin-bottom: 30px;
-    overflow: scroll;
+    overflow: hidden;
     overflow-x: auto;
 }
 
 .limit-max-height{
     max-height: 250px;
+}
+
+.base-tile-half {
+    width: 50%;
+    display: inline-block;
+}
+
+.fixed-height{
+    height: 250px;
 }
 
 .tile-header{

@@ -9,7 +9,7 @@ export default function NotificationListComponent(props) {
     ));
                                     
     return (
-        <div className="base-tile limit-max-height">
+        <div className="base-tile base-tile-half fixed-height">
             <TileHeader text={props.title} toggleImg={require("../images/launch_white_24x24.png")} />
             <div className="tile-content">        
                 {rows}

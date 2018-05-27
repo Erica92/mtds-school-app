@@ -5,7 +5,7 @@ import './BaseStyle.css';
 
 function ProfileHeader(props){
     //{linkLabel: "Personal Data", linkName:"PersonalDataPage", icon:""}
-    let linkList = props.menuList.map((elem) => (<a href="#" onClick={() => props.goToPage(elem.linkName) } >{elem.linkLabel}</a>));
+    let linkList = props.menuList.map((elem) => (<a href="#" key={elem.linkName} onClick={() => props.goToPage(elem.linkName) } >{elem.linkLabel}</a>));
     return (
         <div className="dropdown">
             <div className="profile-header" onClick={ () => props.onClickToggle() }>
@@ -17,7 +17,7 @@ function ProfileHeader(props){
                     <BlockDescription text={props.user.role} />
                 </div>
             </div>
-            <div class="dropdown-content">
+            <div className="dropdown-content">
                 {linkList}
             </div>
         </div>

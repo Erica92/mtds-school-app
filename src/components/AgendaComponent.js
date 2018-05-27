@@ -10,6 +10,7 @@ export default function AgendaComponent(props) {
     console.log("sched"+props.scheduleList);
     let scheduleList = props.scheduleList;
     console.log("scheduleList"+scheduleList);
+    
     for(var i = 0; i < scheduleList.length; i++){
         console.log("i: "+scheduleList[i].TeachClass.TeacherID);
         let teachClass = scheduleList[i].TeachClass;
@@ -22,7 +23,7 @@ export default function AgendaComponent(props) {
                 <span>{teachClass.Subject}</span>
             </div>
         ));
-        agendaList.push(rowsSchedule);
+        agendaList = agendaList.concat(rowsSchedule);
     }
     
     let rowsAppointments = props.appointmentList.map(elem => (
@@ -34,13 +35,13 @@ export default function AgendaComponent(props) {
         </div>
     ));
     
-    agendaList.push(rowsAppointments);
+    agendaList = agendaList.concat(rowsAppointments);
                                     
     return (
-        <div className="base-tile limit-max-height">
+        <div className="base-tile base-tile-half fixed-height">
             <TileHeader text={props.title} toggleImg={require("../images/launch_white_24x24.png")} toggleOnClick={() => props.goToPage("CalendarPage")}/>
             <div className="tile-content">        
-                {agendaList}
+                {agendaList.length > 0 ? agendaList : (<span>There are no appointments or classes for today</span>) }
             </div>
         </div>
     );

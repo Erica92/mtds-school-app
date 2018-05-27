@@ -86,6 +86,13 @@ export default class Calendar extends React.Component {
             var noTZ = $.fullCalendar.moment.parseZone('2014-05-01T12:00:00');
     }
     
+    componentWillMount(){
+        console.log("Mounting CalendarComponent");
+    }
+    componentWillUnmount(){
+        console.log("unmounting CalendarComponent");
+    }
+    
     handleSubmitEvent(event) {
         event.preventDefault();
         var selectedEventTmp = this.state.selectedEvent;

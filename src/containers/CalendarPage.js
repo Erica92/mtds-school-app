@@ -15,7 +15,9 @@ export default class CalendarPage extends React.Component {
         this.state = {
             teacherID: this.props.teacherID,
             appointmentsList: [],
+            schedule: [],
             isLoading: true,
+            allLoaded: false,
             eventList: [],
             classList: this.props.classList
         }
@@ -26,20 +28,36 @@ export default class CalendarPage extends React.Component {
     
     componentDidMount(){
         if(this.props.teacherID){
-            teacherAPI.fetchDataTeacherAppointments(this.props.teacherID);
+            //teacherAPI.fetchDataTeacherAppointments(this.props.teacherID);
+            this.getAppointmentsAndSchedule().then(([appointmentsList, schedule]) => {
+                console.log("both have loaded!");
+                
+                let eventList = this.makeCalendarEventList(this.state.appointmentsList, '#ff6600');
+                console.log("eventList:"+eventList.length);
+                this.setState({
+                    allLoaded: true,
+                    eventList: eventList
+                });
+                console.log(appointmentsList, schedule);
+              })
         }
     }
-    
+    componentWillReceiveProps(){
+        console.log("receive props");
+    }
+    componentWillMount(){
+        console.log("Mounting CalendarPage");
+    }
+    componentWillUnmount(){
+        console.log("unmounting CalendarPage");
+    }
     render(){
-        var isLoading = this.state.isLoading;
+        var allLoaded = this.state.allLoaded;
         var toRender;
         
-        if(!isLoading){
-            if(this.state.eventList.length == 0){
-                var eventList = this.makeCalendarEventList(this.state.appointmentsList, '#ff6600');
-                toRender = (<Calendar appointmentsList={this.state.appointmentsList} 
-                            eventList={eventList} classList={this.state.classList} teacherID={this.state.teacherID} />);
-            }
+        if(allLoaded){
+          toRender = (<Calendar appointmentsList={this.state.appointmentsList} 
+                        eventList={this.state.eventList} classList={this.state.classList} teacherID={this.state.teacherID} />);
         } else {
             toRender = <Spinner />                    
         }
@@ -74,5 +92,11 @@ export default class CalendarPage extends React.Component {
         return eventList;
     }
     
+    getAppointmentsAndSchedule(){
+        return Promise.all([
+            teacherAPI.fetchDataTeacherAppointments(this.props.teacherID),
+            teacherAPI.fetchDataSchedule(this.props.teacherID, 'day')
+        ])
+    }
 
 }
