@@ -12,7 +12,8 @@ export default function ParentDashboard(props){
             <NotificationListComponent title="Notifications" notificationList={props.notificationList} />
             <AgendaComponent title="Today's Agenda" appointmentList={props.appointmentList} 
                 scheduleList={new Array()} goToPage={props.goToPage} />
-            <StudentListComponent studentList={props.studentList} onClickElem={props.goToPage} />
+            <StudentListComponent studentList={props.studentList} 
+                onClickElem={props.selectStudent} callBackFn={() => props.goToPage("StudentDetailsPage")} />
         </div>
     );
 }

@@ -25,7 +25,22 @@ export function fetchDataParentAppointments(parentID){
         .then(response => response.json())
         .then( (result) => this.setState({
             isLoading: false,
-            studentList: result
+            appointmentList: result
+        })
+    );
+}
+
+
+//http://localhost:8080/api/v1/parent/students/grades?id=P1&semester=2
+export function fetchDataStudentGrades(parentID){
+    
+    let endpoint = CONSTANTS.HOST+"/api/v1/parent/students/grades?id="+parentID;
+    
+    return fetch(endpoint)
+        .then(response => response.json())
+        .then( (result) => this.setState({
+            isLoading: false,
+            gradesList: result
         })
     );
 }

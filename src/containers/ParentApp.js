@@ -5,6 +5,7 @@ import ParentDashboard from '../components/ParentDashboard';
 import AppHeader from '../components/AppHeader';
 import * as ApiCalls from '../api/parentAPI';
 import CalendarPage from './CalendarPage';
+import StudentDetailsPage from './StudentDetailsPage';
 import * as CONSTANTS from '../api/apiUtils';
 import * as Utils from '../utils/Utils';
 
@@ -33,6 +34,8 @@ export default class ParentApp extends React.Component {
         Utils.goToPage = Utils.goToPage.bind(this);
         Utils.goToPrevPage = Utils.goToPrevPage.bind(this);
         
+        this.selectStudent = this.selectStudent.bind(this);
+        
         ApiCalls.fetchDataNotifications = ApiCalls.fetchDataNotifications.bind(this);
         ApiCalls.fetchDataParentStudents = ApiCalls.fetchDataParentStudents.bind(this);
         ApiCalls.fetchDataParentAppointments = ApiCalls.fetchDataParentAppointments.bind(this);
@@ -53,12 +56,12 @@ export default class ParentApp extends React.Component {
                 componentToRender = (<ParentDashboard notificationList={this.state.notificationList} 
                                         appointmentList={this.state.appointmentList}
                                         studentList={this.state.studentList}
-                                        selectedStudent={this.state.selectedStudent}
+                                        selectStudent={this.selectStudent}
                                         goToPage={Utils.goToPage} />);
-            } /*else if(this.state.pageState === "ClassPage"){
-                componentToRender = (<ClassDetailsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
-                                     selectedClass={this.state.selectedClass} />);
-            }*/
+            } else if(this.state.pageState === "StudentDetailsPage"){
+                componentToRender = (<StudentDetailsPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
+                                        selectedStudent={this.state.selectedStudent} parentID={this.state.parentID} />);
+            }
         }
                                      
         return (
@@ -77,6 +80,11 @@ export default class ParentApp extends React.Component {
             ApiCalls.fetchDataParentStudents(this.state.parentID),
             ApiCalls.fetchDataParentAppointments(this.state.parentID),
         ])
+    }
+    
+    selectStudent(student){
+        console.log("selectedStudent: "+student);
+        this.setState({selectedStudent: student});
     }
 
 }
