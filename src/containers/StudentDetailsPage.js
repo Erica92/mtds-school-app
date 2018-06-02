@@ -2,7 +2,7 @@ import React from 'react';
 import BaseTile from '../components/BaseTiles';
 import {SectionTitleTile} from '../components/BaseTiles';
 import {SquareTile} from '../components/BaseTiles';
-import GradesTableComponent from '../components/GradesTableComponent';
+import {GradesOverviewTable, SubjectGradesTable} from '../components/GradesTableComponent';
 import * as CONSTANTS from '../api/apiUtils';
 import * as ApiCalls from '../api/parentAPI';
 
@@ -14,10 +14,14 @@ export default class StudentDetailsPage extends React.Component {
         this.state = {
             parentID: this.props.parentID,
             student: this.props.selectedStudent,
-            gradesList: []
+            gradesList: [],
+            gradesView: "overview",
+            selectedSubject: null,
+            isLoading: true
         }
         
         ApiCalls.fetchDataStudentGrades = ApiCalls.fetchDataStudentGrades.bind(this);
+        this.showSubjectView = this.showSubjectView.bind(this);
     }
     
     componentDidMount(){
@@ -25,15 +29,37 @@ export default class StudentDetailsPage extends React.Component {
         ApiCalls.fetchDataStudentGrades(this.state.parentID, this.state.student.Username);
     }
     
+    componentWillUnmount(){
+
+    }
+    
     render(){
+        
+        let componentToRender;
+        if(this.state.gradesView == "overview" && this.state.isLoading == false){
+            componentToRender = (<GradesOverviewTable gradesList={this.state.gradesList} 
+                    title={"Grades Overview"}
+                    showSubjectView={this.showSubjectView} />);
+        } else if(this.state.gradesView == "subject" && this.state.isLoading == false){
+            componentToRender = (<SubjectGradesTable gradesList={this.state.gradesList} 
+                    showSubjectView={this.showSubjectView} />);
+        }
+        
         return (
             <div className="app-content">
                 <SectionTitleTile title={"Student "+this.state.student.FirstName} goToPrevPage={this.props.goToPrevPage} />    
                 <div className="squared-tile-block">
-                <GradesTableComponent gradesList={this.state.gradesList} />
+                    {componentToRender}
                 </div>
             </div>
         );
+    }
+    
+    showSubjectView(index){
+        this.setState({
+            gradesView: 'subject',
+            selectedSubject: index
+        });
     }
 
 }
