@@ -2,6 +2,7 @@ import React from 'react';
 import {SectionTitleTile} from './BaseTiles';
 import GradesListComponent from './GradesListComponent';
 import * as CONSTANTS from '../api/apiUtils';
+import * as APICall from '../api/teacherAPI';
 import * as Utils from '../utils/Utils';
 import {Spinner} from './BaseComponents';
 import * as Modals from './ModalComponents';
@@ -24,12 +25,13 @@ export default class GradesPage extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.createModalSingleGradeObject = this.createModalSingleGradeObject.bind(this);
+        APICall.fetchDataStudentGrades = APICall.fetchDataStudentGrades.bind(this);
         
     }
     
     componentDidMount(){
         console.log("componentDidMount!!!");
-        this.fetchDataStudentGrades(this.state.teacher, this.state.selectedClass.ClassID, this.state.selectedClass.Subject);
+        APICall.fetchDataStudentGrades(this.state.teacher, this.state.selectedClass.ClassID, this.state.selectedClass.Subject);
     }
     
     render(){
@@ -46,22 +48,10 @@ export default class GradesPage extends React.Component {
         );
     }
 
-    fetchDataStudentGrades(teacherID, classID, subject){
-        fetch(CONSTANTS.HOST+"/api/v1/teacher/grades?id="+teacherID+"&class="+classID+"&subject="+subject+"&object=student")
-            .then(response => response.json())
-            .then( (result) => this.setState({
-                studentsGradesList: {
-                    data: result,
-                    isLoading: false
-                }
-            })
-        );
-    }
-    
-    postSingleGrade(){
+    postSingleGrade(teacherID, classID, subject, gradeMod){
         //var form = new FormData(document.getElementById('DataForm'));
         var array = new Array();
-        array.push(this.state.gradeMod);
+        array.push(gradeMod);
         var request = {Grades: array}
         var data = JSON.stringify(request);
         
@@ -78,6 +68,7 @@ export default class GradesPage extends React.Component {
         }).then(function(response){
             if(response.ok){
                 //TODO handle update page
+                APICall.fetchDataStudentGrades(teacherID, classID, subject);
             } else {
                 //TODO eventually handle error messages
             }
@@ -100,10 +91,11 @@ export default class GradesPage extends React.Component {
         gradeModTemp["Date"] = Utils.dateStringToDate(gradeModTemp.Date).toJSON();
         
         console.log("Utils.dateStringToDate(gradeModTemp.Date)"+Utils.dateStringToDate(gradeModTemp.Date));
+        this.postSingleGrade(this.state.teacher, this.state.selectedClass.ClassID, this.state.selectedClass.Subject, gradeModTemp);
+        
         this.setState({
-          gradeMod: gradeModTemp
+          gradeMod: {}
         });
-        this.postSingleGrade();
         Modals.closeModals("singleGradeModal");
     }
     
@@ -135,8 +127,10 @@ export default class GradesPage extends React.Component {
     }
     
     createModalSingleGradeObject(username){
-         this.setState({
-          gradeMod: {StudentID: username}
+        let newGradeMod = new Object();
+        newGradeMod.StudentID = username;
+        this.setState({
+            gradeMod: newGradeMod
         });
     }
     

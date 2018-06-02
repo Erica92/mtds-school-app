@@ -83,7 +83,7 @@ export default class ParentApp extends React.Component {
     }
     
     selectStudent(student){
-        console.log("selectedStudent: "+student);
+        console.log("selectedStudent: "+student.Username);
         this.setState({selectedStudent: student});
     }
 

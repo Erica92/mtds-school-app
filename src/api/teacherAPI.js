@@ -33,3 +33,15 @@ export function fetchDataStudentClass(classID){
         })
     );
 }
+
+export function fetchDataStudentGrades(teacherID, classID, subject){
+    fetch(CONSTANTS.HOST+"/api/v1/teacher/grades?id="+teacherID+"&class="+classID+"&subject="+subject+"&object=student")
+        .then(response => response.json())
+        .then( (result) => this.setState({
+            studentsGradesList: {
+                data: result,
+                isLoading: false
+            }
+        })
+    );
+}

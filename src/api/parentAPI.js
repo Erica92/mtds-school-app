@@ -32,15 +32,24 @@ export function fetchDataParentAppointments(parentID){
 
 
 //http://localhost:8080/api/v1/parent/students/grades?id=P1&semester=2
-export function fetchDataStudentGrades(parentID){
+export function fetchDataStudentGrades(parentID, studentID){
     
     let endpoint = CONSTANTS.HOST+"/api/v1/parent/students/grades?id="+parentID;
+    if(studentID) endpoint += "&studentid="+studentID;
     
     return fetch(endpoint)
         .then(response => response.json())
-        .then( (result) => this.setState({
-            isLoading: false,
-            gradesList: result
-        })
+        .then( (result) => 
+              {if(result && result.length > 0){
+                this.setState({
+                    isLoading: false,
+                    gradesList: result[0].SubjectGrades
+                })
+            } else {
+                this.setState({
+                    isLoading: false,
+                    gradesList: []
+                })
+            }}
     );
 }
