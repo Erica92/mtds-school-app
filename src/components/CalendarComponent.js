@@ -128,11 +128,16 @@ export default class Calendar extends React.Component {
 
         const name = target.name;
         
+        if(name === "startDate" || name==="endDate"){
+            let formattedDate = new Date(value);
+            value = formattedDate;
+        }
+        
         let selectedEventTemp = this.state.selectedEvent;
         selectedEventTemp[name] = value;
 
         this.setState({
-          gradeMod: selectedEventTemp
+          selectedEvent: selectedEventTemp
         });
     }
     

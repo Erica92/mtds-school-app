@@ -22,6 +22,7 @@ export default class StudentDetailsPage extends React.Component {
         
         ApiCalls.fetchDataStudentGrades = ApiCalls.fetchDataStudentGrades.bind(this);
         this.showSubjectView = this.showSubjectView.bind(this);
+        this.showView = this.showView.bind(this);
     }
     
     componentDidMount(){
@@ -42,7 +43,7 @@ export default class StudentDetailsPage extends React.Component {
                     showSubjectView={this.showSubjectView} />);
         } else if(this.state.gradesView == "subject" && this.state.isLoading == false){
             componentToRender = (<SubjectGradesTable gradesList={this.state.gradesList} 
-                    showSubjectView={this.showSubjectView} />);
+                    showView={this.showView} />);
         }
         
         return (
@@ -59,6 +60,13 @@ export default class StudentDetailsPage extends React.Component {
         this.setState({
             gradesView: 'subject',
             selectedSubject: index
+        });
+    }
+            
+    showView(viewName){
+        this.setState({
+            gradesView: viewName,
+            selectedSubject: null
         });
     }
 

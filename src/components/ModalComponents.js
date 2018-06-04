@@ -68,7 +68,7 @@ export function ModalViewEvent(props){
 
 export function ModalAddEvent(props){
     var classList = props.classList.map( elem => (<option value={elem.ClassID}>{elem.ClassID} - {elem.Subject}</option>));
-    var studentClassList = props.studentClassList.map( elem => (<option value={elem.StudentID}>{elem.LastName} {elem.FirstName}</option>));
+    var studentClassList = props.studentClassList.map( elem => (<option value={elem.Username}>{elem.LastName} {elem.FirstName}</option>));
     
     return(
         <div id="addEventModal" className="modal">

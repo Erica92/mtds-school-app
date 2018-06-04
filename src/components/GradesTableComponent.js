@@ -82,6 +82,7 @@ export function SubjectGradesTable(props){
     return (
         <div className="base-tile">
             <TileHeader text={gradesOfSubject.Subject+" Grades"} toggleImg={require("../images/launch_white_18x18.png")} />
+            <div onClick={() => props.showView('overview')}>Overview</div>
             <div className="tile-content">
                 <div className="row-content">
                     <table>
