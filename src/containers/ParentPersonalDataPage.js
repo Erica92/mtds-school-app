@@ -22,12 +22,12 @@ export default class ParentPersonalDataPage extends React.Component {
         
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        ApiCalls.fetchDataPersonalDataParent = ApiCalls.fetchDataPersonalDataParent.bind(this);
+        this.fetchDataPersonalDataParent = ApiCalls.fetchDataPersonalDataParent.bind(this);
     }
     
     componentDidMount(){
         console.log("componentDidMount!!!");
-        ApiCalls.fetchDataPersonalDataParent(this.state.parentID)
+        this.fetchDataPersonalDataParent(this.state.parentID)
             .then(() => {         
             let parentOrig = Object.assign({}, this.state.parentInfo);
             
@@ -103,7 +103,7 @@ export default class ParentPersonalDataPage extends React.Component {
             });
             Modals.openModal("resultModal");
             
-            ApiCalls.fetchDataPersonalDataParent(this.state.parentID)
+            this.fetchDataPersonalDataParent(this.state.parentID)
                 .then(() => {         
                     let parentOrig = Object.assign({}, this.state.parentInfo);
                     this.setState({parentInfoMod: parentOrig});

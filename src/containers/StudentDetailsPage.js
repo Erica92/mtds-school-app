@@ -20,14 +20,14 @@ export default class StudentDetailsPage extends React.Component {
             isLoading: true
         }
         
-        ApiCalls.fetchDataStudentGrades = ApiCalls.fetchDataStudentGrades.bind(this);
+        this.fetchDataStudentGrades = ApiCalls.fetchDataStudentGrades.bind(this);
         this.showSubjectView = this.showSubjectView.bind(this);
         this.showView = this.showView.bind(this);
     }
     
     componentDidMount(){
         console.log("componentDidMount!!!");
-        ApiCalls.fetchDataStudentGrades(this.state.parentID, this.state.student.Username);
+        this.fetchDataStudentGrades(this.state.parentID, this.state.student.Username);
     }
     
     componentWillUnmount(){

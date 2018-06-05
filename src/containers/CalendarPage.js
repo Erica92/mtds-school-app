@@ -22,8 +22,8 @@ export default class CalendarPage extends React.Component {
             classList: this.props.classList
         }
         
-        teacherAPI.fetchDataTeacherAppointments = teacherAPI.fetchDataTeacherAppointments.bind(this);
-        teacherAPI.fetchDataSchedule = teacherAPI.fetchDataSchedule.bind(this);
+        this.fetchDataTeacherAppointments = teacherAPI.fetchDataTeacherAppointments.bind(this);
+        this.fetchDataSchedule = teacherAPI.fetchDataSchedule.bind(this);
     }
     
     componentDidMount(){
@@ -94,8 +94,8 @@ export default class CalendarPage extends React.Component {
     
     getAppointmentsAndSchedule(){
         return Promise.all([
-            teacherAPI.fetchDataTeacherAppointments(this.props.teacherID),
-            teacherAPI.fetchDataSchedule(this.props.teacherID, 'day')
+            this.fetchDataTeacherAppointments(this.props.teacherID),
+            this.fetchDataSchedule(this.props.teacherID, 'day')
         ])
     }
 
