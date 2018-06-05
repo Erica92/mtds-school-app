@@ -6,6 +6,7 @@ import AppHeader from '../components/AppHeader';
 import * as ApiCalls from '../api/parentAPI';
 import CalendarPage from './CalendarPage';
 import StudentDetailsPage from './StudentDetailsPage';
+import ParentPersonalDataPage from './ParentPersonalDataPage';
 import * as CONSTANTS from '../api/apiUtils';
 import * as Utils from '../utils/Utils';
 
@@ -26,7 +27,7 @@ export default class ParentApp extends React.Component {
             prevPageState: ["HomePage"]
         }
         
-        this.menuList = [{linkLabel: "Personal Data", linkName:"PersonalDataPage", icon:""},
+        this.menuList = [{linkLabel: "Personal Data", linkName:"ParentPersonalDataPage", icon:""},
                           {linkLabel: "Appointments", linkName:"AppointmentsPage", icon:""},
                           {linkLabel: "Payments", linkName:"PaymentsPage", icon:""},
                           {linkLabel: "Logout", linkName:"#", icon:""}];
@@ -61,7 +62,11 @@ export default class ParentApp extends React.Component {
             } else if(this.state.pageState === "StudentDetailsPage"){
                 componentToRender = (<StudentDetailsPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
                                         selectedStudent={this.state.selectedStudent} parentID={this.state.parentID} />);
+            } else if(this.state.pageState === "ParentPersonalDataPage"){
+                componentToRender = (<ParentPersonalDataPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
+                                        parentID={this.state.parentID} />);
             }
+                                     
         }
                                      
         return (

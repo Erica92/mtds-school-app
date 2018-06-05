@@ -37,11 +37,11 @@ export default class StudentDetailsPage extends React.Component {
     render(){
         
         let componentToRender;
-        if(this.state.gradesView == "overview" && this.state.isLoading == false){
+        if(this.state.gradesView === "overview" && this.state.isLoading === false){
             componentToRender = (<GradesOverviewTable gradesList={this.state.gradesList} 
                     title={"Grades Overview"}
                     showSubjectView={this.showSubjectView} />);
-        } else if(this.state.gradesView == "subject" && this.state.isLoading == false){
+        } else if(this.state.gradesView === "subject" && this.state.isLoading === false){
             componentToRender = (<SubjectGradesTable gradesList={this.state.gradesList} 
                     showView={this.showView} />);
         }

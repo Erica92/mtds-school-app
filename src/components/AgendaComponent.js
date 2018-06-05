@@ -27,7 +27,7 @@ export default function AgendaComponent(props) {
     }
     
     let rowsAppointments = props.appointmentList.map(elem => (
-        <div>
+        <div key={elem.ParentID}>
             <span>{Utils.formatTimeFromJSON(elem.StartTime)}</span>
             <span>{Utils.formatTimeFromJSON(elem.EndTime)}</span>
             <span>Appointment</span>

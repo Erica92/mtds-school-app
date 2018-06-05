@@ -4,8 +4,9 @@ import './BaseStyle.css';
 export function InputText(props){
     return(
         <div className="input-block">
-            <label for={props.name}>{props.label}</label>
-            <input type="text" name={props.name} value={props.value} onChange={props.onChange} disabled={props.disabled}/>
+            <label htmlFor={props.name}>{props.label}</label>
+            <input type="text" name={props.name} value={props.value} 
+                className="input-base" onChange={props.onChange} disabled={props.disabled}/>
         </div>
     );
 }

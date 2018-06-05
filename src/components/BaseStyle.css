@@ -145,7 +145,7 @@
 
 /*** form ***/
 
-input[type="text"] {
+input[type="text"].input-base {
     border: #ccc solid 1px;
     border-radius: 2px;
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
@@ -175,7 +175,6 @@ label {
 }
 
 .input-group {
-    width: 100%;
     border: #ccc solid 1px;
     border-radius: 2px;
     padding: 10px;
@@ -240,4 +239,36 @@ label {
 
 label:hover {
     color: #000000;
+}
+
+.button-base{
+    border: #ccc solid 0px;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
+    height: 40px;
+    width: 150px;
+    font-size: 16px;
+    outline: none;
+    display: table-cell; 
+    vertical-align: middle;
+    padding-left: 5px;
+    padding-right: 5px;
+    float: right;
+    cursor: pointer;
+}
+
+.submit-button{
+    background-color: #81c784;
+    color: white;
+    margin-left: 10px;
+}
+.submit-button:hover {
+    background-color: #4CAF50
+}
+
+.cancel-button{
+    background-color: #ebebeb;
+}
+.cancel-button:hover{
+    background-color: #cfcfcf;
 }

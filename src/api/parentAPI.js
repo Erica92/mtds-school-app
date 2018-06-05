@@ -30,6 +30,26 @@ export function fetchDataParentAppointments(parentID){
     );
 }
 
+export function fetchDataPersonalDataParent(username){
+    return fetch(CONSTANTS.HOST+"/api/v1/parent/info?id="+username)
+        .then(response => response.json())
+        .then( (result) => this.setState({
+            parentInfo: result,
+            isLoading: false
+        })
+    );
+}
+
+export function fetchDataPersonalDataStudent(username){
+    return fetch(CONSTANTS.HOST+"/api/v1/student/info?id="+username)
+        .then(response => response.json())
+        .then( (result) => this.setState({
+            personalData: result,
+            isLoading: false
+        })
+    );
+}
+
 
 //http://localhost:8080/api/v1/parent/students/grades?id=P1&semester=2
 export function fetchDataStudentGrades(parentID, studentID){

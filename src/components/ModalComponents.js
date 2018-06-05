@@ -102,6 +102,21 @@ export function ModalAddEvent(props){
     );
 }
 
+export function ModalResult(props){
+    return (
+        <div id="resultModal" className="modal">
+            <div class="modal-content modal-small-result">
+                <span class="close" onClick={() => closeModals("resultModal")} >&times;</span>
+                        
+                    <h2 className="modal-text">{props.text}</h2>
+                    <input type="button" className="button-base modal-ok-button" value={props.buttonText} 
+                        onClick={() => closeModals("resultModal")} />
+                        
+            </div>       
+        </div>
+    );
+}
+
 export function openModal(modalId){
     var modal = document.getElementById(modalId);
     modal.style.display = 'block';
