@@ -11,9 +11,9 @@ export function GradesOverviewTable(props){
         <tr key={elem.Subject}>
             <td onClick={() => props.showSubjectView(index)} className="clickable">{elem.Subject}</td>
             <td></td>
-            <td>{Math.round(elem.GradeSummaries[0].Grade * 100) / 100}</td>
+            <td>{elem.GradeSummaries.length > 0 ? Math.round(elem.GradeSummaries[0].Grade * 100) / 100 : "" }</td>
             <td></td>
-            <td>{Math.round(elem.GradeSummaries[1].Grade * 100) / 100}</td>
+            <td>{elem.GradeSummaries.length > 1 ?Math.round(elem.GradeSummaries[1].Grade * 100) / 100 : "" }</td>
         </tr>
     ));
                                    
