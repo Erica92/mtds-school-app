@@ -3,7 +3,7 @@ import './Calendar.css';
 import {Bootstrap, Grid, Row, Col} from 'react-bootstrap';
 import '../../node_modules/fullcalendar/dist/fullcalendar.min.css';
 import * as Modals from './ModalComponents';
-import {ModalViewEvent,ModalAddEvent} from './ModalComponents';
+import {ModalViewEvent,ModalAddEvent,ModalAddEventParent} from './ModalComponents';
 import * as Utils from '../utils/Utils';
 import * as TeacherApi from '../api/teacherAPI';
 import * as CONSTANTS from '../api/apiUtils';
@@ -19,6 +19,7 @@ export default class Calendar extends React.Component {
         
         this.state = {
             teacherID: this.props.teacherID,
+            parentID: this.props.parentID,
             eventList: this.props.eventList,
             selectedEvent: {},
             classList: this.props.classList,
@@ -32,13 +33,22 @@ export default class Calendar extends React.Component {
     }
     
     render() {
+        var modalAddEventToRender;
+        if(this.state.teacherID){
+            console.log("render teacher calendar");
+            modalAddEventToRender = (<ModalAddEvent event={this.state.selectedEvent} 
+                    classList={this.state.classList} loadStudentInClass={this.loadStudentInClass} studentClassList={this.state.studentClassList}
+                    onSubmit={this.handleSubmitEvent} handleInputChange={this.handleInputChange} />);
+        } else if(this.state.parentID){
+            console.log("render parent calendar");
+            modalAddEventToRender = (<ModalAddEventParent event={this.state.selectedEvent} 
+                    onSubmit={this.handleSubmitEvent} handleInputChange={this.handleInputChange} />);
+        }
         return (
             <div>
                 <div id="calendar"></div>
                 <ModalViewEvent event={this.state.selectedEvent} />
-                <ModalAddEvent event={this.state.selectedEvent} 
-                    classList={this.state.classList} loadStudentInClass={this.loadStudentInClass} studentClassList={this.state.studentClassList}
-                    onSubmit={this.handleSubmitEvent} handleInputChange={this.handleInputChange} />
+                {modalAddEventToRender}
             </div>
         );
     }
@@ -49,6 +59,7 @@ export default class Calendar extends React.Component {
     
 
     componentDidMount() {
+
         $('#calendar').fullCalendar({
                     customButtons: {
                         addEventButton: {

@@ -4,6 +4,7 @@ import Calendar from '../components/CalendarComponent';
 import {SectionTitleTile, TileHeader} from '../components/BaseTiles';
 import {Spinner} from '../components/BaseComponents';
 import * as teacherAPI from '../api/teacherAPI';
+import * as parentAPI from '../api/parentAPI';
 import $ from 'jquery'; 
 
 
@@ -14,6 +15,7 @@ export default class CalendarPage extends React.Component {
         
         this.state = {
             teacherID: this.props.teacherID,
+            parentID: this.props.parentID,
             appointmentsList: [],
             schedule: [],
             isLoading: true,
@@ -24,6 +26,7 @@ export default class CalendarPage extends React.Component {
         
         this.fetchDataTeacherAppointments = teacherAPI.fetchDataTeacherAppointments.bind(this);
         this.fetchDataSchedule = teacherAPI.fetchDataSchedule.bind(this);
+        this.fetchDataParentAppointments = parentAPI.fetchDataParentAppointments.bind(this);
     }
     
     componentDidMount(){
@@ -40,6 +43,18 @@ export default class CalendarPage extends React.Component {
                 });
                 console.log(appointmentsList, schedule);
               })
+        } else if (this.props.parentID){
+            this.fetchDataParentAppointments(this.props.parentID)
+                .then( () => {
+                console.log("both have loaded!");
+                
+                let eventList = this.makeCalendarEventList(this.state.appointmentsList, '#ff6600');
+                console.log("eventList:"+eventList.length);
+                this.setState({
+                    allLoaded: true,
+                    eventList: eventList
+                });
+            });
         }
     }
     componentWillReceiveProps(){
@@ -57,7 +72,8 @@ export default class CalendarPage extends React.Component {
         
         if(allLoaded){
           toRender = (<Calendar appointmentsList={this.state.appointmentsList} 
-                        eventList={this.state.eventList} classList={this.state.classList} teacherID={this.state.teacherID} />);
+                        eventList={this.state.eventList} classList={this.state.classList} 
+                        teacherID={this.state.teacherID} parentID={this.state.parentID} />);
         } else {
             toRender = <Spinner />                    
         }

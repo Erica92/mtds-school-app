@@ -69,6 +69,9 @@ export default class ParentApp extends React.Component {
             } else if(this.state.pageState === "StudentPersonalDataPage"){
                 componentToRender = (<StudentPersonalDataPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
                                         student={this.state.selectedStudent} />);
+            } else if(this.state.pageState === "AppointmentsPage"){
+                componentToRender = (<CalendarPage parentID={this.state.parentID} date={new Date()}
+                                     classList={this.state.classList} />);
             }
                                      
         }

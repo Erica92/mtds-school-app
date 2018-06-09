@@ -9,8 +9,8 @@ export function ModalInsertSingleGrade(props){
     //<DayPickerInput dayPickerProps={{todayButton: 'Today'}} onDayClick={props.handleDayClick} />
     return (
         <div id="singleGradeModal" class="modal">
-          <div class="modal-content">
-            <span class="close" onClick={() => closeModals("singleGradeModal")} >&times;</span>
+          <div className="modal-content">
+            <span className="close" onClick={() => closeModals("singleGradeModal")} >&times;</span>
             <form id="SingleGradeForm" method="POST" onSubmit={props.handleSubmitSingleGrade} >
                 <div>Insert Grade</div>
                 <div>Student: {props.student.FirstName} {props.student.LastName}</div>
@@ -48,8 +48,8 @@ export function ModalInsertSingleGrade(props){
 export function ModalViewEvent(props){
     return(
         <div id="viewEventModal" className="modal">
-            <div class="modal-content modal-small">
-                <span class="close" onClick={() => closeModals("viewEventModal")} >&times;</span>
+            <div className="modal-content modal-small">
+                <span className="close" onClick={() => closeModals("viewEventModal")} >&times;</span>
                         
                     <h1>{props.event.title}</h1>
                     <label>Full Day Event</label>
@@ -67,7 +67,7 @@ export function ModalViewEvent(props){
 }
 
 export function ModalAddEvent(props){
-    var classList = props.classList.map( elem => (<option value={elem.ClassID}>{elem.ClassID} - {elem.Subject}</option>));
+    var classList = props.classList.map( elem => (<option value={elem.ClassID} key={elem.ClassID}>{elem.ClassID} - {elem.Subject}</option>));
     var studentClassList = props.studentClassList.map( elem => (<option value={elem.Username}>{elem.LastName} {elem.FirstName}</option>));
     
     return(
@@ -77,25 +77,56 @@ export function ModalAddEvent(props){
                 <form id="addEventForm" method="POST" onSubmit={props.onSubmit} >
                     <h1>Add New Event</h1>
                     <span>Select a student:</span>
-                    <select name="class" onChange={props.loadStudentInClass}>{classList}</select>
-                    <select name="StudentID" onChange={props.handleInputChange} >{studentClassList}</select>
+                    <select className="input-base" name="class" onChange={props.loadStudentInClass}>{classList}</select>
+                    <select className="input-base" name="StudentID" onChange={props.handleInputChange} >{studentClassList}</select>
                     
                     <label>Title</label>
-                    <input type="text" name="title" onChange={props.handleInputChange} />
+                    <input className="input-base" type="text" name="title" onChange={props.handleInputChange} />
 
                     <label>Full Day Event</label>
-                    <input type="checkbox" name="fullday" onChange={props.handleInputChange} />
+                    <input className="input-checkbox" type="checkbox" name="fullday" onChange={props.handleInputChange} />
 
                     <label>Start Date and time</label>
-                    <input type="datetime-local" name="startDate" onChange={props.handleInputChange} />
+                    <input className="input-base" type="datetime-local" name="startDate" onChange={props.handleInputChange} />
 
                     <label>End Date and time</label>
-                    <input type="datetime-local" name="endDate" onChange={props.handleInputChange} />
+                    <input className="input-base" type="datetime-local" name="endDate" onChange={props.handleInputChange} />
 
                     <label>Note</label>
                     <textarea name="Remarks" />
                 
-                    <input type="submit" value="Submit" />
+                    <input className="button-base submit-button" type="submit" value="Submit" />
+                </form>
+            </div>       
+        </div>
+    );
+}
+
+export function ModalAddEventParent(props){
+    
+    return(
+        <div id="addEventModal" className="modal">
+            <div className="modal-content">
+                <span className="close" onClick={() => closeModals("addEventModal")} >&times;</span>
+                <form id="addEventForm" method="POST" onSubmit={props.onSubmit} >
+                    <h1>Add New Event</h1>
+                    
+                    <label>Title</label>
+                    <input className="input-base" type="text" name="title" onChange={props.handleInputChange} />
+
+                    <label>Full Day Event</label>
+                    <input className="input-checkbox" type="checkbox" name="fullday" onChange={props.handleInputChange} />
+
+                    <label>Start Date and time</label>
+                    <input className="input-base" type="datetime-local" name="startDate" onChange={props.handleInputChange} />
+
+                    <label>End Date and time</label>
+                    <input className="input-base" type="datetime-local" name="endDate" onChange={props.handleInputChange} />
+
+                    <label>Note</label>
+                    <textarea name="Remarks" />
+                
+                    <input className="button-base submit-button" type="submit" value="Submit" />
                 </form>
             </div>       
         </div>
@@ -106,7 +137,7 @@ export function ModalResult(props){
     return (
         <div id="resultModal" className="modal">
             <div class="modal-content modal-small-result">
-                <span class="close" onClick={() => closeModals("resultModal")} >&times;</span>
+                <span className="close" onClick={() => closeModals("resultModal")} >&times;</span>
                         
                     <h2 className="modal-text">{props.text}</h2>
                     <input type="button" className="button-base modal-ok-button" value={props.buttonText} 
