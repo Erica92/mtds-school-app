@@ -10,6 +10,39 @@
     overflow-x: auto;
 }
 
+.base-tile-simple{
+    width: 100%;
+    display: flex;
+    border-radius: 2px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+    overflow: hidden;
+    overflow-x: auto;
+}
+
+/* to make equal element inside a flex box */
+.base-tile-content{
+    flex: 1; /* additionally, equal width */
+  
+    padding: 1em;
+    border: solid;
+}
+
+.tile-content-title{
+    margin-top: 1.5em;
+    font-weight: bold;
+    font-size: 25px;
+    padding-left: 1em;
+    cursor: pointer;
+}
+.tile-content-subtitle{
+    font-weight: normal;
+    font-style: italic;
+    font-size: 15px;
+    padding-left: 5em;
+    cursor: pointer;
+}
+
 .limit-max-height{
     max-height: 250px;
 }

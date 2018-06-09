@@ -1,8 +1,8 @@
 import React from 'react';
 import BaseTile from '../components/BaseTiles';
-import {SectionTitleTile} from '../components/BaseTiles';
-import {SquareTile} from '../components/BaseTiles';
+import {SectionTitleTile, SquareTile} from '../components/BaseTiles';
 import {GradesOverviewTable, SubjectGradesTable} from '../components/GradesTableComponent';
+import {BasePersonComponentBig} from '../components/BaseComponents';
 import * as CONSTANTS from '../api/apiUtils';
 import * as ApiCalls from '../api/parentAPI';
 
@@ -48,7 +48,9 @@ export default class StudentDetailsPage extends React.Component {
         
         return (
             <div className="app-content">
-                <SectionTitleTile title={"Student "+this.state.student.FirstName} goToPrevPage={this.props.goToPrevPage} />    
+                <SectionTitleTile title={"Student "+this.state.student.FirstName} goToPrevPage={this.props.goToPrevPage} />
+                <BasePersonComponentBig avatarUrl={this.state.student.ProfilePic} onClick={() => this.props.goToPage("StudentPersonalDataPage")}
+                                 FirstName={this.state.student.FirstName} LastName={this.state.student.LastName}/>
                 <div className="squared-tile-block">
                     {componentToRender}
                 </div>

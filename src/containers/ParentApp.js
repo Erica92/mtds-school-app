@@ -7,6 +7,7 @@ import * as ApiCalls from '../api/parentAPI';
 import CalendarPage from './CalendarPage';
 import StudentDetailsPage from './StudentDetailsPage';
 import ParentPersonalDataPage from './ParentPersonalDataPage';
+import StudentPersonalDataPage from './StudentPersonalDataPage';
 import * as CONSTANTS from '../api/apiUtils';
 import * as Utils from '../utils/Utils';
 
@@ -65,6 +66,9 @@ export default class ParentApp extends React.Component {
             } else if(this.state.pageState === "ParentPersonalDataPage"){
                 componentToRender = (<ParentPersonalDataPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
                                         parentID={this.state.parentID} />);
+            } else if(this.state.pageState === "StudentPersonalDataPage"){
+                componentToRender = (<StudentPersonalDataPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
+                                        student={this.state.selectedStudent} />);
             }
                                      
         }

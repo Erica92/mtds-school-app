@@ -29,6 +29,20 @@ export function BasePersonComponent(props) {
     );
 }
 
+export function BasePersonComponentBig(props){
+    return (
+        <div className="base-tile-simple">
+            <div>
+                <img alt="profile pic" src={props.avatarUrl} className="personal-pic"/>
+            </div>
+            <div>
+                <div className="tile-content-title" onClick={props.onClick} >{props.FirstName} {props.LastName}</div>
+                <div className="tile-content-subtitle" onClick={props.onClick} >See and modify {props.FirstName}'s personal data</div>
+            </div>
+        </div>
+    );
+}
+
 export function Avatar(props){
 	return (
 		<img className="Avatar" src={props.avatarUrl} />

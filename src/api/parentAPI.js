@@ -44,7 +44,7 @@ export function fetchDataPersonalDataStudent(username){
     return fetch(CONSTANTS.HOST+"/api/v1/student/info?id="+username)
         .then(response => response.json())
         .then( (result) => this.setState({
-            personalData: result,
+            studentInfo: result,
             isLoading: false
         })
     );
