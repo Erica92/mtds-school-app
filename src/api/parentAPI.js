@@ -73,3 +73,13 @@ export function fetchDataStudentGrades(parentID, studentID){
             }}
     );
 }
+
+export function fetchDataPayment(username){
+    return fetch(CONSTANTS.HOST+"/api/v1/parent/payments?id="+username)
+        .then(response => response.json())
+        .then( (result) => this.setState({
+            paymentList: result,
+            isLoading: false
+        })
+    );
+}

@@ -8,6 +8,7 @@ import CalendarPage from './CalendarPage';
 import StudentDetailsPage from './StudentDetailsPage';
 import ParentPersonalDataPage from './ParentPersonalDataPage';
 import StudentPersonalDataPage from './StudentPersonalDataPage';
+import PaymentPage from './PaymentPage';
 import * as CONSTANTS from '../api/apiUtils';
 import * as Utils from '../utils/Utils';
 
@@ -72,7 +73,11 @@ export default class ParentApp extends React.Component {
             } else if(this.state.pageState === "AppointmentsPage"){
                 componentToRender = (<CalendarPage parentID={this.state.parentID} date={new Date()}
                                      classList={this.state.classList} />);
-            }
+            } else if(this.state.pageState === "PaymentsPage"){
+                componentToRender = (<PaymentPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
+                                        parentID={this.state.parentID} />);
+            } 
+                          
                                      
         }
                                      
