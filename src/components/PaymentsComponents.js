@@ -18,7 +18,8 @@ export function PaymentListComponent(props){
                 {new Date(elem.Deadline).toLocaleDateString()}
             </span>
             <span>
-                <input className="button-base submit-button" type="button" value="Pay" onClick={() => props.changeView("payment")}/>
+                <input className="button-base submit-button" type="button" value="Pay" 
+                        onClick={() => props.changeView("payment", props.selectPayment(elem))}/>
             </span>
         </div>
     ));
@@ -60,3 +61,39 @@ export function PaymentForm(props){
         </form>
     );
 }
+
+export function PaymentDetails(props){
+    return (
+        <div className="input-group">
+            <div><label>Amount</label><span>{props.paymentDetails.Amount}</span></div>
+            <div><label>Created on</label><span></span>{props.paymentDetails.CreatedOn}</div>
+            <div><label>Deadline</label><span></span>{props.paymentDetails.Deadline}</div>
+            <div><label>Description</label><span></span>{props.paymentDetails.Description}</div>
+            <div><label>Status</label><span></span>{props.paymentDetails.Status}</div>
+            <div><label>StudentID</label><span></span>{props.paymentDetails.StudentID}</div>
+        </div>
+    );
+}
+
+1596.71
+CreatedOn
+:
+"2018-04-30T20:10:48Z"
+Deadline
+:
+"2018-05-30T20:10:48Z"
+Description
+:
+"PayDesc1"
+ParentID
+:
+"P1"
+PaymentID
+:
+"PID1"
+Status
+:
+"1"
+StudentID
+:
+"S1"

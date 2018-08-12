@@ -3,7 +3,7 @@ import {Spinner} from '../components/BaseComponents';
 import {SectionTitleTile} from '../components/BaseTiles';
 import * as ApiCalls from '../api/parentAPI';
 import * as CONSTANTS from '../api/apiUtils';
-import {PaymentListComponent,PaymentForm} from '../components/PaymentsComponents';
+import {PaymentListComponent,PaymentForm,PaymentDetails} from '../components/PaymentsComponents';
 
 export default class PaymentPage extends React.Component {
 
@@ -13,12 +13,14 @@ export default class PaymentPage extends React.Component {
         this.state = {
             parentID: this.props.parentID,
             paymentList: [],
+            selectedPayment: null,
             isLoading: true,
             view: "overview"
         }
         
         this.fetchDataPayment = ApiCalls.fetchDataPayment.bind(this);
         this.changeView = this.changeView.bind(this);
+        this.selectPayment = this.selectPayment.bind(this);
     }   
     
     componentDidMount(){
@@ -36,7 +38,8 @@ export default class PaymentPage extends React.Component {
                 componentToReturn = (
                     <div className="app-content">
                         <SectionTitleTile title="Payments" goToPrevPage={this.props.goToPrevPage} />
-                        <PaymentListComponent paymentList={this.state.paymentList} changeView={this.changeView} />         
+                        <PaymentListComponent paymentList={this.state.paymentList} 
+                                changeView={this.changeView} selectPayment={this.selectPayment} />         
                     </div>
                 );
             } else if(this.state.view === "details"){
@@ -45,6 +48,7 @@ export default class PaymentPage extends React.Component {
                 componentToReturn = (
                     <div className="app-content">
                         <SectionTitleTile title="Payments" goToPrevPage={this.props.goToPrevPage} />
+                        <PaymentDetails paymentDetails={this.state.selectedPayment} />
                         <PaymentForm changeView={this.changeView} />         
                     </div>
                 );
@@ -60,6 +64,10 @@ export default class PaymentPage extends React.Component {
                 view:viewName 
             });
         }
+    }
+    
+    selectPayment(payment){
+        this.setState({selectedPayment: payment});
     }
 
 }
