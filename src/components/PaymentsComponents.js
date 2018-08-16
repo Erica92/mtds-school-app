@@ -1,12 +1,14 @@
 import React from 'react';
 import BaseTile from './BaseTiles';
 import {SectionTitleTile, TileHeader} from './BaseTiles';
-import {TableRow} from './BaseComponents';
+import {TableRow, Spinner} from './BaseComponents';
 import {InputText} from '../components/InputComponents';
 
 export function PaymentListComponent(props){
-    
-    let rows = props.paymentList.map( (elem) => (
+
+    if(props.paymentList && props.paymentList.length > 0){
+        
+        let rows = props.paymentList.map( (elem) => (
         <div key = {elem.PaymentID}>
             <span>
                 {elem.StudentID}
@@ -34,6 +36,10 @@ export function PaymentListComponent(props){
             </div>
         </div>
     );
+
+    } else {
+        return (<Spinner />);
+    }
 }
 
 export function PaymentForm(props){
@@ -74,7 +80,7 @@ export function PaymentDetails(props){
         </div>
     );
 }
-
+/*
 1596.71
 CreatedOn
 :
@@ -96,4 +102,4 @@ Status
 "1"
 StudentID
 :
-"S1"
+"S1"*/

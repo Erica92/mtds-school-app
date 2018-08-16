@@ -13,6 +13,7 @@ export default class PaymentPage extends React.Component {
         this.state = {
             parentID: this.props.parentID,
             paymentList: [],
+            paymentListHistory: [],
             selectedPayment: null,
             isLoading: true,
             view: "overview"
@@ -24,7 +25,12 @@ export default class PaymentPage extends React.Component {
     }   
     
     componentDidMount(){
-        this.fetchDataPayment(this.state.parentID);
+        /*this.fetchAllData().then(([paymentList, paymentListHistory]) => this.setState({
+            isLoading: false
+        }))*/
+        this.fetchDataPayment(this.state.parentID, 2);
+        this.fetchDataPayment(this.state.parentID, 1);
+
     }
 
     render(){
@@ -39,7 +45,9 @@ export default class PaymentPage extends React.Component {
                     <div className="app-content">
                         <SectionTitleTile title="Payments" goToPrevPage={this.props.goToPrevPage} />
                         <PaymentListComponent paymentList={this.state.paymentList} 
-                                changeView={this.changeView} selectPayment={this.selectPayment} />         
+                                changeView={this.changeView} selectPayment={this.selectPayment} />      
+                        <PaymentListComponent paymentList={this.state.paymentListHistory} 
+                                changeView={this.changeView} selectPayment={this.selectPayment} />
                     </div>
                 );
             } else if(this.state.view === "details"){
@@ -69,5 +77,14 @@ export default class PaymentPage extends React.Component {
     selectPayment(payment){
         this.setState({selectedPayment: payment});
     }
+    
+    
+    fetchAllData(){
+        return Promise.all([
+            this.fetchDataPayment(this.state.parentID, 1),
+            this.fetchDataPayment(this.state.parentID, 2)
+        ])
+    }
+    
 
 }

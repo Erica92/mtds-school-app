@@ -74,12 +74,44 @@ export function fetchDataStudentGrades(parentID, studentID){
     );
 }
 
-export function fetchDataPayment(username){
-    return fetch(CONSTANTS.HOST+"/api/v1/parent/payments?id="+username)
+export function fetchDataPayment(username, status){
+    let endpoint = CONSTANTS.HOST+"/api/v1/parent/payments?id="+username;
+    if(status){
+        endpoint += "&status="+status;
+    }
+
+    var outerThis = this;
+    
+    return fetch(endpoint)
         .then(response => response.json())
-        .then( (result) => this.setState({
+        .then(function(result){
+            console.log("nella fun");
+            if(status == 2){
+                outerThis.setState({
+                    paymentListHistory: result,
+                    isLoading: false
+                });
+            } else if(status == 1){
+                outerThis.setState({
+                    paymentList: result,
+                    isLoading: false
+                });
+            }
+        });
+}
+
+function setStatePaymentList(result, status){
+    let stateToReturn = null;
+    
+    if(status == 2){
+        stateToReturn = {
+            paymentListHistory: result,
+        };
+    } else {
+        stateToReturn = {
             paymentList: result,
-            isLoading: false
-        })
-    );
+        };
+    }
+    console.log("status:"+status+" stateToReturn:"+result);
+    return stateToReturn;
 }
