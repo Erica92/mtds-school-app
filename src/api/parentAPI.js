@@ -74,6 +74,9 @@ export function fetchDataStudentGrades(parentID, studentID){
     );
 }
 
+export function postParentPayment(){
+    let endpoint = CONSTANTS.HOST+"/api/v1/parent/payments";
+}
 export function fetchDataPayment(username, status){
     let endpoint = CONSTANTS.HOST+"/api/v1/parent/payments?id="+username;
     if(status){
@@ -115,3 +118,43 @@ function setStatePaymentList(result, status){
     console.log("status:"+status+" stateToReturn:"+result);
     return stateToReturn;
 }
+
+function postParentPayment(selectedPayment){
+        //var form = new FormData(document.getElementById('DataForm'));
+        var data = JSON.stringify(selectedPayment);
+        
+        console.log(data);
+        
+        fetch(CONSTANTS.HOST+"/api/v1/parent/payments", {
+            method: "POST",
+            mode: 'cors',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: data
+        }).then((res) => res.json())
+            .then((data) => {
+            console.log("data:"+data);
+            let message = "";
+            if(data.code == 200){
+                message = "Personal Data correctly updated";
+            } else {
+                message = "Sorry, an error occurred";
+                console.log("post error:"+data.message);
+            }
+            
+            /*this.setState({
+                modificationResult: message
+            });
+            Modals.openModal("resultModal");
+            
+            this.fetchDataPersonalDataParent(this.state.parentID)
+                .then(() => {         
+                    let parentOrig = Object.assign({}, this.state.parentInfo);
+                    this.setState({parentInfoMod: parentOrig});
+            })*/
+        });/*.then((res) => res.json())
+            .then((data) =>  console.log(data))
+            .catch((err)=>console.log(err))*/
+    }

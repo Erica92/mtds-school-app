@@ -30,9 +30,7 @@ export function PaymentListComponent(props){
         <div className="base-tile fixed-height">
             <TileHeader text={props.title} toggleImg={require("../images/launch_white_24x24.png")} />
             <div className="tile-content">        
-                <table>
-                    {rows}
-                </table>
+                {rows}
             </div>
         </div>
     );
@@ -77,6 +75,7 @@ export function PaymentDetails(props){
             <div><label>Description</label><span></span>{props.paymentDetails.Description}</div>
             <div><label>Status</label><span></span>{props.paymentDetails.Status}</div>
             <div><label>StudentID</label><span></span>{props.paymentDetails.StudentID}</div>
+            <div><label>Student</label><span></span>{ props.studentInfo ? props.studentInfo.FirstName+" "+props.studentInfo.LastName : "-"}</div>
         </div>
     );
 }

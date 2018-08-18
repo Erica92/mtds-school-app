@@ -14,14 +14,21 @@ export default class PaymentPage extends React.Component {
             parentID: this.props.parentID,
             paymentList: [],
             paymentListHistory: [],
+            studentInfo: null,
+            cardInfo: null,
             selectedPayment: null,
             isLoading: true,
             view: "overview"
         }
         
         this.fetchDataPayment = ApiCalls.fetchDataPayment.bind(this);
+        this.fetchDataPersonalDataStudent = ApiCalls.fetchDataPersonalDataStudent.bind(this);
+        this.postParentPayment = ApiCalls.postParentPayment.bind(this);
         this.changeView = this.changeView.bind(this);
         this.selectPayment = this.selectPayment.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.cancelChanges = this.cancelChanges.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }   
     
     componentDidMount(){
@@ -56,8 +63,8 @@ export default class PaymentPage extends React.Component {
                 componentToReturn = (
                     <div className="app-content">
                         <SectionTitleTile title="Payments" goToPrevPage={this.props.goToPrevPage} />
-                        <PaymentDetails paymentDetails={this.state.selectedPayment} />
-                        <PaymentForm changeView={this.changeView} />         
+                        <PaymentDetails paymentDetails={this.state.selectedPayment} studentInfo={this.state.studentInfo} />
+                        <PaymentForm changeView={this.changeView} handleSubmit={this.handleSubmit}/>         
                     </div>
                 );
             }
@@ -75,6 +82,7 @@ export default class PaymentPage extends React.Component {
     }
     
     selectPayment(payment){
+        this.fetchDataPersonalDataStudent(payment.StudentID);
         this.setState({selectedPayment: payment});
     }
     
@@ -84,6 +92,35 @@ export default class PaymentPage extends React.Component {
             this.fetchDataPayment(this.state.parentID, 1),
             this.fetchDataPayment(this.state.parentID, 2)
         ])
+    }
+
+    handleSubmit(event) {
+        console.log("handleSubmit");
+        event.preventDefault();
+        //TODO
+        /*this.state.cardInfo;
+        this.state.selectedPayment;*/
+        this.postParentPayment(this.state.selectedPayment);
+    }
+
+    cancelChanges(){
+
+        this.setState({
+            cardInfo: null
+        });
+    }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        
+        let parentInfoMod = this.state.parentInfoMod;
+        parentInfoMod[name] = value;
+
+        this.setState({
+          parentInfoMod: parentInfoMod
+        });
     }
     
 

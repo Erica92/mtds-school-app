@@ -60,6 +60,7 @@ export default class App extends React.Component {
                 <Route exact path="/login" render={props =>(<LoginPage auth={this.getAuth} />)}/>
                 <Route exact path="/teacherPortal" component={TeacherApp} onEnter={this.isAuthenticated}/>
                 <Route exact path="/parentPortal" component={ParentApp} onEnter={this.isAuthenticated}/>
+                <Route exact path="/adminPortal" component={AdminApp} onEnter={this.isAuthenticated}/>
                 <Route component={NoMatchPage}/>
             </Switch>
         );
