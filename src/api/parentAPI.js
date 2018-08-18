@@ -119,9 +119,15 @@ function setStatePaymentList(result, status){
     return stateToReturn;
 }
 
-function postParentPayment(selectedPayment){
+function postParentPayment(selectedPayment, cardInfo){
         //var form = new FormData(document.getElementById('DataForm'));
-        var data = JSON.stringify(selectedPayment);
+        
+        var paymentInfo = {
+            Payment: selectedPayment,
+            CreditCard: cardInfo
+        }
+
+        var data = JSON.stringify(paymentInfo);
         
         console.log(data);
         

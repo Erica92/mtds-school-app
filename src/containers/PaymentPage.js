@@ -15,7 +15,7 @@ export default class PaymentPage extends React.Component {
             paymentList: [],
             paymentListHistory: [],
             studentInfo: null,
-            cardInfo: null,
+            cardInfo: {},
             selectedPayment: null,
             isLoading: true,
             view: "overview"
@@ -51,9 +51,9 @@ export default class PaymentPage extends React.Component {
                 componentToReturn = (
                     <div className="app-content">
                         <SectionTitleTile title="Payments" goToPrevPage={this.props.goToPrevPage} />
-                        <PaymentListComponent paymentList={this.state.paymentList} 
+                        <PaymentListComponent paymentList={this.state.paymentList} title="Upcoming Payments"
                                 changeView={this.changeView} selectPayment={this.selectPayment} />      
-                        <PaymentListComponent paymentList={this.state.paymentListHistory} 
+                        <PaymentListComponent paymentList={this.state.paymentListHistory} title="Past Payments" 
                                 changeView={this.changeView} selectPayment={this.selectPayment} />
                     </div>
                 );
@@ -64,7 +64,8 @@ export default class PaymentPage extends React.Component {
                     <div className="app-content">
                         <SectionTitleTile title="Payments" goToPrevPage={this.props.goToPrevPage} />
                         <PaymentDetails paymentDetails={this.state.selectedPayment} studentInfo={this.state.studentInfo} />
-                        <PaymentForm changeView={this.changeView} handleSubmit={this.handleSubmit}/>         
+                        <PaymentForm changeView={this.changeView} handleSubmit={this.handleSubmit}
+                                handleInputChange={this.handleInputChange} />         
                     </div>
                 );
             }
@@ -100,7 +101,7 @@ export default class PaymentPage extends React.Component {
         //TODO
         /*this.state.cardInfo;
         this.state.selectedPayment;*/
-        this.postParentPayment(this.state.selectedPayment);
+        this.postParentPayment(this.state.selectedPayment, this.state.cardInfo);
     }
 
     cancelChanges(){
@@ -111,15 +112,18 @@ export default class PaymentPage extends React.Component {
     }
 
     handleInputChange(event) {
+        console.log("handleInputChange");
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         
-        let parentInfoMod = this.state.parentInfoMod;
-        parentInfoMod[name] = value;
+        console.log("name:"+name+" value:"+value);
+
+        let cardInfo = this.state.cardInfo;
+        cardInfo[name] = value;
 
         this.setState({
-          parentInfoMod: parentInfoMod
+          cardInfo: cardInfo
         });
     }
     

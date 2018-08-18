@@ -6,25 +6,30 @@ import {InputText} from '../components/InputComponents';
 
 export function PaymentListComponent(props){
 
+    let rows = null;
+
     if(props.paymentList && props.paymentList.length > 0){
         
-        let rows = props.paymentList.map( (elem) => (
-        <div key = {elem.PaymentID}>
-            <span>
-                {elem.StudentID}
-            </span>    
-            <span>
-                {elem.Description}
-            </span>
-            <span>
-                {new Date(elem.Deadline).toLocaleDateString()}
-            </span>
-            <span>
-                <input className="button-base submit-button" type="button" value="Pay" 
-                        onClick={() => props.changeView("payment", props.selectPayment(elem))}/>
-            </span>
-        </div>
-    ));
+        rows = props.paymentList.map( (elem) => (
+            <div key = {elem.PaymentID}>
+                <span>
+                    {elem.StudentID}
+                </span>    
+                <span>
+                    {elem.Description}
+                </span>
+                <span>
+                    {new Date(elem.Deadline).toLocaleDateString()}
+                </span>
+                <span>
+                    <input className="button-base submit-button" type="button" value="Pay" 
+                            onClick={() => props.changeView("payment", props.selectPayment(elem))}/>
+                </span>
+            </div>
+        ));
+    } else {
+        rows = (<div><span>No result found</span></div>);
+    }   
     
     return (
         <div className="base-tile fixed-height">
@@ -35,28 +40,25 @@ export function PaymentListComponent(props){
         </div>
     );
 
-    } else {
-        return (<Spinner />);
-    }
 }
 
 export function PaymentForm(props){
     return (
         <form id="PaymentForm" onSubmit={props.handleSubmit}>
             <div className="input-group">
-                <select name="creditCardType">
+                <select name="Circuit" onChange={props.handleInputChange}>
                     <option value="Visa">Visa</option>
                     <option value="Mastercard">Mastercard</option>
                     <option value="VisaElectron">VisaElectron</option>
                 </select>
                 <InputText className="editable" onChange={props.handleInputChange}
-                                label="Card Number" name="cardNumber" />
+                                label="Card Number" name="CCN" />
                 <InputText className="editable" onChange={props.handleInputChange}
                                 label="CVV" name="CVV" />
                 <InputText className="editable" onChange={props.handleInputChange}
-                                label="Expiration Date" name="expirationDate" />
+                                label="Expiration Date" name="Expiry" />
                 <InputText className="editable" onChange={props.handleInputChange}
-                                label="Name on card" name="nameOnCard" />
+                                label="Name on card" name="NameOnCard" />
             </div>
             <div>
                 <input className="button-base submit-button" type="submit" value="Submit"/>
