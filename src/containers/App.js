@@ -5,6 +5,7 @@ import AppHeader from '../components/AppHeader';
 import AppContent from '../components/AppContent';
 import TeacherApp from './TeacherApp';
 import ParentApp from './ParentApp';
+import AdminApp from './AdminApp';
 import LoginPage from './LoginPage';
 import HomePage from './HomePage';
 import NoMatchPage from './NoMatchPage';
