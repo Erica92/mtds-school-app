@@ -59,6 +59,18 @@ export function goToPrevPage(){
     });
 }
 
+export function cleanPageHistory(){
+    console.log("clean history");
+    let newPrevPageState = this.state.prevPageState;
+    newPrevPageState.length = 0;
+    newPrevPageState.push("HomePage");
+    this.setState({
+        prevPageState: newPrevPageState
+    });
+
+    console.log("prevPageState;"+this.state.prevPageState);
+}
+
 //this was created because there was a "this" misunderstanding with fullCalendar
 export function updateSelectedEvent(calEvent){
     this.setState({selectedEvent: calEvent});

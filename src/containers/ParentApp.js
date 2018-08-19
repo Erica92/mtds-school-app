@@ -37,6 +37,7 @@ export default class ParentApp extends React.Component {
         
         Utils.goToPage = Utils.goToPage.bind(this);
         Utils.goToPrevPage = Utils.goToPrevPage.bind(this);
+        Utils.cleanPageHistory = Utils.cleanPageHistory.bind(this);
         
         this.selectStudent = this.selectStudent.bind(this);
         
@@ -86,7 +87,8 @@ export default class ParentApp extends React.Component {
             <div>
                 <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" 
                                      user={user1} menuList={this.menuList}    
-                                     goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage} onClickToggle={function(){}} />
+                                     goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage} cleanPageHistory={Utils.cleanPageHistory}
+                                     onClickToggle={function(){}} />
                 {componentToRender} 
             </div>
         );
