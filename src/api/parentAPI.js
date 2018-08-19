@@ -26,7 +26,7 @@ export function fetchDataParentAppointments(parentID){
         .then(response => response.json())
         .then( (result) => this.setState({
             isLoading: false,
-            appointmentList: result
+            appointmentsList: result
         })
     );
 }

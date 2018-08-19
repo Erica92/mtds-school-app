@@ -35,7 +35,7 @@ export default class CalendarPage extends React.Component {
             this.getAppointmentsAndSchedule().then(([appointmentsList, schedule]) => {
                 console.log("both have loaded!");
                 
-                let eventList = this.makeCalendarEventList(this.state.appointmentsList, '#ff6600');
+                var eventList = this.makeCalendarEventList(this.state.appointmentsList, '#ff6600');
                 console.log("eventList:"+eventList.length);
                 this.setState({
                     allLoaded: true,

@@ -28,7 +28,8 @@ export default class Calendar extends React.Component {
         Utils.updateSelectedEvent = Utils.updateSelectedEvent.bind(this);
         TeacherApi.fetchDataStudentClass = TeacherApi.fetchDataStudentClass.bind(this);
         this.makeEmptyEvent = this.makeEmptyEvent.bind(this);
-        this.handleSubmitEvent = this.handleSubmitEvent.bind(this);
+        this.handleSubmitEventParent = this.handleSubmitEventParent.bind(this);
+        this.handleSubmitEventTeacher = this.handleSubmitEventTeacher.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
     }
     
@@ -38,11 +39,11 @@ export default class Calendar extends React.Component {
             console.log("render teacher calendar");
             modalAddEventToRender = (<ModalAddEvent event={this.state.selectedEvent} 
                     classList={this.state.classList} loadStudentInClass={this.loadStudentInClass} studentClassList={this.state.studentClassList}
-                    onSubmit={this.handleSubmitEvent} handleInputChange={this.handleInputChange} />);
+                    onSubmit={this.handleSubmitEventTeacher} handleInputChange={this.handleInputChange} />);
         } else if(this.state.parentID){
             console.log("render parent calendar");
             modalAddEventToRender = (<ModalAddEventParent event={this.state.selectedEvent} 
-                    onSubmit={this.handleSubmitEvent} handleInputChange={this.handleInputChange} />);
+                    onSubmit={this.handleSubmitEventParent} handleInputChange={this.handleInputChange} />);
         }
         return (
             <div>
@@ -104,13 +105,38 @@ export default class Calendar extends React.Component {
         console.log("unmounting CalendarComponent");
     }
     
-    handleSubmitEvent(event) {
+    handleSubmitEventParent(event) {
         event.preventDefault();
         var selectedEventTmp = this.state.selectedEvent;
-        selectedEventTmp["TeacherID"] = this.state.teacherID;
-        selectedEventTmp["ParentID"] = '';
+        selectedEventTmp["TeacherID"] = (this.state.teacherID ? this.state.teacherID : '');
+        selectedEventTmp["ParentID"] = (this.state.parentID ? this.state.parentID : '');
+        selectedEventTmp.Fullday = ( selectedEventTmp.Fullday ? selectedEventTmp.Fullday : false );
         //selectedEventTmp["StudentID"] = '';
+        selectedEventTmp.Status = 0,
+        selectedEventTmp.StatusTeacher = (this.state.teacherID ? 1 : 0 );
+        selectedEventTmp.StatusParent =  (this.state.parentID ? 1 : 0 );
+        selectedEventTmp.AppointmentID = 0,
+        
         delete selectedEventTmp['class'];
+        delete selectedEventTmp['title'];
+        
+        this.setState({
+          selectedEvent: selectedEventTmp
+        });
+        this.postAppointment();
+        Modals.closeModals("addEventModal");
+    }
+
+    handleSubmitEventTeacher(event) {
+        event.preventDefault();
+        var selectedEventTmp = this.state.selectedEvent;
+        selectedEventTmp["TeacherID"] = (this.state.teacherID ? this.state.teacherID : '');
+        selectedEventTmp["ParentID"] = (this.state.parentID ? this.state.parentID : '');
+        selectedEventTmp.Fullday = ( selectedEventTmp.Fullday ? selectedEventTmp.Fullday : false );
+        //selectedEventTmp["StudentID"] = '';
+        
+        delete selectedEventTmp['class'];
+        delete selectedEventTmp['title'];
         
         this.setState({
           selectedEvent: selectedEventTmp
@@ -139,7 +165,7 @@ export default class Calendar extends React.Component {
 
         const name = target.name;
         
-        if(name === "startDate" || name==="endDate"){
+        if(name === "StartTime" || name==="EndTime"){
             let formattedDate = new Date(value);
             value = formattedDate;
         }
@@ -166,8 +192,11 @@ export default class Calendar extends React.Component {
         var data = JSON.stringify(request);
         
         console.log(data);
+
+        var endpoint = CONSTANTS.HOST;
+        endpoint = (this.state.teacherID ? endpoint+"/api/v1/teacher/appointment" : endpoint+"/api/v1/parent/appointment")
         
-        fetch(CONSTANTS.HOST+"/api/v1/teacher/appointment", {
+        fetch(endpoint, {
             method: "POST",
             mode: 'cors',
             headers: {

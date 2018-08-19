@@ -84,16 +84,16 @@ export function ModalAddEvent(props){
                     <input className="input-base" type="text" name="title" onChange={props.handleInputChange} />
 
                     <label>Full Day Event</label>
-                    <input className="input-checkbox" type="checkbox" name="fullday" onChange={props.handleInputChange} />
+                    <input className="input-checkbox" type="checkbox" name="Fullday" onChange={props.handleInputChange} />
 
                     <label>Start Date and time</label>
-                    <input className="input-base" type="datetime-local" name="startDate" onChange={props.handleInputChange} />
+                    <input className="input-base" type="datetime-local" name="StartTime" onChange={props.handleInputChange} />
 
                     <label>End Date and time</label>
-                    <input className="input-base" type="datetime-local" name="endDate" onChange={props.handleInputChange} />
+                    <input className="input-base" type="datetime-local" name="EndTime" onChange={props.handleInputChange} />
 
                     <label>Note</label>
-                    <textarea name="Remarks" />
+                    <textarea name="Remarks" onChange={props.handleInputChange} />
                 
                     <input className="button-base submit-button" type="submit" value="Submit" />
                 </form>
@@ -115,16 +115,16 @@ export function ModalAddEventParent(props){
                     <input className="input-base" type="text" name="title" onChange={props.handleInputChange} />
 
                     <label>Full Day Event</label>
-                    <input className="input-checkbox" type="checkbox" name="fullday" onChange={props.handleInputChange} />
+                    <input className="input-checkbox" type="checkbox" name="Fullday" onChange={props.handleInputChange} />
 
                     <label>Start Date and time</label>
-                    <input className="input-base" type="datetime-local" name="startDate" onChange={props.handleInputChange} />
+                    <input className="input-base" type="datetime-local" name="StartTime" onChange={props.handleInputChange} />
 
                     <label>End Date and time</label>
-                    <input className="input-base" type="datetime-local" name="endDate" onChange={props.handleInputChange} />
+                    <input className="input-base" type="datetime-local" name="EndTime" onChange={props.handleInputChange} />
 
                     <label>Note</label>
-                    <textarea name="Remarks" />
+                    <textarea name="Remarks"onChange={props.handleInputChange}  />
                 
                     <input className="button-base submit-button" type="submit" value="Submit" />
                 </form>

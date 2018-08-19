@@ -24,7 +24,7 @@ export default class ParentApp extends React.Component {
             allLoaded: false,
             notificationList: [],           
             studentList: [],
-            appointmentList: [],
+            appointmentsList: [],
             selectedStudent: {},
             pageState: "HomePage",
             prevPageState: ["HomePage"]
@@ -41,9 +41,9 @@ export default class ParentApp extends React.Component {
         
         this.selectStudent = this.selectStudent.bind(this);
         
-        ApiCalls.fetchDataNotifications = ApiCalls.fetchDataNotifications.bind(this);
-        ApiCalls.fetchDataParentStudents = ApiCalls.fetchDataParentStudents.bind(this);
-        ApiCalls.fetchDataParentAppointments = ApiCalls.fetchDataParentAppointments.bind(this);
+        this.fetchDataNotifications = ApiCalls.fetchDataNotifications.bind(this);
+        this.fetchDataParentStudents = ApiCalls.fetchDataParentStudents.bind(this);
+        this.fetchDataParentAppointments = ApiCalls.fetchDataParentAppointments.bind(this);
         
     }
     
@@ -59,7 +59,7 @@ export default class ParentApp extends React.Component {
         } else {
             if(this.state.pageState === "HomePage"){
                 componentToRender = (<ParentDashboard notificationList={this.state.notificationList} 
-                                        appointmentList={this.state.appointmentList}
+                                        appointmentList={this.state.appointmentsList}
                                         studentList={this.state.studentList}
                                         selectStudent={this.selectStudent}
                                         goToPage={Utils.goToPage} />);
@@ -96,9 +96,9 @@ export default class ParentApp extends React.Component {
         
     getFetchAll(){
         return Promise.all([
-            ApiCalls.fetchDataNotifications(this.state.parentID),
-            ApiCalls.fetchDataParentStudents(this.state.parentID),
-            ApiCalls.fetchDataParentAppointments(this.state.parentID),
+            this.fetchDataNotifications(this.state.parentID),
+            this.fetchDataParentStudents(this.state.parentID),
+            this.fetchDataParentAppointments(this.state.parentID),
         ])
     }
     
