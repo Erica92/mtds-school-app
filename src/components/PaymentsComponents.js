@@ -46,7 +46,9 @@ export function PaymentForm(props){
     return (
         <form id="PaymentForm" onSubmit={props.handleSubmit}>
             <div className="input-group">
+                <label htmlFor="Circuit">Circuit</label>
                 <select name="Circuit" onChange={props.handleInputChange}>
+                    <option value="">-</option>
                     <option value="Visa">Visa</option>
                     <option value="Mastercard">Mastercard</option>
                     <option value="VisaElectron">VisaElectron</option>

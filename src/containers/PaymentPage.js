@@ -4,6 +4,9 @@ import {SectionTitleTile} from '../components/BaseTiles';
 import * as ApiCalls from '../api/parentAPI';
 import * as CONSTANTS from '../api/apiUtils';
 import {PaymentListComponent,PaymentForm,PaymentDetails} from '../components/PaymentsComponents';
+import {Panel} from 'react-bootstrap';
+import {ModalResult} from '../components/ModalComponents';
+import * as Modals from '../components/ModalComponents';
 
 export default class PaymentPage extends React.Component {
 
@@ -16,6 +19,7 @@ export default class PaymentPage extends React.Component {
             paymentListHistory: [],
             studentInfo: null,
             cardInfo: {},
+            paymentResult: {},
             selectedPayment: null,
             isLoading: true,
             view: "overview"
@@ -54,7 +58,7 @@ export default class PaymentPage extends React.Component {
                         <PaymentListComponent paymentList={this.state.paymentList} title="Upcoming Payments"
                                 changeView={this.changeView} selectPayment={this.selectPayment} />      
                         <PaymentListComponent paymentList={this.state.paymentListHistory} title="Past Payments" 
-                                changeView={this.changeView} selectPayment={this.selectPayment} />
+                                changeView={this.changeView} selectPayment={this.selectPayment} />  
                     </div>
                 );
             } else if(this.state.view === "details"){
@@ -65,7 +69,8 @@ export default class PaymentPage extends React.Component {
                         <SectionTitleTile title="Payments" goToPrevPage={this.props.goToPrevPage} />
                         <PaymentDetails paymentDetails={this.state.selectedPayment} studentInfo={this.state.studentInfo} />
                         <PaymentForm changeView={this.changeView} handleSubmit={this.handleSubmit}
-                                handleInputChange={this.handleInputChange} />         
+                                handleInputChange={this.handleInputChange} />
+                        <ModalResult text={this.state.paymentResult.message} buttonText="OK" callBackFn={() => this.changeView("overview")} />     
                     </div>
                 );
             }
@@ -112,12 +117,10 @@ export default class PaymentPage extends React.Component {
     }
 
     handleInputChange(event) {
-        console.log("handleInputChange");
+
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        
-        console.log("name:"+name+" value:"+value);
 
         let cardInfo = this.state.cardInfo;
         cardInfo[name] = value;

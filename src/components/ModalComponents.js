@@ -137,11 +137,11 @@ export function ModalResult(props){
     return (
         <div id="resultModal" className="modal">
             <div class="modal-content modal-small-result">
-                <span className="close" onClick={() => closeModals("resultModal")} >&times;</span>
+                <span className="close" onClick={() => closeModals("resultModal", (props.callBackFn ? props.callBackFn() : null))} >&times;</span>
                         
                     <h2 className="modal-text">{props.text}</h2>
                     <input type="button" className="button-base modal-ok-button" value={props.buttonText} 
-                        onClick={() => closeModals("resultModal")} />
+                        onClick={() => closeModals("resultModal",(props.callBackFn ? props.callBackFn() : null))} />
                         
             </div>       
         </div>

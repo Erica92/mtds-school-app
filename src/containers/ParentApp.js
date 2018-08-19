@@ -11,6 +11,7 @@ import StudentPersonalDataPage from './StudentPersonalDataPage';
 import PaymentPage from './PaymentPage';
 import * as CONSTANTS from '../api/apiUtils';
 import * as Utils from '../utils/Utils';
+import * as Modals from '../components/ModalComponents';
 
 export default class ParentApp extends React.Component {
     

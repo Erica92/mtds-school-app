@@ -1,4 +1,5 @@
 import * as CONSTANTS from './apiUtils';
+import * as Modals from '../components/ModalComponents';
 
 export function fetchDataNotifications(parentID){
     return fetch(CONSTANTS.HOST+"/api/v1/parent/notifications?id="+parentID)
@@ -119,7 +120,7 @@ function setStatePaymentList(result, status){
     return stateToReturn;
 }
 
-function postParentPayment(selectedPayment, cardInfo){
+function postParentPayment(selectedPayment, cardInfo, goToPage){
         //var form = new FormData(document.getElementById('DataForm'));
         
         var paymentInfo = {
@@ -142,19 +143,14 @@ function postParentPayment(selectedPayment, cardInfo){
         }).then((res) => res.json())
             .then((data) => {
             console.log("data:"+data);
-            let message = "";
-            if(data.code == 200){
-                message = "Personal Data correctly updated";
-            } else {
-                message = "Sorry, an error occurred";
-                console.log("post error:"+data.message);
-            }
             
-            /*this.setState({
-                modificationResult: message
+            this.setState({
+                paymentResult: data
             });
+
             Modals.openModal("resultModal");
-            
+
+            /*
             this.fetchDataPersonalDataParent(this.state.parentID)
                 .then(() => {         
                     let parentOrig = Object.assign({}, this.state.parentInfo);
