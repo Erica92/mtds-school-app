@@ -21,7 +21,8 @@ export default class CalendarPage extends React.Component {
             isLoading: true,
             allLoaded: false,
             eventList: [],
-            classList: this.props.classList
+            classList: this.props.classList,
+            studentList: this.props.parentStudentList
         }
         
         this.fetchDataTeacherAppointments = teacherAPI.fetchDataTeacherAppointments.bind(this);
@@ -73,7 +74,8 @@ export default class CalendarPage extends React.Component {
         if(allLoaded){
           toRender = (<Calendar appointmentsList={this.state.appointmentsList} 
                         eventList={this.state.eventList} classList={this.state.classList} 
-                        teacherID={this.state.teacherID} parentID={this.state.parentID} />);
+                        teacherID={this.state.teacherID} parentID={this.state.parentID} 
+                        parentStudentList={this.state.studentList} />);
         } else {
             toRender = <Spinner />                    
         }

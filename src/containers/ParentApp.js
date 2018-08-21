@@ -74,7 +74,7 @@ export default class ParentApp extends React.Component {
                                         student={this.state.selectedStudent} />);
             } else if(this.state.pageState === "AppointmentsPage"){
                 componentToRender = (<CalendarPage parentID={this.state.parentID} date={new Date()}
-                                     classList={this.state.classList} />);
+                                     classList={this.state.classList} parentStudentList={this.state.studentList} />);
             } else if(this.state.pageState === "PaymentsPage"){
                 componentToRender = (<PaymentPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
                                         parentID={this.state.parentID} />);
@@ -98,7 +98,7 @@ export default class ParentApp extends React.Component {
         return Promise.all([
             this.fetchDataNotifications(this.state.parentID),
             this.fetchDataParentStudents(this.state.parentID),
-            this.fetchDataParentAppointments(this.state.parentID),
+            this.fetchDataParentAppointments(this.state.parentID, "day"),
         ])
     }
     

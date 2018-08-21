@@ -103,13 +103,18 @@ export function ModalAddEvent(props){
 }
 
 export function ModalAddEventParent(props){
-    
+    var studentList = props.parentStudentList.map( elem => (<option value={elem.Username} key={elem.Username}>{elem.FirstName}</option>));
+    var teachings = props.teachings.map( elem => (<option value={elem.TeacherID}>{elem.Subject}</option>));
+
     return(
         <div id="addEventModal" className="modal">
             <div className="modal-content">
                 <span className="close" onClick={() => closeModals("addEventModal")} >&times;</span>
                 <form id="addEventForm" method="POST" onSubmit={props.onSubmit} >
                     <h1>Add New Event</h1>
+                    <label>Select a teacher:</label>
+                    <select className="input-base" name="StudentID" onChange={props.loadStudentTeachers} >{studentList}</select>
+                    <select className="input-base" name="TeacherID" onChange={props.handleInputChange} >{teachings}</select>
                     
                     <label>Title</label>
                     <input className="input-base" type="text" name="title" onChange={props.handleInputChange} />

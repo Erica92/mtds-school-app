@@ -21,8 +21,15 @@ export function fetchDataParentStudents(parentID){
     );
 }
 
-export function fetchDataParentAppointments(parentID){
-    return fetch(CONSTANTS.HOST+"/api/v1/parent/appointments?id="+parentID)
+export function fetchDataParentAppointments(parentID, scope){
+
+    var endpoint = CONSTANTS.HOST+"/api/v1/parent/appointments?id="+parentID;
+
+    if(scope){
+        endpoint += "&scope="+scope;
+    }
+
+    return fetch(endpoint)
         .then(response => response.json())
         .then( (result) => this.setState({
             isLoading: false,
@@ -75,9 +82,6 @@ export function fetchDataStudentGrades(parentID, studentID){
     );
 }
 
-export function postParentPayment(){
-    let endpoint = CONSTANTS.HOST+"/api/v1/parent/payments";
-}
 export function fetchDataPayment(username, status){
     let endpoint = CONSTANTS.HOST+"/api/v1/parent/payments?id="+username;
     if(status){
@@ -120,7 +124,7 @@ function setStatePaymentList(result, status){
     return stateToReturn;
 }
 
-function postParentPayment(selectedPayment, cardInfo, goToPage){
+export function postParentPayment(selectedPayment, cardInfo, goToPage){
         //var form = new FormData(document.getElementById('DataForm'));
         
         var paymentInfo = {
@@ -160,3 +164,13 @@ function postParentPayment(selectedPayment, cardInfo, goToPage){
             .then((data) =>  console.log(data))
             .catch((err)=>console.log(err))*/
     }
+
+export function fetchDataTeachings(parentID, studentID){
+    return fetch(CONSTANTS.HOST+"/api/v1/parent/teachings?id="+parentID+"&student="+studentID)
+        .then(response => response.json())
+        .then( (result) => this.setState({
+            teachings: result,
+            isLoading: false
+        })
+    );
+}

@@ -6,6 +6,7 @@ import * as Modals from './ModalComponents';
 import {ModalViewEvent,ModalAddEvent,ModalAddEventParent} from './ModalComponents';
 import * as Utils from '../utils/Utils';
 import * as TeacherApi from '../api/teacherAPI';
+import * as ParentApi from '../api/parentAPI';
 import * as CONSTANTS from '../api/apiUtils';
 
 import $ from 'jquery';
@@ -23,10 +24,14 @@ export default class Calendar extends React.Component {
             eventList: this.props.eventList,
             selectedEvent: {},
             classList: this.props.classList,
-            studentClassList: []
+            studentClassList: [],
+            parentStudentList: this.props.parentStudentList,
+            teachings: []
         }
         Utils.updateSelectedEvent = Utils.updateSelectedEvent.bind(this);
         TeacherApi.fetchDataStudentClass = TeacherApi.fetchDataStudentClass.bind(this);
+        this.fetchDataTeachings = ParentApi.fetchDataTeachings.bind(this);
+        this.loadStudentTeachers = this.loadStudentTeachers.bind(this);
         this.makeEmptyEvent = this.makeEmptyEvent.bind(this);
         this.handleSubmitEventParent = this.handleSubmitEventParent.bind(this);
         this.handleSubmitEventTeacher = this.handleSubmitEventTeacher.bind(this);
@@ -42,8 +47,9 @@ export default class Calendar extends React.Component {
                     onSubmit={this.handleSubmitEventTeacher} handleInputChange={this.handleInputChange} />);
         } else if(this.state.parentID){
             console.log("render parent calendar");
-            modalAddEventToRender = (<ModalAddEventParent event={this.state.selectedEvent} 
-                    onSubmit={this.handleSubmitEventParent} handleInputChange={this.handleInputChange} />);
+            modalAddEventToRender = (<ModalAddEventParent event={this.state.selectedEvent} parentStudentList={this.state.parentStudentList}
+                    teachings={this.state.teachings}
+                    onSubmit={this.handleSubmitEventParent} handleInputChange={this.handleInputChange} loadStudentTeachers={this.loadStudentTeachers}/>);
         }
         return (
             <div>
@@ -108,7 +114,6 @@ export default class Calendar extends React.Component {
     handleSubmitEventParent(event) {
         event.preventDefault();
         var selectedEventTmp = this.state.selectedEvent;
-        selectedEventTmp["TeacherID"] = (this.state.teacherID ? this.state.teacherID : '');
         selectedEventTmp["ParentID"] = (this.state.parentID ? this.state.parentID : '');
         selectedEventTmp.Fullday = ( selectedEventTmp.Fullday ? selectedEventTmp.Fullday : false );
         //selectedEventTmp["StudentID"] = '';
@@ -184,6 +189,14 @@ export default class Calendar extends React.Component {
         const name = target.name;
 
         TeacherApi.fetchDataStudentClass(target.value);
+    }
+
+    loadStudentTeachers(event) {
+        console.log("loadStudentTeachers: "+event);
+        const target = event.target;
+        const name = target.name;
+
+        this.fetchDataTeachings(this.state.parentID, target.value);
     }
     
     postAppointment(){
