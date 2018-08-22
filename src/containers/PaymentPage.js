@@ -4,6 +4,9 @@ import {SectionTitleTile} from '../components/BaseTiles';
 import * as ApiCalls from '../api/parentAPI';
 import * as CONSTANTS from '../api/apiUtils';
 import {PaymentListComponent,PaymentForm,PaymentDetails} from '../components/PaymentsComponents';
+import {Panel} from 'react-bootstrap';
+import {ModalResult} from '../components/ModalComponents';
+import * as Modals from '../components/ModalComponents';
 
 export default class PaymentPage extends React.Component {
 
@@ -15,7 +18,8 @@ export default class PaymentPage extends React.Component {
             paymentList: [],
             paymentListHistory: [],
             studentInfo: null,
-            cardInfo: null,
+            cardInfo: {},
+            paymentResult: {},
             selectedPayment: null,
             isLoading: true,
             view: "overview"
@@ -51,10 +55,10 @@ export default class PaymentPage extends React.Component {
                 componentToReturn = (
                     <div className="app-content">
                         <SectionTitleTile title="Payments" goToPrevPage={this.props.goToPrevPage} />
-                        <PaymentListComponent paymentList={this.state.paymentList} 
+                        <PaymentListComponent paymentList={this.state.paymentList} title="Upcoming Payments"
                                 changeView={this.changeView} selectPayment={this.selectPayment} />      
-                        <PaymentListComponent paymentList={this.state.paymentListHistory} 
-                                changeView={this.changeView} selectPayment={this.selectPayment} />
+                        <PaymentListComponent paymentList={this.state.paymentListHistory} title="Past Payments" 
+                                changeView={this.changeView} selectPayment={this.selectPayment} />  
                     </div>
                 );
             } else if(this.state.view === "details"){
@@ -64,7 +68,9 @@ export default class PaymentPage extends React.Component {
                     <div className="app-content">
                         <SectionTitleTile title="Payments" goToPrevPage={this.props.goToPrevPage} />
                         <PaymentDetails paymentDetails={this.state.selectedPayment} studentInfo={this.state.studentInfo} />
-                        <PaymentForm changeView={this.changeView} handleSubmit={this.handleSubmit}/>         
+                        <PaymentForm changeView={this.changeView} handleSubmit={this.handleSubmit}
+                                handleInputChange={this.handleInputChange} />
+                        <ModalResult text={this.state.paymentResult.message} buttonText="OK" callBackFn={() => this.changeView("overview")} />     
                     </div>
                 );
             }
@@ -100,7 +106,7 @@ export default class PaymentPage extends React.Component {
         //TODO
         /*this.state.cardInfo;
         this.state.selectedPayment;*/
-        this.postParentPayment(this.state.selectedPayment);
+        this.postParentPayment(this.state.selectedPayment, this.state.cardInfo);
     }
 
     cancelChanges(){
@@ -111,15 +117,16 @@ export default class PaymentPage extends React.Component {
     }
 
     handleInputChange(event) {
+
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        
-        let parentInfoMod = this.state.parentInfoMod;
-        parentInfoMod[name] = value;
+
+        let cardInfo = this.state.cardInfo;
+        cardInfo[name] = value;
 
         this.setState({
-          parentInfoMod: parentInfoMod
+          cardInfo: cardInfo
         });
     }
     

@@ -1,4 +1,5 @@
 import * as CONSTANTS from './apiUtils';
+import * as Modals from '../components/ModalComponents';
 
 export function fetchDataNotifications(parentID){
     return fetch(CONSTANTS.HOST+"/api/v1/parent/notifications?id="+parentID)
@@ -20,12 +21,19 @@ export function fetchDataParentStudents(parentID){
     );
 }
 
-export function fetchDataParentAppointments(parentID){
-    return fetch(CONSTANTS.HOST+"/api/v1/parent/appointments?id="+parentID)
+export function fetchDataParentAppointments(parentID, scope){
+
+    var endpoint = CONSTANTS.HOST+"/api/v1/parent/appointments?id="+parentID;
+
+    if(scope){
+        endpoint += "&scope="+scope;
+    }
+
+    return fetch(endpoint)
         .then(response => response.json())
         .then( (result) => this.setState({
             isLoading: false,
-            appointmentList: result
+            appointmentsList: result
         })
     );
 }
@@ -74,9 +82,6 @@ export function fetchDataStudentGrades(parentID, studentID){
     );
 }
 
-export function postParentPayment(){
-    let endpoint = CONSTANTS.HOST+"/api/v1/parent/payments";
-}
 export function fetchDataPayment(username, status){
     let endpoint = CONSTANTS.HOST+"/api/v1/parent/payments?id="+username;
     if(status){
@@ -119,9 +124,15 @@ function setStatePaymentList(result, status){
     return stateToReturn;
 }
 
-function postParentPayment(selectedPayment){
+export function postParentPayment(selectedPayment, cardInfo, goToPage){
         //var form = new FormData(document.getElementById('DataForm'));
-        var data = JSON.stringify(selectedPayment);
+        
+        var paymentInfo = {
+            Payment: selectedPayment,
+            CreditCard: cardInfo
+        }
+
+        var data = JSON.stringify(paymentInfo);
         
         console.log(data);
         
@@ -136,19 +147,14 @@ function postParentPayment(selectedPayment){
         }).then((res) => res.json())
             .then((data) => {
             console.log("data:"+data);
-            let message = "";
-            if(data.code == 200){
-                message = "Personal Data correctly updated";
-            } else {
-                message = "Sorry, an error occurred";
-                console.log("post error:"+data.message);
-            }
             
-            /*this.setState({
-                modificationResult: message
+            this.setState({
+                paymentResult: data
             });
+
             Modals.openModal("resultModal");
-            
+
+            /*
             this.fetchDataPersonalDataParent(this.state.parentID)
                 .then(() => {         
                     let parentOrig = Object.assign({}, this.state.parentInfo);
@@ -158,3 +164,13 @@ function postParentPayment(selectedPayment){
             .then((data) =>  console.log(data))
             .catch((err)=>console.log(err))*/
     }
+
+export function fetchDataTeachings(parentID, studentID){
+    return fetch(CONSTANTS.HOST+"/api/v1/parent/teachings?id="+parentID+"&student="+studentID)
+        .then(response => response.json())
+        .then( (result) => this.setState({
+            teachings: result,
+            isLoading: false
+        })
+    );
+}

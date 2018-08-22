@@ -7,7 +7,8 @@ export default function AppHeader(props){
         <div className="header-bar">
             <div className="header-bar-content" >
                 <div className="brand clickable" onClick={() => props.goToPage("HomePage")} ><img src={props.brand} /></div>
-                <ProfileHeader user={props.user} goToPage={props.goToPage} onClickToggle={props.onClickToggle} menuList={props.menuList} />
+                <ProfileHeader user={props.user} goToPage={props.goToPage} cleanPageHistory={props.cleanPageHistory} 
+                	onClickToggle={props.onClickToggle} menuList={props.menuList} />
             </div>
         </div>
     );

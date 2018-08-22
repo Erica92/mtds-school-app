@@ -11,6 +11,7 @@ import StudentPersonalDataPage from './StudentPersonalDataPage';
 import PaymentPage from './PaymentPage';
 import * as CONSTANTS from '../api/apiUtils';
 import * as Utils from '../utils/Utils';
+import * as Modals from '../components/ModalComponents';
 
 export default class ParentApp extends React.Component {
     
@@ -23,7 +24,7 @@ export default class ParentApp extends React.Component {
             allLoaded: false,
             notificationList: [],           
             studentList: [],
-            appointmentList: [],
+            appointmentsList: [],
             selectedStudent: {},
             pageState: "HomePage",
             prevPageState: ["HomePage"]
@@ -36,12 +37,13 @@ export default class ParentApp extends React.Component {
         
         Utils.goToPage = Utils.goToPage.bind(this);
         Utils.goToPrevPage = Utils.goToPrevPage.bind(this);
+        Utils.cleanPageHistory = Utils.cleanPageHistory.bind(this);
         
         this.selectStudent = this.selectStudent.bind(this);
         
-        ApiCalls.fetchDataNotifications = ApiCalls.fetchDataNotifications.bind(this);
-        ApiCalls.fetchDataParentStudents = ApiCalls.fetchDataParentStudents.bind(this);
-        ApiCalls.fetchDataParentAppointments = ApiCalls.fetchDataParentAppointments.bind(this);
+        this.fetchDataNotifications = ApiCalls.fetchDataNotifications.bind(this);
+        this.fetchDataParentStudents = ApiCalls.fetchDataParentStudents.bind(this);
+        this.fetchDataParentAppointments = ApiCalls.fetchDataParentAppointments.bind(this);
         
     }
     
@@ -57,7 +59,7 @@ export default class ParentApp extends React.Component {
         } else {
             if(this.state.pageState === "HomePage"){
                 componentToRender = (<ParentDashboard notificationList={this.state.notificationList} 
-                                        appointmentList={this.state.appointmentList}
+                                        appointmentList={this.state.appointmentsList}
                                         studentList={this.state.studentList}
                                         selectStudent={this.selectStudent}
                                         goToPage={Utils.goToPage} />);
@@ -72,7 +74,7 @@ export default class ParentApp extends React.Component {
                                         student={this.state.selectedStudent} />);
             } else if(this.state.pageState === "AppointmentsPage"){
                 componentToRender = (<CalendarPage parentID={this.state.parentID} date={new Date()}
-                                     classList={this.state.classList} />);
+                                     classList={this.state.classList} parentStudentList={this.state.studentList} />);
             } else if(this.state.pageState === "PaymentsPage"){
                 componentToRender = (<PaymentPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
                                         parentID={this.state.parentID} />);
@@ -85,7 +87,8 @@ export default class ParentApp extends React.Component {
             <div>
                 <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" 
                                      user={user1} menuList={this.menuList}    
-                                     goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage} onClickToggle={function(){}} />
+                                     goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage} cleanPageHistory={Utils.cleanPageHistory}
+                                     onClickToggle={function(){}} />
                 {componentToRender} 
             </div>
         );
@@ -93,9 +96,9 @@ export default class ParentApp extends React.Component {
         
     getFetchAll(){
         return Promise.all([
-            ApiCalls.fetchDataNotifications(this.state.parentID),
-            ApiCalls.fetchDataParentStudents(this.state.parentID),
-            ApiCalls.fetchDataParentAppointments(this.state.parentID),
+            this.fetchDataNotifications(this.state.parentID),
+            this.fetchDataParentStudents(this.state.parentID),
+            this.fetchDataParentAppointments(this.state.parentID, "day"),
         ])
     }
     

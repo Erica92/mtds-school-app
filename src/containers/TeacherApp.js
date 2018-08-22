@@ -9,6 +9,7 @@ import SchedulePage from '../components/SchedulePage';
 import TeacherPersonalDataPage from './TeacherPersonalDataPage';
 import ProgramPage from './ProgramPage';
 import CalendarPage from './CalendarPage';
+import * as Utils from '../utils/Utils';
 import * as CONSTANTS from '../api/apiUtils';
 
 class TeacherApp extends React.Component {
@@ -35,6 +36,8 @@ class TeacherApp extends React.Component {
         
         this.goToPage = this.goToPage.bind(this);
         this.goToPrevPage = this.goToPrevPage.bind(this);
+        Utils.cleanPageHistory = Utils.cleanPageHistory.bind(this);
+
         this.selectClass = this.selectClass.bind(this);
     }
     
@@ -169,7 +172,8 @@ class TeacherApp extends React.Component {
             <div>
                 <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" 
                                      user={user1} menuList={this.menuList}
-                                     goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} onClickToggle={function(){}} />
+                                     goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} cleanPageHistory={Utils.cleanPageHistory}
+                                     onClickToggle={function(){}} />
                 {componentToRender} 
             </div>
         );
