@@ -46,21 +46,41 @@ export function ModalInsertSingleGrade(props){
 }
 
 export function ModalViewEvent(props){
+    var statusText = "";
+
+    switch(props.event.status){
+        case "approved":
+            statusText = "Accepted";
+            break;
+        case "waiting":
+            statusText = "Waiting for acceptance";
+            break;
+        case "requested":
+            statusText = "Request for appointment";
+            break;
+    }
+
     return(
         <div id="viewEventModal" className="modal">
             <div className="modal-content modal-small">
                 <span className="close" onClick={() => closeModals("viewEventModal")} >&times;</span>
-                        
-                    <h1>{props.event.title}</h1>
+                    
+                    <span>{statusText}</span>
+                    <h2>{props.event.title}</h2>
+                    
                     <label>Full Day Event</label>
-                    <input type="checkbox" disabled />
+                    <input className="input-checkbox" type="checkbox" name="Fullday" value={props.event.allDay} onChange={props.handleInputChange} />
 
                     <label>Start Date and time</label>
-                    <input type="datetime" disabled />
+                    <input className="input-base" type="datetime-local" name="StartTime" value={props.event.StartTime} onChange={props.handleInputChange} />
 
                     <label>End Date and time</label>
-                    <input type="datetime" disabled />
-                        
+                    <input className="input-base" type="datetime-local" name="EndTime" value={props.event.EndTime} onChange={props.handleInputChange} />
+
+                    <label>Note</label>
+                    <textarea name="Remarks" onChange={props.handleInputChange} />
+
+                    <div><span>Accept?</span><input type="button" value="YES"/><input type="button" value="NO"/> </div>   
             </div>       
         </div>
     );

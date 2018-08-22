@@ -29,13 +29,14 @@ export default class Calendar extends React.Component {
             teachings: []
         }
         Utils.updateSelectedEvent = Utils.updateSelectedEvent.bind(this);
-        TeacherApi.fetchDataStudentClass = TeacherApi.fetchDataStudentClass.bind(this);
+        this.fetchDataStudentClass = TeacherApi.fetchDataStudentClass.bind(this);
         this.fetchDataTeachings = ParentApi.fetchDataTeachings.bind(this);
         this.loadStudentTeachers = this.loadStudentTeachers.bind(this);
         this.makeEmptyEvent = this.makeEmptyEvent.bind(this);
         this.handleSubmitEventParent = this.handleSubmitEventParent.bind(this);
         this.handleSubmitEventTeacher = this.handleSubmitEventTeacher.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.loadStudentInClass = this.loadStudentInClass.bind(this);
     }
     
     render() {
@@ -54,7 +55,8 @@ export default class Calendar extends React.Component {
         return (
             <div>
                 <div id="calendar"></div>
-                <ModalViewEvent event={this.state.selectedEvent} />
+                <ModalViewEvent event={this.state.selectedEvent} 
+                                onSubmit={this.handleSubmitEventParent} handleInputChange={this.handleInputChange} />
                 {modalAddEventToRender}
             </div>
         );
@@ -188,7 +190,7 @@ export default class Calendar extends React.Component {
         const target = event.target;
         const name = target.name;
 
-        TeacherApi.fetchDataStudentClass(target.value);
+        this.fetchDataStudentClass(target.value);
     }
 
     loadStudentTeachers(event) {

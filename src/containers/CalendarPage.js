@@ -36,7 +36,7 @@ export default class CalendarPage extends React.Component {
             this.getAppointmentsAndSchedule().then(([appointmentsList, schedule]) => {
                 console.log("both have loaded!");
                 
-                var eventList = this.makeCalendarEventList(this.state.appointmentsList, '#ff6600');
+                var eventList = this.makeCalendarEventList(this.state.appointmentsList);
                 console.log("eventList:"+eventList.length);
                 this.setState({
                     allLoaded: true,
@@ -49,7 +49,7 @@ export default class CalendarPage extends React.Component {
                 .then( () => {
                 console.log("both have loaded!");
                 
-                let eventList = this.makeCalendarEventList(this.state.appointmentsList, '#ff6600');
+                let eventList = this.makeCalendarEventList(this.state.appointmentsList);
                 console.log("eventList:"+eventList.length);
                 this.setState({
                     allLoaded: true,
@@ -97,16 +97,47 @@ export default class CalendarPage extends React.Component {
         console.log(students, scores);
     })*/
             
-    makeCalendarEventList(list, color){
-        let eventList = list.map( elem => 
-            ({
+    makeCalendarEventList(list){
+
+        var color = "#ffffff";
+        var _this = this;
+        var status = -1;
+
+        let eventList = list.map(function(elem){
+            
+            if(elem.StatusTeacher === 1 && elem.StatusParent === 1){
+                //if approved, then green
+                color = "#34A853";
+                status = "approved";
+            } else if((elem.StatusTeacher === 1 && _this.state.teacherID)
+                        || (elem.StatusParent === 1 && _this.state.parentID)){
+                //if not yet approved by the other, then yellow
+                color = "#FFC413";
+                status = "waiting";
+            } else {
+                //if the approvation of the user is required, then orange
+                color = "#FF6600";
+                status = "requested";
+            }
+
+            return ({
                 id: elem.AppointmentID,
                 title: elem.Remarks,
                 start: elem.StartTime,
                 end: elem.EndTime,
                 allDay: elem.FullDay,
-                color: color
-            }));
+                color: color,
+                status: status,
+                StatusTeacher: elem.StatusTeacher,
+                StatusParent: elem.StatusParent,
+                ParentID: elem.ParentID,
+                TeacherID: elem.TeacherID,
+                StartTime: elem.StartTime,
+                EndTime: elem.EndTime,
+            });
+
+        });
+
         return eventList;
     }
     
