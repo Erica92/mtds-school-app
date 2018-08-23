@@ -69,18 +69,18 @@ export function ModalViewEvent(props){
                     <h2>{props.event.title}</h2>
                     
                     <label>Full Day Event</label>
-                    <input className="input-checkbox" type="checkbox" name="Fullday" value={props.event.allDay} onChange={props.handleInputChange} />
+                    <input className="input-checkbox" type="checkbox" name="Fullday" value={props.event.originalEvent ? props.event.originalEvent.Fullday : ""} onChange={props.handleInputChange} />
 
                     <label>Start Date and time</label>
-                    <input className="input-base" type="datetime-local" name="StartTime" value={props.event.StartTime} onChange={props.handleInputChange} />
+                    <input className="input-base" type="datetime-local" name="StartTime" value={props.event.originalEvent ? props.event.originalEvent.StartTime : ""} onChange={props.handleInputChange} />
 
                     <label>End Date and time</label>
-                    <input className="input-base" type="datetime-local" name="EndTime" value={props.event.EndTime} onChange={props.handleInputChange} />
+                    <input className="input-base" type="datetime-local" name="EndTime" value={props.event.originalEvent ? props.event.originalEvent.EndTime : ""} onChange={props.handleInputChange} />
 
                     <label>Note</label>
                     <textarea name="Remarks" onChange={props.handleInputChange} />
 
-                    <div><span>Accept?</span><input type="button" value="YES"/><input type="button" value="NO"/> </div>   
+                    <div><span>Accept?</span><input type="button" value="YES" onClick={() => props.acceptAppointment()} /><input type="button" value="NO"/> </div>   
             </div>       
         </div>
     );

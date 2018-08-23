@@ -28,7 +28,7 @@ export default class Calendar extends React.Component {
             parentStudentList: this.props.parentStudentList,
             teachings: []
         }
-        Utils.updateSelectedEvent = Utils.updateSelectedEvent.bind(this);
+        this.updateSelectedEvent = Utils.updateSelectedEvent.bind(this);
         this.fetchDataStudentClass = TeacherApi.fetchDataStudentClass.bind(this);
         this.fetchDataTeachings = ParentApi.fetchDataTeachings.bind(this);
         this.loadStudentTeachers = this.loadStudentTeachers.bind(this);
@@ -37,6 +37,8 @@ export default class Calendar extends React.Component {
         this.handleSubmitEventTeacher = this.handleSubmitEventTeacher.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.loadStudentInClass = this.loadStudentInClass.bind(this);
+        this.acceptAppointment = this.acceptAppointment.bind(this);
+        this.postAppointmentAccept = this.postAppointmentAccept.bind(this);
     }
     
     render() {
@@ -55,7 +57,7 @@ export default class Calendar extends React.Component {
         return (
             <div>
                 <div id="calendar"></div>
-                <ModalViewEvent event={this.state.selectedEvent} 
+                <ModalViewEvent event={this.state.selectedEvent} acceptAppointment={this.acceptAppointment}
                                 onSubmit={this.handleSubmitEventParent} handleInputChange={this.handleInputChange} />
                 {modalAddEventToRender}
             </div>
@@ -68,13 +70,14 @@ export default class Calendar extends React.Component {
     
 
     componentDidMount() {
+        var _this = this;
 
         $('#calendar').fullCalendar({
                     customButtons: {
                         addEventButton: {
                           text: 'New Appointment',
                           click: function() {
-                            Utils.updateSelectedEvent({});
+                            _this.updateSelectedEvent({});
                             Modals.openModal("addEventModal");
                           }
                         }
@@ -95,7 +98,7 @@ export default class Calendar extends React.Component {
                         }
                     },
                     eventClick: function(calEvent, jsEvent, view){
-                        Utils.updateSelectedEvent(calEvent);
+                        _this.updateSelectedEvent(calEvent);
                         Modals.openModal("viewEventModal");
                     }
             });
@@ -152,7 +155,28 @@ export default class Calendar extends React.Component {
         Modals.closeModals("addEventModal");
     }
     //{"StudentID":"","title":"aaaaaaaaa","fullday":false,"startDate":"2018-05-22T10:30","endDate":"2018-05-22T12:30","ParentID":""} why?
-    
+    /*
+    AppointmentID: 1,
+TeacherID: "TFirstName1 TLastName1",
+ParentID: "P1",
+FullDay: false,
+StartTime: "2018-05-20T17:16:23Z",
+EndTime: "2018-05-20T18:16:23Z",
+Remarks: "",
+Status: 1,
+StatusTeacher: 1,
+StatusParent: 1
+    */
+    acceptAppointment() {
+        var eventAccepted = Object.assign({}, this.state.selectedEvent.originalEvent);
+        eventAccepted.StatusTeacher = 1;
+        eventAccepted.StatusParent = 1;
+        eventAccepted.Status = 1;
+
+        this.setState({selectedEvent: eventAccepted});
+        this.postAppointmentAccept(eventAccepted);
+    }
+
     handleInputChange(event) {
         console.log("handleInputChange: "+event);
         const target = event.target;
@@ -201,6 +225,31 @@ export default class Calendar extends React.Component {
         this.fetchDataTeachings(this.state.parentID, target.value);
     }
     
+    postAppointmentAccept(selectedEvent){
+       
+        var request = selectedEvent;
+        var data = JSON.stringify(request);
+
+        var endpoint = CONSTANTS.HOST;
+        endpoint += "/api/v1/teacher/appointments";
+
+        fetch(endpoint, {
+            method: "POST",
+            mode: 'cors',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: data
+        }).then(function(response){
+            if(response.ok){
+                //TODO handle update page
+            } else {
+                //TODO eventually handle error messages
+            }
+        });
+    }
+
     postAppointment(){
 
         var request = this.state.selectedEvent;

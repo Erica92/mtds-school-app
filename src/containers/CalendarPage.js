@@ -128,12 +128,7 @@ export default class CalendarPage extends React.Component {
                 allDay: elem.FullDay,
                 color: color,
                 status: status,
-                StatusTeacher: elem.StatusTeacher,
-                StatusParent: elem.StatusParent,
-                ParentID: elem.ParentID,
-                TeacherID: elem.TeacherID,
-                StartTime: elem.StartTime,
-                EndTime: elem.EndTime,
+                originalEvent: elem
             });
 
         });
