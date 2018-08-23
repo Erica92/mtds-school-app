@@ -28,6 +28,8 @@ export default class CalendarPage extends React.Component {
         this.fetchDataTeacherAppointments = teacherAPI.fetchDataTeacherAppointments.bind(this);
         this.fetchDataSchedule = teacherAPI.fetchDataSchedule.bind(this);
         this.fetchDataParentAppointments = parentAPI.fetchDataParentAppointments.bind(this);
+        this.loadTeacherEvents = this.loadTeacherEvents.bind(this);
+        this.loadParentEvents = this.loadParentEvents.bind(this);
     }
     
     componentDidMount(){
@@ -47,10 +49,9 @@ export default class CalendarPage extends React.Component {
         } else if (this.props.parentID){
             this.fetchDataParentAppointments(this.props.parentID)
                 .then( () => {
-                console.log("both have loaded!");
                 
                 let eventList = this.makeCalendarEventList(this.state.appointmentsList);
-                console.log("eventList:"+eventList.length);
+
                 this.setState({
                     allLoaded: true,
                     eventList: eventList
@@ -75,7 +76,9 @@ export default class CalendarPage extends React.Component {
           toRender = (<Calendar appointmentsList={this.state.appointmentsList} 
                         eventList={this.state.eventList} classList={this.state.classList} 
                         teacherID={this.state.teacherID} parentID={this.state.parentID} 
-                        parentStudentList={this.state.studentList} />);
+                        parentStudentList={this.state.studentList} 
+                        loadTeacherEvents={this.loadTeacherEvents}
+                        loadParentEvents={this.loadParentEvents} />);
         } else {
             toRender = <Spinner />                    
         }
@@ -136,6 +139,32 @@ export default class CalendarPage extends React.Component {
         return eventList;
     }
     
+    loadParentEvents(){
+        this.fetchDataParentAppointments(this.props.parentID)
+            .then( () => {
+            
+            let eventList = this.makeCalendarEventList(this.state.appointmentsList);
+
+            this.setState({
+                allLoaded: true,
+                eventList: eventList
+            });
+        });
+    }
+
+    loadTeacherEvents(){
+        this.fetchDataTeacherAppointments(this.props.teacherID)
+            .then( () => {
+            
+            let eventList = this.makeCalendarEventList(this.state.appointmentsList);
+
+            this.setState({
+                allLoaded: true,
+                eventList: eventList
+            });
+        });
+    }
+
     getAppointmentsAndSchedule(){
         return Promise.all([
             this.fetchDataTeacherAppointments(this.props.teacherID),

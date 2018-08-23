@@ -3,7 +3,7 @@ import './Calendar.css';
 import {Bootstrap, Grid, Row, Col} from 'react-bootstrap';
 import '../../node_modules/fullcalendar/dist/fullcalendar.min.css';
 import * as Modals from './ModalComponents';
-import {ModalViewEvent,ModalAddEvent,ModalAddEventParent} from './ModalComponents';
+import {ModalViewEvent, ModalAddEvent, ModalAddEventParent, ModalResult} from './ModalComponents';
 import * as Utils from '../utils/Utils';
 import * as TeacherApi from '../api/teacherAPI';
 import * as ParentApi from '../api/parentAPI';
@@ -26,7 +26,8 @@ export default class Calendar extends React.Component {
             classList: this.props.classList,
             studentClassList: [],
             parentStudentList: this.props.parentStudentList,
-            teachings: []
+            teachings: [],
+            resultMessage: ""
         }
         this.updateSelectedEvent = Utils.updateSelectedEvent.bind(this);
         this.fetchDataStudentClass = TeacherApi.fetchDataStudentClass.bind(this);
@@ -39,6 +40,7 @@ export default class Calendar extends React.Component {
         this.loadStudentInClass = this.loadStudentInClass.bind(this);
         this.acceptAppointment = this.acceptAppointment.bind(this);
         this.postAppointmentAccept = this.postAppointmentAccept.bind(this);
+        this.refreshEvents = this.refreshEvents.bind(this);
     }
     
     render() {
@@ -59,6 +61,7 @@ export default class Calendar extends React.Component {
                 <div id="calendar"></div>
                 <ModalViewEvent event={this.state.selectedEvent} acceptAppointment={this.acceptAppointment}
                                 onSubmit={this.handleSubmitEventParent} handleInputChange={this.handleInputChange} />
+                <ModalResult text={this.state.resultMessage.message} buttonText="OK" callBackFn={this.refreshEvents()} />
                 {modalAddEventToRender}
             </div>
         );
@@ -226,31 +229,33 @@ StatusParent: 1
     }
     
     postAppointmentAccept(selectedEvent){
-       
+
+        var _this = this;
         var request = selectedEvent;
         var data = JSON.stringify(request);
 
         var endpoint = CONSTANTS.HOST;
-        endpoint += "/api/v1/teacher/appointments";
+        endpoint += "/api/v1/parent/appointments";
 
         fetch(endpoint, {
-            method: "POST",
+            method: "PUT",
             mode: 'cors',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
             body: data
-        }).then(function(response){
-            if(response.ok){
-                //TODO handle update page
-            } else {
-                //TODO eventually handle error messages
-            }
+        }).then((response) => response.json())
+            .then((jsonRes) => {
+                _this.setState({resultMessage: jsonRes});
+                Modals.closeModals("viewEventModal");
+                Modals.openModal("resultModal");
         });
     }
 
     postAppointment(){
+
+        var _this = this;
 
         var request = this.state.selectedEvent;
         var data = JSON.stringify(request);
@@ -268,18 +273,28 @@ StatusParent: 1
               'Content-Type': 'application/json'
             },
             body: data
-        }).then(function(response){
-            if(response.ok){
-                //TODO handle update page
-            } else {
-                //TODO eventually handle error messages
-            }
+        }).then((response) => response.json())
+            .then((jsonRes) => {
+                _this.setState({resultMessage: jsonRes});
+                Modals.closeModals("viewEventModal");
+                Modals.openModal("resultModal");
+                //eventually create a notification here
         });
         
         /*.then((res) => res.json())
             .then((data) =>  console.log(data))
             .catch((err)=>console.log(err));*/
         
+    }
+
+    refreshEvents(){
+        if(this.props.teacherID){
+            this.props.loadTeacherEvents();
+        } else if(this.props.parentID){
+            this.props.loadParentEvents();
+        }
+        
+        $('#calendar').fullCalendar('rerenderEvents');
     }
                 
 }
