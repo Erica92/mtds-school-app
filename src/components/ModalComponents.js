@@ -47,6 +47,7 @@ export function ModalInsertSingleGrade(props){
 
 export function ModalViewEvent(props){
     var statusText = "";
+    var acceptComponent = "";
 
     switch(props.event.status){
         case "approved":
@@ -57,6 +58,14 @@ export function ModalViewEvent(props){
             break;
         case "requested":
             statusText = "Request for appointment";
+            acceptComponent = (<div>
+                                <span>Accept?</span>
+                                    <input type="button" value="YES" onClick={() => props.acceptAppointment()} />
+                                    <input type="button" value="NO" onClick={() => props.rejectAppointment()} />
+                                </div>);
+            break;
+         case "deleted":
+            statusText = "Deleted";
             break;
     }
 
@@ -80,7 +89,7 @@ export function ModalViewEvent(props){
                     <label>Note</label>
                     <textarea name="Remarks" onChange={props.handleInputChange} />
 
-                    <div><span>Accept?</span><input type="button" value="YES" onClick={() => props.acceptAppointment()} /><input type="button" value="NO"/> </div>   
+                    {acceptComponent}   
             </div>       
         </div>
     );

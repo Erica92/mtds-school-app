@@ -107,15 +107,18 @@ export default class CalendarPage extends React.Component {
         var status = -1;
 
         let eventList = list.map(function(elem){
-            
-            if(elem.StatusTeacher === 1 && elem.StatusParent === 1){
+            if(elem.StatusTeacher === 0 && elem.StatusParent === 0){
+                //if approved, then green
+                color = "#E8E8E8";
+                status = "deleted";
+            } else if(elem.StatusTeacher === 1 && elem.StatusParent === 1){
                 //if approved, then green
                 color = "#34A853";
                 status = "approved";
             } else if((elem.StatusTeacher === 1 && _this.state.teacherID)
                         || (elem.StatusParent === 1 && _this.state.parentID)){
                 //if not yet approved by the other, then yellow
-                color = "#FFC413";
+                color = "#FFDC72";
                 status = "waiting";
             } else {
                 //if the approvation of the user is required, then orange
@@ -126,8 +129,8 @@ export default class CalendarPage extends React.Component {
             return ({
                 id: elem.AppointmentID,
                 title: elem.Remarks,
-                start: elem.StartTime,
-                end: elem.EndTime,
+                start: new Date(elem.StartTime),
+                end: new Date(elem.EndTime),
                 allDay: elem.FullDay,
                 color: color,
                 status: status,

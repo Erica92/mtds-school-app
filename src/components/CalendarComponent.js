@@ -39,6 +39,7 @@ export default class Calendar extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.loadStudentInClass = this.loadStudentInClass.bind(this);
         this.acceptAppointment = this.acceptAppointment.bind(this);
+        this.rejectAppointment = this.rejectAppointment.bind(this);
         this.postAppointmentAccept = this.postAppointmentAccept.bind(this);
         this.refreshEvents = this.refreshEvents.bind(this);
     }
@@ -59,9 +60,10 @@ export default class Calendar extends React.Component {
         return (
             <div>
                 <div id="calendar"></div>
-                <ModalViewEvent event={this.state.selectedEvent} acceptAppointment={this.acceptAppointment}
+                <ModalViewEvent event={this.state.selectedEvent} 
+                                acceptAppointment={this.acceptAppointment} rejectAppointment={this.rejectAppointment}
                                 onSubmit={this.handleSubmitEventParent} handleInputChange={this.handleInputChange} />
-                <ModalResult text={this.state.resultMessage.message} buttonText="OK" callBackFn={this.refreshEvents()} />
+                <ModalResult text={this.state.resultMessage.message} buttonText="OK" callBackFn={this.refreshEvents} />
                 {modalAddEventToRender}
             </div>
         );
@@ -100,6 +102,7 @@ export default class Calendar extends React.Component {
                             $(this).remove();
                         }
                     },
+                    timeFormat: 'H:mm', // uppercase H for 24-hour clock
                     eventClick: function(calEvent, jsEvent, view){
                         _this.updateSelectedEvent(calEvent);
                         Modals.openModal("viewEventModal");
@@ -175,6 +178,16 @@ StatusParent: 1
         eventAccepted.StatusTeacher = 1;
         eventAccepted.StatusParent = 1;
         eventAccepted.Status = 1;
+
+        this.setState({selectedEvent: eventAccepted});
+        this.postAppointmentAccept(eventAccepted);
+    }
+
+    rejectAppointment() {
+        var eventAccepted = Object.assign({}, this.state.selectedEvent.originalEvent);
+        eventAccepted.StatusTeacher = 0;
+        eventAccepted.StatusParent = 0;
+        eventAccepted.Status = 0;
 
         this.setState({selectedEvent: eventAccepted});
         this.postAppointmentAccept(eventAccepted);
@@ -288,13 +301,24 @@ StatusParent: 1
     }
 
     refreshEvents(){
+        console.log("refresh");
         if(this.props.teacherID){
             this.props.loadTeacherEvents();
         } else if(this.props.parentID){
             this.props.loadParentEvents();
         }
         
+       //remove old data
+        $('#calendar').fullCalendar('removeEvents');
+         
+        //Getting new event json data
+        $("#calendar").fullCalendar('addEventSource', this.state.eventList);
+        //Updating new events
         $('#calendar').fullCalendar('rerenderEvents');
+        //getting latest Events
+        $('#fullCalendar').fullCalendar( 'refetchEvents' );
+        //getting latest Resources
+        //$('#calendar').fullCalendar( 'refetchResources' );
     }
                 
 }
