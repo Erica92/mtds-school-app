@@ -5,6 +5,7 @@ import {SectionTitleTile, TileHeader} from '../components/BaseTiles';
 import {Spinner} from '../components/BaseComponents';
 import * as teacherAPI from '../api/teacherAPI';
 import * as parentAPI from '../api/parentAPI';
+import * as Utils from '../utils/Utils';
 import $ from 'jquery'; 
 
 
@@ -126,6 +127,10 @@ export default class CalendarPage extends React.Component {
                 status = "requested";
             }
 
+            var elemFormatted = Object.assign({}, elem);
+            elemFormatted.StartTime = Utils.formatDatetimeFromJSON(elem.StartTime);
+            elemFormatted.EndTime = Utils.formatDatetimeFromJSON(elem.EndTime);
+
             return ({
                 id: elem.AppointmentID,
                 title: elem.Remarks,
@@ -134,7 +139,7 @@ export default class CalendarPage extends React.Component {
                 allDay: elem.FullDay,
                 color: color,
                 status: status,
-                originalEvent: elem
+                originalEvent: elemFormatted
             });
 
         });
