@@ -5,6 +5,7 @@ import {SectionTitleTile, TileHeader} from '../components/BaseTiles';
 import {Spinner} from '../components/BaseComponents';
 import * as teacherAPI from '../api/teacherAPI';
 import * as parentAPI from '../api/parentAPI';
+import * as Utils from '../utils/Utils';
 import $ from 'jquery'; 
 
 
@@ -28,6 +29,8 @@ export default class CalendarPage extends React.Component {
         this.fetchDataTeacherAppointments = teacherAPI.fetchDataTeacherAppointments.bind(this);
         this.fetchDataSchedule = teacherAPI.fetchDataSchedule.bind(this);
         this.fetchDataParentAppointments = parentAPI.fetchDataParentAppointments.bind(this);
+        this.loadTeacherEvents = this.loadTeacherEvents.bind(this);
+        this.loadParentEvents = this.loadParentEvents.bind(this);
     }
     
     componentDidMount(){
@@ -47,10 +50,9 @@ export default class CalendarPage extends React.Component {
         } else if (this.props.parentID){
             this.fetchDataParentAppointments(this.props.parentID)
                 .then( () => {
-                console.log("both have loaded!");
                 
                 let eventList = this.makeCalendarEventList(this.state.appointmentsList);
-                console.log("eventList:"+eventList.length);
+
                 this.setState({
                     allLoaded: true,
                     eventList: eventList
@@ -75,7 +77,9 @@ export default class CalendarPage extends React.Component {
           toRender = (<Calendar appointmentsList={this.state.appointmentsList} 
                         eventList={this.state.eventList} classList={this.state.classList} 
                         teacherID={this.state.teacherID} parentID={this.state.parentID} 
-                        parentStudentList={this.state.studentList} />);
+                        parentStudentList={this.state.studentList} 
+                        loadTeacherEvents={this.loadTeacherEvents}
+                        loadParentEvents={this.loadParentEvents} />);
         } else {
             toRender = <Spinner />                    
         }
@@ -104,15 +108,18 @@ export default class CalendarPage extends React.Component {
         var status = -1;
 
         let eventList = list.map(function(elem){
-            
-            if(elem.StatusTeacher === 1 && elem.StatusParent === 1){
+            if(elem.StatusTeacher === 0 && elem.StatusParent === 0){
+                //if approved, then green
+                color = "#E8E8E8";
+                status = "deleted";
+            } else if(elem.StatusTeacher === 1 && elem.StatusParent === 1){
                 //if approved, then green
                 color = "#34A853";
                 status = "approved";
             } else if((elem.StatusTeacher === 1 && _this.state.teacherID)
                         || (elem.StatusParent === 1 && _this.state.parentID)){
                 //if not yet approved by the other, then yellow
-                color = "#FFC413";
+                color = "#FFDC72";
                 status = "waiting";
             } else {
                 //if the approvation of the user is required, then orange
@@ -120,20 +127,22 @@ export default class CalendarPage extends React.Component {
                 status = "requested";
             }
 
+            var elemFormatted = Object.assign({}, elem);
+            elemFormatted.StartTime = Utils.formatDatetimeFromJSON(elem.StartTime);
+            elemFormatted.EndTime = Utils.formatDatetimeFromJSON(elem.EndTime);
+
+            elemFormatted.color = color;
+            elemFormatted.status = status;
+
             return ({
                 id: elem.AppointmentID,
                 title: elem.Remarks,
-                start: elem.StartTime,
-                end: elem.EndTime,
+                start: new Date(elem.StartTime),
+                end: new Date(elem.EndTime),
                 allDay: elem.FullDay,
                 color: color,
                 status: status,
-                StatusTeacher: elem.StatusTeacher,
-                StatusParent: elem.StatusParent,
-                ParentID: elem.ParentID,
-                TeacherID: elem.TeacherID,
-                StartTime: elem.StartTime,
-                EndTime: elem.EndTime,
+                originalEvent: elemFormatted
             });
 
         });
@@ -141,6 +150,32 @@ export default class CalendarPage extends React.Component {
         return eventList;
     }
     
+    loadParentEvents(){
+        this.fetchDataParentAppointments(this.props.parentID)
+            .then( () => {
+            
+            let eventList = this.makeCalendarEventList(this.state.appointmentsList);
+
+            this.setState({
+                allLoaded: true,
+                eventList: eventList
+            });
+        });
+    }
+
+    loadTeacherEvents(){
+        this.fetchDataTeacherAppointments(this.props.teacherID)
+            .then( () => {
+            
+            let eventList = this.makeCalendarEventList(this.state.appointmentsList);
+
+            this.setState({
+                allLoaded: true,
+                eventList: eventList
+            });
+        });
+    }
+
     getAppointmentsAndSchedule(){
         return Promise.all([
             this.fetchDataTeacherAppointments(this.props.teacherID),
