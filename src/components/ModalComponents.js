@@ -75,19 +75,16 @@ export function ModalViewEvent(props){
                 <span className="close" onClick={() => closeModals("viewEventModal")} >&times;</span>
                     
                     <span>{statusText}</span>
-                    <h2>{props.event.title}</h2>
+                    <h2>{props.event.Remarks}</h2>
                     
                     <label>Full Day Event</label>
-                    <input className="input-checkbox" type="checkbox" name="Fullday" value={props.event.originalEvent ? props.event.originalEvent.Fullday : ""} onChange={props.handleInputChange} />
+                    <input className="input-checkbox" type="checkbox" name="Fullday" value={props.event ? props.event.Fullday : ""} onChange={props.handleInputChange} />
 
                     <label>Start Date and time</label>
-                    <input className="input-base" type="datetime-local" name="StartTime" value={props.event.originalEvent ? props.event.originalEvent.StartTime : ""} onChange={props.handleInputChange} />
+                    <input className="input-base" type="datetime-local" name="StartTime" value={props.event ? props.event.StartTime : ""} onChange={props.handleInputChange} />
 
                     <label>End Date and time</label>
-                    <input className="input-base" type="datetime-local" name="EndTime" value={props.event.originalEvent ? props.event.originalEvent.EndTime : ""} onChange={props.handleInputChange} />
-
-                    <label>Note</label>
-                    <textarea name="Remarks" onChange={props.handleInputChange} />
+                    <input className="input-base" type="datetime-local" name="EndTime" value={props.event ? props.event.EndTime : ""} onChange={props.handleInputChange} />
 
                     {acceptComponent}   
             </div>       
@@ -110,7 +107,7 @@ export function ModalAddEvent(props){
                     <select className="input-base" name="StudentID" onChange={props.handleInputChange} >{studentClassList}</select>
                     
                     <label>Title</label>
-                    <input className="input-base" type="text" name="title" onChange={props.handleInputChange} />
+                    <input className="input-base input-base-long" type="text" name="Remarks" onChange={props.handleInputChange} />
 
                     <label>Full Day Event</label>
                     <input className="input-checkbox" type="checkbox" name="Fullday" onChange={props.handleInputChange} />
@@ -120,9 +117,6 @@ export function ModalAddEvent(props){
 
                     <label>End Date and time</label>
                     <input className="input-base" type="datetime-local" name="EndTime" onChange={props.handleInputChange} />
-
-                    <label>Note</label>
-                    <textarea name="Remarks" onChange={props.handleInputChange} />
                 
                     <input className="button-base submit-button" type="submit" value="Submit" />
                 </form>
@@ -146,7 +140,7 @@ export function ModalAddEventParent(props){
                     <select className="input-base" name="TeacherID" onChange={props.handleInputChange} >{teachings}</select>
                     
                     <label>Title</label>
-                    <input className="input-base" type="text" name="title" onChange={props.handleInputChange} />
+                    <input className="input-base input-base-long" type="text" name="Remarks" onChange={props.handleInputChange} />
 
                     <label>Full Day Event</label>
                     <input className="input-checkbox" type="checkbox" name="Fullday" onChange={props.handleInputChange} />
@@ -156,9 +150,6 @@ export function ModalAddEventParent(props){
 
                     <label>End Date and time</label>
                     <input className="input-base" type="datetime-local" name="EndTime" onChange={props.handleInputChange} />
-
-                    <label>Note</label>
-                    <textarea name="Remarks"onChange={props.handleInputChange}  />
                 
                     <input className="button-base submit-button" type="submit" value="Submit" />
                 </form>

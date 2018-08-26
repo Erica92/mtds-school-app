@@ -29,7 +29,7 @@ export default class Calendar extends React.Component {
             teachings: [],
             resultMessage: ""
         }
-        this.updateSelectedEvent = Utils.updateSelectedEvent.bind(this);
+        this.updateSelectedEvent = this.updateSelectedEvent.bind(this);
         this.fetchDataStudentClass = TeacherApi.fetchDataStudentClass.bind(this);
         this.fetchDataTeachings = ParentApi.fetchDataTeachings.bind(this);
         this.loadStudentTeachers = this.loadStudentTeachers.bind(this);
@@ -134,7 +134,7 @@ export default class Calendar extends React.Component {
         selectedEventTmp.AppointmentID = 0,
         
         delete selectedEventTmp['class'];
-        delete selectedEventTmp['title'];
+        //delete selectedEventTmp['title'];
         
         this.setState({
           selectedEvent: selectedEventTmp
@@ -152,7 +152,7 @@ export default class Calendar extends React.Component {
         //selectedEventTmp["StudentID"] = '';
         
         delete selectedEventTmp['class'];
-        delete selectedEventTmp['title'];
+        //delete selectedEventTmp['title'];
         
         this.setState({
           selectedEvent: selectedEventTmp
@@ -174,20 +174,32 @@ StatusTeacher: 1,
 StatusParent: 1
     */
     acceptAppointment() {
-        var eventAccepted = Object.assign({}, this.state.selectedEvent.originalEvent);
+        var eventAccepted = Object.assign({}, this.state.selectedEvent);
         eventAccepted.StatusTeacher = 1;
         eventAccepted.StatusParent = 1;
         eventAccepted.Status = 1;
+
+        eventAccepted.StartTime = new Date(eventAccepted.StartTime);
+        eventAccepted.EndTime = new Date(eventAccepted.EndTime);
+
+        delete eventAccepted.status;
+        delete eventAccepted.color;
 
         this.setState({selectedEvent: eventAccepted});
         this.postAppointmentAccept(eventAccepted);
     }
 
     rejectAppointment() {
-        var eventAccepted = Object.assign({}, this.state.selectedEvent.originalEvent);
+        var eventAccepted = Object.assign({}, this.state.selectedEvent);
         eventAccepted.StatusTeacher = 0;
         eventAccepted.StatusParent = 0;
         eventAccepted.Status = 0;
+
+        eventAccepted.StartTime = new Date(eventAccepted.StartTime);
+        eventAccepted.EndTime = new Date(eventAccepted.EndTime);
+
+        delete eventAccepted.status;
+        delete eventAccepted.color;
 
         this.setState({selectedEvent: eventAccepted});
         this.postAppointmentAccept(eventAccepted);
@@ -319,6 +331,12 @@ StatusParent: 1
         $('#fullCalendar').fullCalendar( 'refetchEvents' );
         //getting latest Resources
         //$('#calendar').fullCalendar( 'refetchResources' );
+    }
+
+    //this was created because there was a "this" misunderstanding with fullCalendar
+    updateSelectedEvent(calEvent){
+        var originalEvent = calEvent && calEvent.originalEvent ? calEvent.originalEvent : {};
+        this.setState({selectedEvent: originalEvent});
     }
                 
 }

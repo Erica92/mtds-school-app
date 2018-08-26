@@ -18,7 +18,7 @@ export function formatDatetimeFromJSON(jsonDate){
     var jsDate = new Date(jsonDate);
     
     var year = jsDate.getFullYear();
-    var month = jsDate.getMonth();
+    var month = jsDate.getMonth() + 1;
     var day = jsDate.getDate();
     var hours = jsDate.getHours();
     var min = jsDate.getMinutes();
@@ -92,7 +92,4 @@ export function cleanPageHistory(){
     console.log("prevPageState;"+this.state.prevPageState);
 }
 
-//this was created because there was a "this" misunderstanding with fullCalendar
-export function updateSelectedEvent(calEvent){
-    this.setState({selectedEvent: calEvent});
-}
+

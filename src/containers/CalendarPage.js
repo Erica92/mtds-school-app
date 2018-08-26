@@ -131,6 +131,9 @@ export default class CalendarPage extends React.Component {
             elemFormatted.StartTime = Utils.formatDatetimeFromJSON(elem.StartTime);
             elemFormatted.EndTime = Utils.formatDatetimeFromJSON(elem.EndTime);
 
+            elemFormatted.color = color;
+            elemFormatted.status = status;
+
             return ({
                 id: elem.AppointmentID,
                 title: elem.Remarks,
