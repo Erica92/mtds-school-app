@@ -45,3 +45,13 @@ export function fetchDataStudentGrades(teacherID, classID, subject){
         })
     );
 }
+
+export function fetchDataPersonalDataTeacher(username){
+    return (fetch(CONSTANTS.HOST+"/api/v1/teacher/info?id="+username)
+        .then(response => response.json())
+        .then( (result) => this.setState({
+            teacherInfo: result,
+            isLoading: false
+        })
+    ));
+}

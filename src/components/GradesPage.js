@@ -25,13 +25,13 @@ export default class GradesPage extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.createModalSingleGradeObject = this.createModalSingleGradeObject.bind(this);
-        APICall.fetchDataStudentGrades = APICall.fetchDataStudentGrades.bind(this);
+        this.fetchDataStudentGrades = APICall.fetchDataStudentGrades.bind(this);
         
     }
     
     componentDidMount(){
         console.log("componentDidMount!!!");
-        APICall.fetchDataStudentGrades(this.state.teacher, this.state.selectedClass.ClassID, this.state.selectedClass.Subject);
+        this.fetchDataStudentGrades(this.state.teacher, this.state.selectedClass.ClassID, this.state.selectedClass.Subject);
     }
     
     render(){
@@ -54,6 +54,8 @@ export default class GradesPage extends React.Component {
         array.push(gradeMod);
         var request = {Grades: array}
         var data = JSON.stringify(request);
+
+        var _this = this;
         
         console.log(data);
         
@@ -68,7 +70,7 @@ export default class GradesPage extends React.Component {
         }).then(function(response){
             if(response.ok){
                 //TODO handle update page
-                APICall.fetchDataStudentGrades(teacherID, classID, subject);
+                _this.fetchDataStudentGrades(teacherID, classID, subject);
             } else {
                 //TODO eventually handle error messages
             }

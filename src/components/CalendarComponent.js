@@ -42,10 +42,14 @@ export default class Calendar extends React.Component {
         this.rejectAppointment = this.rejectAppointment.bind(this);
         this.postAppointmentAccept = this.postAppointmentAccept.bind(this);
         this.refreshEvents = this.refreshEvents.bind(this);
+        this.fetchDataPersonalDataParent = ParentApi.fetchDataPersonalDataParent.bind(this);
+        this.fetchDataPersonalDataTeacher = TeacherApi.fetchDataPersonalDataTeacher.bind(this);
     }
     
     render() {
         var modalAddEventToRender;
+        var partecipantInfo = this.state.teacherInfo ? this.state.teacherInfo : this.state.parentInfo;
+        
         if(this.state.teacherID){
             console.log("render teacher calendar");
             modalAddEventToRender = (<ModalAddEvent event={this.state.selectedEvent} 
@@ -62,7 +66,8 @@ export default class Calendar extends React.Component {
                 <div id="calendar"></div>
                 <ModalViewEvent event={this.state.selectedEvent} 
                                 acceptAppointment={this.acceptAppointment} rejectAppointment={this.rejectAppointment}
-                                onSubmit={this.handleSubmitEventParent} handleInputChange={this.handleInputChange} />
+                                onSubmit={this.handleSubmitEventParent} handleInputChange={this.handleInputChange}
+                                partecipantInfo = {partecipantInfo} />
                 <ModalResult text={this.state.resultMessage.message} buttonText="OK" callBackFn={this.refreshEvents} />
                 {modalAddEventToRender}
             </div>
@@ -82,7 +87,7 @@ export default class Calendar extends React.Component {
                         addEventButton: {
                           text: 'New Appointment',
                           click: function() {
-                            _this.updateSelectedEvent({});
+                            _this.newEvent();
                             Modals.openModal("addEventModal");
                           }
                         }
@@ -336,7 +341,24 @@ StatusParent: 1
     //this was created because there was a "this" misunderstanding with fullCalendar
     updateSelectedEvent(calEvent){
         var originalEvent = calEvent && calEvent.originalEvent ? calEvent.originalEvent : {};
-        this.setState({selectedEvent: originalEvent});
+        var premiseEventPartecipant;
+        var _this = this;
+
+        if(this.state.teacherID){
+            premiseEventPartecipant = this.fetchDataPersonalDataParent(originalEvent.ParentID);
+        }
+        if(this.state.parentID){
+            premiseEventPartecipant = this.fetchDataPersonalDataTeacher(originalEvent.TeacherID);
+        }
+        
+        premiseEventPartecipant.then(function(){
+            _this.setState((prevState, props) => {return {selectedEvent: originalEvent} });
+        });
+        //this.setState({selectedEvent: originalEvent});
+    }
+
+    newEvent(){
+        this.setState({selectedEvent: {} });
     }
                 
 }

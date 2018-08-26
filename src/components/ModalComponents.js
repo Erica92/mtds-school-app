@@ -76,6 +76,9 @@ export function ModalViewEvent(props){
                     
                     <span>{statusText}</span>
                     <h2>{props.event.Remarks}</h2>
+
+                    <label>Partecipant</label>
+                    <span>{props.partecipantInfo ? props.partecipantInfo.FirstName + " " + props.partecipantInfo.LastName : "-"}</span>
                     
                     <label>Full Day Event</label>
                     <input className="input-checkbox" type="checkbox" name="Fullday" value={props.event ? props.event.Fullday : ""} onChange={props.handleInputChange} />
