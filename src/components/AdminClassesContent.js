@@ -10,6 +10,8 @@ import ClassDetailsPage from './ClassDetailsPage';
 export default function AdminClassesContent(props){
     return (
         <div className="app-content">
+            <SectionTitleTile title="Student Page" goToPrevPage={props.goToPrevPage} />
+            <button className="right-button" onClick={() => props.goToPage("CreateStudentDataPage")} >Create Student</button>
             <ClassListComponent classList={props.classList} title="My Classes"
                 goToPage={props.goToPage} selectClass={props.selectClass}/>
         </div>

@@ -13,6 +13,8 @@ import * as CONSTANTS from '../api/apiUtils';
 import {SectionTitleTile} from '../components/BaseTiles';
 import AdminClassesContent from "../components/AdminClassesContent";
 import StudentListComponent from '../components/StudentListComponent';
+import CreateStudentDataPage from '../containers/CreateStudentDataPage';
+import StudentPersonalDataPage from '../containers/StudentPersonalDataPage';
 import StudentDetailsPage from "../containers/StudentDetailsPage";
 
 import * as ApiCalls from "../api/adminAPI";
@@ -72,20 +74,34 @@ export default class AdminStudentsPage extends React.Component {
             componentToRender = (<Spinner />);
         } else {
             if(this.state.pageState === "AdminClassesContent"){
-                componentToRender = (<AdminClassesContent classList={classList} goToPage={this.goToPage}
+                componentToRender = (<AdminClassesContent classList={classList} goToPage={this.goToPage} goToPrevPage={this.props.goToPrevPage}
                                                           selectClass={this.selectClass}/>);
             }
             else if(this.state.pageState === "ClassPage"){
                 if(this.state.studentClassList.isLoading){
                     componentToRender = (<Spinner />);
                 }else{
-                    componentToRender = (<StudentListComponent studentList={this.state.studentClassList.data}
+                    componentToRender = (
+                        <div className='app-content'>
+                            <SectionTitleTile title="Student Page" goToPrevPage={this.props.goToPrevPage} />
+                            <button className="right-button" onClick={() => this.goToPage("CreateStudentDataPage")} >Create Student</button>
+                            <StudentListComponent studentList={this.state.studentClassList.data}
                                                                onClickElem={this.selectStudent}
-                                                               callBackFn={() => this.goToPage("StudentDetailsPage")}/>);
+                                                               callBackFn={() => this.goToPage("StudentDetailsPage")}/>
+                        </div>
+                    );
                 }
             } else if(this.state.pageState === "StudentDetailsPage"){
-                componentToRender = (<StudentDetailsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
-                                     selectedStudent={this.state.selectedStudent} parentID={''} />);
+                componentToRender = (
+                     <StudentDetailsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
+                                            selectedStudent={this.state.selectedStudent} parentID={''} />
+                );
+            }else if(this.state.pageState === "CreateStudentDataPage"){
+                componentToRender = (<CreateStudentDataPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
+                                                             />);
+            }else if(this.state.pageState === "StudentPersonalDataPage"){
+                componentToRender = (<StudentPersonalDataPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
+                                                              student={this.state.selectedStudent} />);
             }
 
         }
@@ -93,11 +109,9 @@ export default class AdminStudentsPage extends React.Component {
         
         //<AppContent news={message} /> />
         return (
-            <div>
-                <br/>
-                <SectionTitleTile title="Student Page" goToPrevPage={this.props.goToPrevPage} />
-                {componentToRender}
-            </div>
+            //<div className='app-content'>
+                componentToRender
+            //</div>
 
         );
     }
@@ -112,6 +126,7 @@ export default class AdminStudentsPage extends React.Component {
         console.log("selectedStudent: "+student);
         this.setState({selectedStudent: student});
     }
+
 }
 
 
