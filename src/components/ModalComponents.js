@@ -73,7 +73,7 @@ export function ModalViewEvent(props){
         <div id="viewEventModal" className="modal">
             <div className="modal-content modal-small">
                 <span className="close" onClick={() => closeModals("viewEventModal")} >&times;</span>
-                    
+                <form id="modifyEventForm" method="POST" onSubmit={props.onSubmit} >    
                     <span>{statusText}</span>
                     <h2>{props.event.Remarks}</h2>
 
@@ -89,7 +89,10 @@ export function ModalViewEvent(props){
                     <label>End Date and time</label>
                     <input className="input-base" type="datetime-local" name="EndTime" value={props.event ? props.event.EndTime : ""} onChange={props.handleInputChange} />
 
-                    {acceptComponent}   
+                    {acceptComponent} 
+
+                    {props.event.status === "waiting" ? (<div> <input className="button-base submit-button" type="submit" value="Submit" /></div>) : (<div></div>) }
+                </form>
             </div>       
         </div>
     );
