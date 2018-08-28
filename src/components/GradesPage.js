@@ -6,6 +6,7 @@ import * as APICall from '../api/teacherAPI';
 import * as Utils from '../utils/Utils';
 import {Spinner} from './BaseComponents';
 import * as Modals from './ModalComponents';
+import {ModalResult} from './ModalComponents';
 
 export default class GradesPage extends React.Component {
     constructor(props) {
@@ -18,7 +19,8 @@ export default class GradesPage extends React.Component {
             },
             teacher: this.props.teacher,
             selectedClass: this.props.selectedClass,
-            gradeMod: {}
+            gradeMod: {},
+            resultMessage : ""
         }
         
         this.handleSubmitSingleGrade = this.handleSubmitSingleGrade.bind(this);
@@ -44,6 +46,7 @@ export default class GradesPage extends React.Component {
                         handleSubmitSingleGrade={this.handleSubmitSingleGrade} handleInputChange={this.handleInputChange}
                         handleDayClick={this.handleDayClick} createObject={this.createModalSingleGradeObject} />
                 </div>
+                <ModalResult text={this.state.resultMessage.message} buttonText="OK" />
             </div>
         );
     }
@@ -67,13 +70,15 @@ export default class GradesPage extends React.Component {
               'Content-Type': 'application/json'
             },
             body: data
-        }).then(function(response){
-            if(response.ok){
-                //TODO handle update page
-                _this.fetchDataStudentGrades(teacherID, classID, subject);
-            } else {
-                //TODO eventually handle error messages
-            }
+        }).then((response) => response.json())
+            .then((jsonRes) => {
+                _this.setState({resultMessage: jsonRes});
+                Modals.closeModals("singleGradeModal");
+                Modals.openModal("resultModal");
+
+                if(_this.state.resultMessage.code == "200"){
+                    _this.fetchDataStudentGrades(teacherID, classID, subject);
+                }
         });
         
         /*.then((res) => res.json())
@@ -98,7 +103,6 @@ export default class GradesPage extends React.Component {
         this.setState({
           gradeMod: {}
         });
-        Modals.closeModals("singleGradeModal");
     }
     
     handleInputChange(event) {
@@ -143,3 +147,15 @@ export default class GradesPage extends React.Component {
         this.setState({ gradeMod: gradeModTemp });
     }
 }
+
+/*type Grade struct {
++    TeacherID string    `form:"TeacherID" json:"TeacherID"`
++    StudentID string    `form:"StudentID" json:"StudentID"`
++    Subject   string    `form:"Subject" json:"Subject"`
++    Year      int       `form:"Year" json:"Year"`
++    Semester  int       `form:"Semester" json:"Semester"`
++    Type      string    `form:"Type" json:"Type"`
++    Date      time.Time `form:"Date" json:"Date"`
++    Grade     float64   `form:"Grade" json:"Grade"`
++    Remarks   string    `form:"Remarks" json:"Remarks"`
++}*/

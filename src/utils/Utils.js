@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function formatDateFromJSON(jsonDate){
     return (new Date(jsonDate).toLocaleDateString());
 }
@@ -33,12 +35,14 @@ export function formatDatetimeFromJSON(jsonDate){
     return (year+"-"+month+"-"+day+"T"+hours+":"+min+":"+seconds);
 }
 
-export function formatDateToString(dateToFormat){
-      var yyyy = dateToFormat.getFullYear();
-      var mm = dateToFormat.getMonth() + 1;
-      var dd = dateToFormat.getDate();
+export function formatDateToString(dateToFormat, separator){
+    var sep = separator ? separator : "-";
     
-      return [yyyy, (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join('-');
+    var yyyy = dateToFormat.getFullYear();
+    var mm = dateToFormat.getMonth() + 1;
+    var dd = dateToFormat.getDate();
+
+    return [yyyy, (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join(sep);
  }
 
 export function dateStringToDate(dateString){
@@ -91,5 +95,7 @@ export function cleanPageHistory(){
 
     console.log("prevPageState;"+this.state.prevPageState);
 }
+
+export const EMPTY_SELECT = (<option value="-1" key="-1" selected>---Select---</option>);
 
 

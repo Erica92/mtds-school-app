@@ -2,13 +2,14 @@ import React from 'react';
 import './Modals.css';
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css';
+import * as Utils from '../utils/Utils';
 
 
 export function ModalInsertSingleGrade(props){
     const FORMAT = 'MM/DD/YYYY';
     //<DayPickerInput dayPickerProps={{todayButton: 'Today'}} onDayClick={props.handleDayClick} />
     return (
-        <div id="singleGradeModal" class="modal">
+        <div id="singleGradeModal" className="modal">
           <div className="modal-content">
             <span className="close" onClick={() => closeModals("singleGradeModal")} >&times;</span>
             <form id="SingleGradeForm" method="POST" onSubmit={props.handleSubmitSingleGrade} >
@@ -22,6 +23,7 @@ export function ModalInsertSingleGrade(props){
                 <div>
                     <label>Type of Grade</label>
                     <select name="Type" onChange={props.handleInputChange} >
+                        {Utils.EMPTY_SELECT}
                         <option value="Homework">Homework</option>
                         <option value="Oral">Oral</option>
                         <option value="Quiz">Quiz</option>
@@ -99,7 +101,7 @@ export function ModalViewEvent(props){
 }
 
 export function ModalAddEvent(props){
-    var emptyElem = (<option value="-1" key="-1" selected>---Select---</option>);
+    var emptyElem = Utils.EMPTY_SELECT;
     
     var classList = props.classList.map( elem => (<option value={elem.ClassID} key={elem.ClassID}>{elem.ClassID} - {elem.Subject}</option>));
     classList.unshift(emptyElem);
@@ -136,7 +138,7 @@ export function ModalAddEvent(props){
 }
 
 export function ModalAddEventParent(props){
-    var emptyElem = (<option value="-1" key="-1" selected>---Select---</option>);
+    var emptyElem = Utils.EMPTY_SELECT;
 
     var studentList = props.parentStudentList.map( elem => (<option value={elem.Username} key={elem.Username}>{elem.FirstName}</option>));
     studentList.unshift(emptyElem);
@@ -175,7 +177,7 @@ export function ModalAddEventParent(props){
 export function ModalResult(props){
     return (
         <div id="resultModal" className="modal">
-            <div class="modal-content modal-small-result">
+            <div className="modal-content modal-small-result">
                 <span className="close" onClick={() => closeModals("resultModal", (props.callBackFn ? props.callBackFn() : null))} >&times;</span>
                         
                     <h2 className="modal-text">{props.text}</h2>
