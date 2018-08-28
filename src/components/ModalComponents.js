@@ -99,9 +99,13 @@ export function ModalViewEvent(props){
 }
 
 export function ModalAddEvent(props){
-    var classList = props.classList.map( elem => (<option value={elem.ClassID} key={elem.ClassID}>{elem.ClassID} - {elem.Subject}</option>));
-    var studentClassList = props.studentClassList.map( elem => (<option value={elem.Username}>{elem.LastName} {elem.FirstName}</option>));
+    var emptyElem = (<option value="-1" key="-1" selected>---Select---</option>);
     
+    var classList = props.classList.map( elem => (<option value={elem.ClassID} key={elem.ClassID}>{elem.ClassID} - {elem.Subject}</option>));
+    classList.unshift(emptyElem);
+    var studentClassList = props.studentClassList.map( elem => (<option value={elem.Username}>{elem.LastName} {elem.FirstName}</option>));
+    studentClassList.unshift(emptyElem);
+
     return(
         <div id="addEventModal" className="modal">
             <div className="modal-content">
@@ -132,8 +136,12 @@ export function ModalAddEvent(props){
 }
 
 export function ModalAddEventParent(props){
+    var emptyElem = (<option value="-1" key="-1" selected>---Select---</option>);
+
     var studentList = props.parentStudentList.map( elem => (<option value={elem.Username} key={elem.Username}>{elem.FirstName}</option>));
+    studentList.unshift(emptyElem);
     var teachings = props.teachings.map( elem => (<option value={elem.TeacherID}>{elem.Subject}</option>));
+    teachings.unshift(emptyElem);
 
     return(
         <div id="addEventModal" className="modal">
