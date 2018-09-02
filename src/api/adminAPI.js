@@ -1,4 +1,5 @@
 import * as CONSTANTS from './apiUtils';
+import * as Modals from "../components/ModalComponents";
 
 
 
@@ -33,4 +34,61 @@ export function fetchDataStudentClass(classID){
                 }
             })
         );
+}
+
+export function getStudentParent(username){
+    let parent = null;
+    fetch(CONSTANTS.HOST+"/api/v1/student/parents?id="+username)
+        .then(response => response.json())
+        .then( (result) => {
+            console.log("getStudentParent "+result[0].Username);
+            parent = result[0].Username;
+            }
+        );
+    return parent;
+}
+
+export function postcreatePayment(paymentInfo){
+/*
+    var paymentInfo = {
+        ParentID: parent,
+        StudentID: student,
+        Amount: amount,
+        Deadline: deadline,
+
+    }
+*/
+    console.log(paymentInfo);
+
+    var data = JSON.stringify(paymentInfo);
+
+    console.log(data);
+
+    fetch(CONSTANTS.HOST+"/api/v1/admin/payment", {
+        method: "POST",
+        mode: 'cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: data
+    }).then((res) => res.json())
+        .then((data) => {
+            console.log("data:"+data);
+
+            this.setState({
+                paymentResult: data
+            });
+
+           // Modals.openModal("resultModal");
+
+            /*
+            this.fetchDataPersonalDataParent(this.state.parentID)
+                .then(() => {
+                    let parentOrig = Object.assign({}, this.state.parentInfo);
+                    this.setState({parentInfoMod: parentOrig});
+            })*/
+        });/*.then((res) => res.json())
+            .then((data) =>  console.log(data))
+            .catch((err)=>console.log(err))*/
 }

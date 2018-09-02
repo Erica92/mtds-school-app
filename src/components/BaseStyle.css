@@ -331,3 +331,13 @@ label:hover {
 .cancel-button:hover{
     background-color: #cfcfcf;
 }
+.right-button{
+    font-weight: bold;
+    border-radius: 2px;
+    background-color: #81c784;
+    color: white;
+    float: right;
+    height: 40px;
+    margin: 4px 0;
+    padding: 10px 15px;
+}

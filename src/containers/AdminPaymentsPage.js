@@ -9,14 +9,17 @@ import StudentDetailsPage from "../containers/StudentDetailsPage";
 
 import * as ApiCalls from "../api/adminAPI";
 import * as Utils from "../utils/Utils";
+import CreatePaymentsPagePage from "./CreatePaymentsPage";
 
-export default class AdminStudentsPage extends React.Component {
-    
+export default class AdminPaymentsPage extends React.Component {
+
     constructor(props) {
         super(props);
-        
+
         this.state = {
             isLoading: true,
+            paymentsList: [],
+            createdPayment: {},
             classList : [],
             selectedClass : null,
             studentClassList: {
@@ -24,8 +27,8 @@ export default class AdminStudentsPage extends React.Component {
                 isLoading: false
             },
             selectedStudent: null,
-            pageState: "AdminClassesContent",
-            prevPageState: ["AdminClassesContent"]
+            pageState: "CreatePaymentsPagePage",
+            prevPageState: ["CreatePaymentsPagePage"]
         };
 
         this.goToPage = Utils.goToPage.bind(this);
@@ -36,11 +39,29 @@ export default class AdminStudentsPage extends React.Component {
 
         this.fetchDataClasses = ApiCalls.fetchDataClasses.bind(this);
         this.fetchDataStudentClass = ApiCalls.fetchDataStudentClass.bind(this);
+        this.postcreatePayment = ApiCalls.postcreatePayment.bind(this);
+        this.getStudentParent =ApiCalls.getStudentParent.bind(this);
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit= this.handleSubmit.bind(this);
+
 
     }
 
     componentDidMount(){
         this.getFetchAll().then(() => this.setState({allLoaded: true}));
+    }
+
+
+    getFetchAll(){
+        return Promise.all([
+            this.fetchDataClasses(this.state.parentID),
+        ])
+    }
+
+    selectStudent(student){
+        console.log("selectedStudent: "+student);
+        this.setState({selectedStudent: student});
     }
 
 
@@ -52,13 +73,48 @@ export default class AdminStudentsPage extends React.Component {
 
     }
 
-    //http://localhost:8080/api/v1/teacher/agenda?id=T1&scope=day&class=C1
-    //http://localhost:8080/api/v1/teacher/grades?id=T5&class=C5&subject=SubjectName5
-    
+    loadStudentInClass(event) {
+        console.log("loadStudentInClass: "+event);
+        const target = event.target;
+        const name = target.name;
+
+        this.fetchDataStudentClass(target.value);
+    }
+
+
+    handleSubmit(event){
+        console.log("submittato");
+        event.preventDefault();
+        let newPayment = this.state.createdPayment;
+        console.log("student "+newPayment.StudentId);
+        newPayment.ParentId = this.getStudentParent(newPayment.StudentId);
+        console.log("parent "+newPayment.Username);
+
+
+        this.postcreatePayment(newPayment);
+    }
+
+    handleInputChange(event){
+        console.log("handleInputChange: "+event.target.value );
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+
+        let paymentOnChange = this.state.createdPayment;
+        paymentOnChange[name] = value;
+
+        console.log(paymentOnChange[name] );
+
+        this.setState({
+            createdPayment: paymentOnChange
+        });
+    }
+
+
     render(){
         const {isLoading, classList} = this.state;
         console.log("Rendering App - classList length"+classList.length);
-        
+
         var componentToRender = null;
         if(isLoading){
             componentToRender = (<Spinner />);
@@ -74,48 +130,45 @@ export default class AdminStudentsPage extends React.Component {
                     componentToRender = (
                         <div className='app-content'>
                             <SectionTitleTile title="Student Page" goToPrevPage={this.props.goToPrevPage} />
-                            <button className="right-button" onClick={() => this.goToPage("CreateStudentDataPage")} >Create Student</button>
+                            <button className="right-button" onClick={() => this.goToPage("CreatePaymentsPagePage")} >Create Student</button>
                             <StudentListComponent studentList={this.state.studentClassList.data}
-                                                               onClickElem={this.selectStudent}
-                                                               callBackFn={() => this.goToPage("StudentDetailsPage")}/>
+                                                  onClickElem={this.selectStudent}
+                                                  callBackFn={() => this.goToPage("StudentDetailsPage")}/>
                         </div>
                     );
                 }
             } else if(this.state.pageState === "StudentDetailsPage"){
                 componentToRender = (
-                     <StudentDetailsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
-                                            selectedStudent={this.state.selectedStudent} parentID={''} />
+                    <StudentDetailsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
+                                        selectedStudent={this.state.selectedStudent} parentID={''} />
                 );
-            }else if(this.state.pageState === "CreateStudentDataPage"){
-                componentToRender = (<CreateStudentDataPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
-                                                             />);
+            }else if(this.state.pageState === "CreatePaymentsPagePage"){
+                componentToRender = (<CreatePaymentsPagePage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
+                         studentClassList = {this.state.studentClassList.data} classList={classList}
+                         loadStudentInClass = {(event) => this.loadStudentInClass(event)}
+                            payment={this.state.createdPayment}
+                            handleInputChange = {(event) => this.handleInputChange(event) }
+                            handleSubmit = {(event) => this.handleSubmit(event) }    />);
+
+
+
             }else if(this.state.pageState === "StudentPersonalDataPage"){
                 componentToRender = (<StudentPersonalDataPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
                                                               student={this.state.selectedStudent} />);
             }
 
         }
-        
-        
+
+
         //<AppContent news={message} /> />
         return (
             //<div className='app-content'>
-                componentToRender
+            componentToRender
             //</div>
 
         );
     }
 
-    getFetchAll(){
-        return Promise.all([
-            this.fetchDataClasses(this.state.parentID),
-        ])
-    }
-
-    selectStudent(student){
-        console.log("selectedStudent: "+student);
-        this.setState({selectedStudent: student});
-    }
 
 }
 

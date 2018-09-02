@@ -12,6 +12,7 @@ import PaymentPage from './PaymentPage';
 import * as CONSTANTS from '../api/apiUtils';
 import * as Utils from '../utils/Utils';
 import AdminStudentsPage from "./AdminStudentsPage";
+import AdminPaymentsPage from "./AdminPaymentsPage";
 
 export default class AdminApp extends React.Component {
 
@@ -46,10 +47,10 @@ export default class AdminApp extends React.Component {
                 componentToRender = (<AdminStudentsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
                                                        selectedClass={this.state.selectedClass} />);
             }
-            /*else if(this.state.pageState === "AdminPaymentsPage"){
-                componentToRender = (<ClassDetailsPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
+            else if(this.state.pageState === "AdminPaymentsPage"){
+                componentToRender = (<AdminPaymentsPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
                                                        selectedClass={this.state.selectedClass} />);
-            } else if(this.state.pageState === "AdminNotificationsPage"){
+            }/* else if(this.state.pageState === "AdminNotificationsPage"){
                 componentToRender = (<ClassDetailsPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
                                                        selectedClass={this.state.selectedClass} />);
             } else if(this.state.pageState === "AdminAccountsPage"){
