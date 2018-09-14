@@ -98,4 +98,9 @@ export function cleanPageHistory(){
 
 export const EMPTY_SELECT = (<option value="-1" key="-1" selected>---Select---</option>);
 
+const REGEXP_PHONE_NUM = /^\d{10}$/g;
+const REGEXP_CREDIT_CARD = /^[0-9]{16}$/g;
+
+
+
 

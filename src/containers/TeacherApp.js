@@ -30,7 +30,8 @@ class TeacherApp extends React.Component {
             prevPageState: ["HomePage"]
         };
         
-        this.menuList = [{linkLabel: "Personal Data", linkName:"PersonalDataPage", icon:""},
+        this.menuList = [{linkLabel: "Home Page", linkName:"HomePage", icon:""},,
+                        {linkLabel: "Personal Data", linkName:"PersonalDataPage", icon:""},
                          {linkLabel: "Calendar", linkName:"CalendarPage", icon:""},
                           {linkLabel: "Logout", linkName:"#", icon:""}];
         

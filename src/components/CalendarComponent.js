@@ -45,6 +45,7 @@ export default class Calendar extends React.Component {
         this.refreshEvents = this.refreshEvents.bind(this);
         this.fetchDataPersonalDataParent = ParentApi.fetchDataPersonalDataParent.bind(this);
         this.fetchDataPersonalDataTeacher = TeacherApi.fetchDataPersonalDataTeacher.bind(this);
+        this.callBackRefreshEvents = this.callBackRefreshEvents.bind(this);
 
     }
     
@@ -99,15 +100,8 @@ export default class Calendar extends React.Component {
                         center: 'title',
                         right: 'addEventButton month,agendaWeek,agendaDay'
                     },
-                    events: this.state.eventList,
-                    editable: true,
-                    droppable: true, // this allows things to be dropped onto the calendar
-                    drop: function() {
-                        // is the "remove after drop" checkbox checked?
-                        if ($('#drop-remove').is(':checked')) {
-                            // if so, remove the element from the "Draggable Events" list
-                            $(this).remove();
-                        }
+                    events: function(start, end, timezone, callback){
+                        callback(_this.state.eventList);
                     },
                     timeFormat: 'H:mm', // uppercase H for 24-hour clock
                     eventClick: function(calEvent, jsEvent, view){
@@ -127,6 +121,46 @@ export default class Calendar extends React.Component {
     }
     componentWillUnmount(){
         console.log("unmounting CalendarComponent");
+    }
+
+    componentDidUpdate() {
+        var _this = this;
+        //$('#calendar').fullCalendar( 'refetchEvents' );
+                            //remove old data
+        $('#calendar').fullCalendar('removeEvents');
+                     
+                    //Getting new event json data
+        $("#calendar").fullCalendar('addEventSource', this.state.eventList);
+                    //Updating new events
+        $('#calendar').fullCalendar('rerenderEvents');
+                    //getting latest Events
+        $('#calendar').fullCalendar( 'refetchEvents' );
+
+        //$('#calendar').fullCalendar( 'refetchEvents' );
+        /*$('#calendar').fullCalendar('destroy');
+
+        $('#calendar').fullCalendar({
+                    customButtons: {
+                        addEventButton: {
+                          text: 'New Appointment',
+                          click: function() {
+                            _this.newEvent();
+                            Modals.openModal("addEventModal");
+                          }
+                        }
+                      },
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'addEventButton month,agendaWeek,agendaDay'
+                    },
+                    events: this.state.eventList,
+                    timeFormat: 'H:mm', // uppercase H for 24-hour clock
+                    eventClick: function(calEvent, jsEvent, view){
+                        _this.updateSelectedEvent(calEvent);
+                        Modals.openModal("viewEventModal");
+                    }
+            });*/
     }
 
     handleModifyEvent(event){
@@ -341,7 +375,20 @@ StatusParent: 1
     refreshEvents(){
         console.log("refresh");
         if(this.props.teacherID){
-            this.props.loadTeacherEvents();
+            this.props.loadTeacherEvents()
+                .then(() => {
+                    //remove old data
+                    //$('#calendar').fullCalendar('removeEvents');
+                     
+                    //Getting new event json data
+                    //$("#calendar").fullCalendar('addEventSource', this.state.eventList);
+                    //Updating new events
+                    //$('#calendar').fullCalendar('rerenderEvents');
+                    //getting latest Events
+                    //$('#calendar').fullCalendar( 'refetchEvents' );
+                    //getting latest Resources
+                    //$('#calendar').fullCalendar( 'refetchResources' );
+                });
         } else if(this.props.parentID){
             this.props.loadParentEvents();
         }
@@ -380,6 +427,10 @@ StatusParent: 1
 
     newEvent(){
         this.setState({selectedEvent: {} });
+    }
+
+    callBackRefreshEvents(eventList){
+        return eventList;
     }
                 
 }
