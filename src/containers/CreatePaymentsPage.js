@@ -27,14 +27,14 @@ export default function CreatePaymentsPage(props) {
                         </p>
                         <InputText className="editable" label="Description" name="Description" onChange={props.handleInputChange} value={props.payment.desc} />
                         <InputText className="editable" label="Amount" name="Amount" onChange={props.handleInputChange} value={props.payment.amount}/>
-                        <InputDate className="editable" label="Deadline" name="DeadLine" onChange={props.handleInputChange} value={props.payment.deadline} />
+                        <InputDate className="editable" label="Deadline" name="Deadline" onChange={props.handleInputChange} value={props.payment.deadline} />
                     </div>
                     <div>
                         <input className="button-base submit-button" type="submit" value="Submit" />
                         <input className="button-base cancel-button" type="button" value="Cancel" onClick={() => cancelChanges()} />
                     </div>
                 </form>
-                {/*               <ModalResult text={this.state.modificationResult} buttonText="OK" callBackFn={this.props.goToPrevPage} /> */}
+                    <ModalResult text={props.modificationResult} buttonText="OK" callBackFn={props.goToPrevPage} />
             </div>
 
 

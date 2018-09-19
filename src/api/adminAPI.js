@@ -36,31 +36,17 @@ export function fetchDataStudentClass(classID){
         );
 }
 
-export function getStudentParent(username){
-    let parent = null;
-    fetch(CONSTANTS.HOST+"/api/v1/student/parents?id="+username)
-        .then(response => response.json())
-        .then( (result) => {
-            console.log("getStudentParent "+result[0].Username);
-            parent = result[0].Username;
-            }
-        );
-    return parent;
-}
+export function postcreatePayment(paymentInfo_studentID,paymentInfo_Amount,paymentInfo_Description,paymentInfo_Deadline){
 
-export function postcreatePayment(paymentInfo){
-/*
-    var paymentInfo = {
-        ParentID: parent,
-        StudentID: student,
-        Amount: amount,
-        Deadline: deadline,
+    let creatingPayment = {
+        StudentID: paymentInfo_studentID,
+        Amount: new Number(paymentInfo_Amount),
+        Description: paymentInfo_Description,
+        Deadline: new Date(paymentInfo_Deadline),
 
     }
-*/
-    console.log(paymentInfo);
 
-    var data = JSON.stringify(paymentInfo);
+    var data = JSON.stringify(creatingPayment);
 
     console.log(data);
 
@@ -74,11 +60,18 @@ export function postcreatePayment(paymentInfo){
         body: data
     }).then((res) => res.json())
         .then((data) => {
-            console.log("data:"+data);
+            let message = "";
+            if(data.code == 200){
+                message = "Payment correctly uploaded";
+            } else {
+                message = "Sorry, an error occurred";
+                console.log("post error:"+data.message);
+            }
 
             this.setState({
-                paymentResult: data
+                modificationResult: message
             });
+            Modals.openModal("resultModal");
 
            // Modals.openModal("resultModal");
 

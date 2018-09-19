@@ -9,7 +9,7 @@ import StudentDetailsPage from "../containers/StudentDetailsPage";
 
 import * as ApiCalls from "../api/adminAPI";
 import * as Utils from "../utils/Utils";
-import CreatePaymentsPagePage from "./CreatePaymentsPage";
+import CreatePaymentsPage from "./CreatePaymentsPage";
 
 export default class AdminPaymentsPage extends React.Component {
 
@@ -19,16 +19,23 @@ export default class AdminPaymentsPage extends React.Component {
         this.state = {
             isLoading: true,
             paymentsList: [],
-            createdPayment: {},
+            createdPayment: {
+              StudentId: null,
+              ParentId: null,
+              Amount: null,
+              Deadline: null,
+              Description: null
+            },
             classList : [],
             selectedClass : null,
             studentClassList: {
                 data: [],
                 isLoading: false
             },
+            modificationResult: null,
             selectedStudent: null,
-            pageState: "CreatePaymentsPagePage",
-            prevPageState: ["CreatePaymentsPagePage"]
+            pageState: "CreatePaymentsPage",
+            prevPageState: ["CreatePaymentsPage"]
         };
 
         this.goToPage = Utils.goToPage.bind(this);
@@ -40,7 +47,6 @@ export default class AdminPaymentsPage extends React.Component {
         this.fetchDataClasses = ApiCalls.fetchDataClasses.bind(this);
         this.fetchDataStudentClass = ApiCalls.fetchDataStudentClass.bind(this);
         this.postcreatePayment = ApiCalls.postcreatePayment.bind(this);
-        this.getStudentParent =ApiCalls.getStudentParent.bind(this);
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit= this.handleSubmit.bind(this);
@@ -55,26 +61,23 @@ export default class AdminPaymentsPage extends React.Component {
 
     getFetchAll(){
         return Promise.all([
-            this.fetchDataClasses(this.state.parentID),
+            this.fetchDataClasses(this.state.parentID)
         ])
     }
 
     selectStudent(student){
-        console.log("selectedStudent: "+student);
         this.setState({selectedStudent: student});
     }
 
 
 
     selectClass(selectedElem){
-        console.log("selected class:"+selectedElem.ClassID);
         this.setState({ selectedClass: selectedElem});
         this.fetchDataStudentClass(selectedElem.ClassID);
 
     }
 
     loadStudentInClass(event) {
-        console.log("loadStudentInClass: "+event);
         const target = event.target;
         const name = target.name;
 
@@ -83,27 +86,20 @@ export default class AdminPaymentsPage extends React.Component {
 
 
     handleSubmit(event){
-        console.log("submittato");
+
         event.preventDefault();
-        let newPayment = this.state.createdPayment;
-        console.log("student "+newPayment.StudentId);
-        newPayment.ParentId = this.getStudentParent(newPayment.StudentId);
-        console.log("parent "+newPayment.Username);
+        const newPayment = this.state.createdPayment;
 
-
-        this.postcreatePayment(newPayment);
+        this.postcreatePayment(newPayment.StudentId, newPayment.Amount, newPayment.Description, newPayment.Deadline);
     }
 
     handleInputChange(event){
-        console.log("handleInputChange: "+event.target.value );
         const target = event.target;
         const value = target.value;
         const name = target.name;
 
         let paymentOnChange = this.state.createdPayment;
         paymentOnChange[name] = value;
-
-        console.log(paymentOnChange[name] );
 
         this.setState({
             createdPayment: paymentOnChange
@@ -130,7 +126,7 @@ export default class AdminPaymentsPage extends React.Component {
                     componentToRender = (
                         <div className='app-content'>
                             <SectionTitleTile title="Student Page" goToPrevPage={this.props.goToPrevPage} />
-                            <button className="right-button" onClick={() => this.goToPage("CreatePaymentsPagePage")} >Create Student</button>
+                            <button className="right-button" onClick={() => this.goToPage("CreatePaymentsPage")} >Create Student</button>
                             <StudentListComponent studentList={this.state.studentClassList.data}
                                                   onClickElem={this.selectStudent}
                                                   callBackFn={() => this.goToPage("StudentDetailsPage")}/>
@@ -142,13 +138,14 @@ export default class AdminPaymentsPage extends React.Component {
                     <StudentDetailsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
                                         selectedStudent={this.state.selectedStudent} parentID={''} />
                 );
-            }else if(this.state.pageState === "CreatePaymentsPagePage"){
-                componentToRender = (<CreatePaymentsPagePage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
+            }else if(this.state.pageState === "CreatePaymentsPage"){
+                componentToRender = (<CreatePaymentsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
                          studentClassList = {this.state.studentClassList.data} classList={classList}
                          loadStudentInClass = {(event) => this.loadStudentInClass(event)}
                             payment={this.state.createdPayment}
                             handleInputChange = {(event) => this.handleInputChange(event) }
-                            handleSubmit = {(event) => this.handleSubmit(event) }    />);
+                            handleSubmit = {(event) => this.handleSubmit(event) }
+                            modificationResult = {this.state.modificationResult} />);
 
 
 
@@ -182,4 +179,3 @@ var user1 = {
     role: 'teacher',
     fullName: 'Mario Rossi'
 }
-
