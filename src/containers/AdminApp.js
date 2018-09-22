@@ -12,6 +12,7 @@ import PaymentPage from './PaymentPage';
 import * as CONSTANTS from '../api/apiUtils';
 import * as Utils from '../utils/Utils';
 import AdminStudentsPage from "./AdminStudentsPage";
+import NotificationForm from "../components/NotificationForm"
 
 export default class AdminApp extends React.Component {
 
@@ -20,7 +21,8 @@ export default class AdminApp extends React.Component {
 
         this.state = {
             pageState: "HomePage",
-            prevPageState: ["HomePage"]
+            prevPageState: ["HomePage"],
+            newNotification: {}
         }
 
         this.menuList = [{linkLabel: "Students", linkName:"AdminStudentsPage", icon:""},
@@ -32,6 +34,8 @@ export default class AdminApp extends React.Component {
 
         this.goToPage = Utils.goToPage.bind(this);
         this.goToPrevPage = Utils.goToPrevPage.bind(this);
+        this.handleSubmitNotification = this.handleSubmitNotification.bind(this);
+        this.handleInputChangeNotification = this.handleInputChangeNotification.bind(this);
 
     }
 
@@ -45,6 +49,10 @@ export default class AdminApp extends React.Component {
             } else if(this.state.pageState === "AdminStudentsPage"){
                 componentToRender = (<AdminStudentsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
                                                        selectedClass={this.state.selectedClass} />);
+            } else if(this.state.pageState === "AdminNotificationsPage"){
+                componentToRender = (<NotificationForm goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
+                                                        handleSubmit={this.handleSubmitNotification}
+                                                        handleInputChange={this.handleInputChangeNotification} />);
             }
             /*else if(this.state.pageState === "AdminPaymentsPage"){
                 componentToRender = (<ClassDetailsPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
@@ -69,6 +77,67 @@ export default class AdminApp extends React.Component {
             </div>
         );
     }
+
+    postNotification(){
+        let newNotification = Object.assign({}, this.state.newNotification);
+
+        delete newNotification.DestinationIDType;
+
+        var data = JSON.stringify(this.state.newNotification);
+        
+        console.log(data);
+        
+        fetch(CONSTANTS.HOST+"/api/v1/admin/notification", {
+            method: "POST",
+            mode: 'cors',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: data
+        }).then((res) => res.json())
+            .then((data) => {
+            console.log("data:"+data);
+            let message = "";
+            if(data.code == 200){
+                message = "Notification added";
+            } else {
+                message = "Sorry, an error occurred";
+                console.log("post error:"+data.message);
+            }
+            /*
+            this.setState({
+                modificationResult: message
+            });
+            Modals.openModal("resultModal");*/
+            
+
+        });
+    }
+    
+    handleInputChangeNotification(event) {
+        const target = event.target;
+        var value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        
+        if(name === "StartDate" || name==="EndDate"){
+            let formattedDate = new Date(value);
+            value = formattedDate;
+        }
+
+        let newNotification = this.state.newNotification;
+        newNotification[name] = value;
+
+        this.setState({
+          newNotification: newNotification
+        });
+    }
+    
+    handleSubmitNotification(event) {
+        event.preventDefault();
+        this.postNotification();
+    }
+
 
 
 }
