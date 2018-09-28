@@ -154,26 +154,26 @@ export default class CalendarPage extends React.Component {
         this.fetchDataParentAppointments(this.props.parentID)
             .then( () => {
             
-            let eventList = this.makeCalendarEventList(this.state.appointmentsList);
+                let eventList = this.makeCalendarEventList(this.state.appointmentsList);
 
-            this.setState({
-                allLoaded: true,
-                eventList: eventList
-            });
+                this.setState({
+                    allLoaded: true,
+                    eventList: eventList
+                });
         });
     }
 
     loadTeacherEvents(){
-        this.fetchDataTeacherAppointments(this.props.teacherID)
+        return (this.fetchDataTeacherAppointments(this.props.teacherID)
             .then( () => {
             
-            let eventList = this.makeCalendarEventList(this.state.appointmentsList);
+                let eventList = this.makeCalendarEventList(this.state.appointmentsList);
 
-            this.setState({
-                allLoaded: true,
-                eventList: eventList
-            });
-        });
+                this.setState({
+                    allLoaded: true,
+                    eventList: eventList
+                });
+        }));
     }
 
     getAppointmentsAndSchedule(){

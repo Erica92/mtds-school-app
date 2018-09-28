@@ -2,13 +2,14 @@ import React from 'react';
 import './Modals.css';
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css';
+import * as Utils from '../utils/Utils';
 
 
 export function ModalInsertSingleGrade(props){
     const FORMAT = 'MM/DD/YYYY';
     //<DayPickerInput dayPickerProps={{todayButton: 'Today'}} onDayClick={props.handleDayClick} />
     return (
-        <div id="singleGradeModal" class="modal">
+        <div id="singleGradeModal" className="modal">
           <div className="modal-content">
             <span className="close" onClick={() => closeModals("singleGradeModal")} >&times;</span>
             <form id="SingleGradeForm" method="POST" onSubmit={props.handleSubmitSingleGrade} >
@@ -22,6 +23,7 @@ export function ModalInsertSingleGrade(props){
                 <div>
                     <label>Type of Grade</label>
                     <select name="Type" onChange={props.handleInputChange} >
+                        {Utils.EMPTY_SELECT}
                         <option value="Homework">Homework</option>
                         <option value="Oral">Oral</option>
                         <option value="Quiz">Quiz</option>
@@ -73,9 +75,12 @@ export function ModalViewEvent(props){
         <div id="viewEventModal" className="modal">
             <div className="modal-content modal-small">
                 <span className="close" onClick={() => closeModals("viewEventModal")} >&times;</span>
-                    
+                <form id="modifyEventForm" method="POST" onSubmit={props.onSubmit} >    
                     <span>{statusText}</span>
                     <h2>{props.event.Remarks}</h2>
+
+                    <label>Partecipant</label>
+                    <span>{props.partecipantInfo ? props.partecipantInfo.FirstName + " " + props.partecipantInfo.LastName : "-"}</span>
                     
                     <label>Full Day Event</label>
                     <input className="input-checkbox" type="checkbox" name="Fullday" value={props.event ? props.event.Fullday : ""} onChange={props.handleInputChange} />
@@ -86,16 +91,23 @@ export function ModalViewEvent(props){
                     <label>End Date and time</label>
                     <input className="input-base" type="datetime-local" name="EndTime" value={props.event ? props.event.EndTime : ""} onChange={props.handleInputChange} />
 
-                    {acceptComponent}   
+                    {acceptComponent} 
+
+                    {props.event.status === "waiting" ? (<div> <input className="button-base submit-button" type="submit" value="Submit" /></div>) : (<div></div>) }
+                </form>
             </div>       
         </div>
     );
 }
 
 export function ModalAddEvent(props){
-    var classList = props.classList.map( elem => (<option value={elem.ClassID} key={elem.ClassID}>{elem.ClassID} - {elem.Subject}</option>));
-    var studentClassList = props.studentClassList.map( elem => (<option value={elem.Username}>{elem.LastName} {elem.FirstName}</option>));
+    var emptyElem = Utils.EMPTY_SELECT;
     
+    var classList = props.classList.map( elem => (<option value={elem.ClassID} key={elem.ClassID}>{elem.ClassID} - {elem.Subject}</option>));
+    classList.unshift(emptyElem);
+    var studentClassList = props.studentClassList.map( elem => (<option value={elem.Username}>{elem.LastName} {elem.FirstName}</option>));
+    studentClassList.unshift(emptyElem);
+
     return(
         <div id="addEventModal" className="modal">
             <div className="modal-content">
@@ -126,8 +138,12 @@ export function ModalAddEvent(props){
 }
 
 export function ModalAddEventParent(props){
+    var emptyElem = Utils.EMPTY_SELECT;
+
     var studentList = props.parentStudentList.map( elem => (<option value={elem.Username} key={elem.Username}>{elem.FirstName}</option>));
+    studentList.unshift(emptyElem);
     var teachings = props.teachings.map( elem => (<option value={elem.TeacherID}>{elem.Subject}</option>));
+    teachings.unshift(emptyElem);
 
     return(
         <div id="addEventModal" className="modal">
@@ -161,7 +177,7 @@ export function ModalAddEventParent(props){
 export function ModalResult(props){
     return (
         <div id="resultModal" className="modal">
-            <div class="modal-content modal-small-result">
+            <div className="modal-content modal-small-result">
                 <span className="close" onClick={() => closeModals("resultModal", (props.callBackFn ? props.callBackFn() : null))} >&times;</span>
                         
                     <h2 className="modal-text">{props.text}</h2>

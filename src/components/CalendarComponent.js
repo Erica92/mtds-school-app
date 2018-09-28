@@ -37,15 +37,22 @@ export default class Calendar extends React.Component {
         this.handleSubmitEventParent = this.handleSubmitEventParent.bind(this);
         this.handleSubmitEventTeacher = this.handleSubmitEventTeacher.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleModifyEvent = this.handleModifyEvent.bind(this);
         this.loadStudentInClass = this.loadStudentInClass.bind(this);
         this.acceptAppointment = this.acceptAppointment.bind(this);
         this.rejectAppointment = this.rejectAppointment.bind(this);
-        this.postAppointmentAccept = this.postAppointmentAccept.bind(this);
+        this.postAppointmentChange = this.postAppointmentChange.bind(this);
         this.refreshEvents = this.refreshEvents.bind(this);
+        this.fetchDataPersonalDataParent = ParentApi.fetchDataPersonalDataParent.bind(this);
+        this.fetchDataPersonalDataTeacher = TeacherApi.fetchDataPersonalDataTeacher.bind(this);
+        this.callBackRefreshEvents = this.callBackRefreshEvents.bind(this);
+
     }
     
     render() {
         var modalAddEventToRender;
+        var partecipantInfo = this.state.teacherInfo ? this.state.teacherInfo : this.state.parentInfo;
+        
         if(this.state.teacherID){
             console.log("render teacher calendar");
             modalAddEventToRender = (<ModalAddEvent event={this.state.selectedEvent} 
@@ -62,7 +69,8 @@ export default class Calendar extends React.Component {
                 <div id="calendar"></div>
                 <ModalViewEvent event={this.state.selectedEvent} 
                                 acceptAppointment={this.acceptAppointment} rejectAppointment={this.rejectAppointment}
-                                onSubmit={this.handleSubmitEventParent} handleInputChange={this.handleInputChange} />
+                                onSubmit={this.handleSubmitEventParent} handleInputChange={this.handleInputChange}
+                                partecipantInfo = {partecipantInfo} onSubmit={this.handleModifyEvent} />
                 <ModalResult text={this.state.resultMessage.message} buttonText="OK" callBackFn={this.refreshEvents} />
                 {modalAddEventToRender}
             </div>
@@ -82,7 +90,7 @@ export default class Calendar extends React.Component {
                         addEventButton: {
                           text: 'New Appointment',
                           click: function() {
-                            _this.updateSelectedEvent({});
+                            _this.newEvent();
                             Modals.openModal("addEventModal");
                           }
                         }
@@ -92,15 +100,8 @@ export default class Calendar extends React.Component {
                         center: 'title',
                         right: 'addEventButton month,agendaWeek,agendaDay'
                     },
-                    events: this.state.eventList,
-                    editable: true,
-                    droppable: true, // this allows things to be dropped onto the calendar
-                    drop: function() {
-                        // is the "remove after drop" checkbox checked?
-                        if ($('#drop-remove').is(':checked')) {
-                            // if so, remove the element from the "Draggable Events" list
-                            $(this).remove();
-                        }
+                    events: function(start, end, timezone, callback){
+                        callback(_this.state.eventList);
                     },
                     timeFormat: 'H:mm', // uppercase H for 24-hour clock
                     eventClick: function(calEvent, jsEvent, view){
@@ -121,6 +122,59 @@ export default class Calendar extends React.Component {
     componentWillUnmount(){
         console.log("unmounting CalendarComponent");
     }
+
+    componentDidUpdate() {
+        var _this = this;
+        //$('#calendar').fullCalendar( 'refetchEvents' );
+                            //remove old data
+        $('#calendar').fullCalendar('removeEvents');
+                     
+                    //Getting new event json data
+        $("#calendar").fullCalendar('addEventSource', this.state.eventList);
+                    //Updating new events
+        $('#calendar').fullCalendar('rerenderEvents');
+                    //getting latest Events
+        $('#calendar').fullCalendar( 'refetchEvents' );
+
+        //$('#calendar').fullCalendar( 'refetchEvents' );
+        /*$('#calendar').fullCalendar('destroy');
+
+        $('#calendar').fullCalendar({
+                    customButtons: {
+                        addEventButton: {
+                          text: 'New Appointment',
+                          click: function() {
+                            _this.newEvent();
+                            Modals.openModal("addEventModal");
+                          }
+                        }
+                      },
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'addEventButton month,agendaWeek,agendaDay'
+                    },
+                    events: this.state.eventList,
+                    timeFormat: 'H:mm', // uppercase H for 24-hour clock
+                    eventClick: function(calEvent, jsEvent, view){
+                        _this.updateSelectedEvent(calEvent);
+                        Modals.openModal("viewEventModal");
+                    }
+            });*/
+    }
+
+    handleModifyEvent(event){
+        event.preventDefault();
+        var selectedEventTmp = this.state.selectedEvent;
+        selectedEventTmp.StartTime = new Date(selectedEventTmp.StartTime);
+        selectedEventTmp.EndTime = new Date(selectedEventTmp.EndTime);
+
+        delete selectedEventTmp.status;
+        delete selectedEventTmp.color;
+
+        this.postAppointmentChange(selectedEventTmp);
+        Modals.closeModals("viewEventModal");
+    }
     
     handleSubmitEventParent(event) {
         event.preventDefault();
@@ -132,6 +186,9 @@ export default class Calendar extends React.Component {
         selectedEventTmp.StatusTeacher = (this.state.teacherID ? 1 : 0 );
         selectedEventTmp.StatusParent =  (this.state.parentID ? 1 : 0 );
         selectedEventTmp.AppointmentID = 0,
+
+        selectedEventTmp.StartTime = new Date(selectedEventTmp.StartTime);
+        selectedEventTmp.EndTime = new Date(selectedEventTmp.EndTime);
         
         delete selectedEventTmp['class'];
         //delete selectedEventTmp['title'];
@@ -151,6 +208,9 @@ export default class Calendar extends React.Component {
         selectedEventTmp.Fullday = ( selectedEventTmp.Fullday ? selectedEventTmp.Fullday : false );
         //selectedEventTmp["StudentID"] = '';
         
+        selectedEventTmp.StartTime = new Date(selectedEventTmp.StartTime);
+        selectedEventTmp.EndTime = new Date(selectedEventTmp.EndTime);
+
         delete selectedEventTmp['class'];
         //delete selectedEventTmp['title'];
         
@@ -186,7 +246,7 @@ StatusParent: 1
         delete eventAccepted.color;
 
         this.setState({selectedEvent: eventAccepted});
-        this.postAppointmentAccept(eventAccepted);
+        this.postAppointmentChange(eventAccepted);
     }
 
     rejectAppointment() {
@@ -202,7 +262,7 @@ StatusParent: 1
         delete eventAccepted.color;
 
         this.setState({selectedEvent: eventAccepted});
-        this.postAppointmentAccept(eventAccepted);
+        this.postAppointmentChange(eventAccepted);
     }
 
     handleInputChange(event) {
@@ -224,10 +284,10 @@ StatusParent: 1
 
         const name = target.name;
         
-        if(name === "StartTime" || name==="EndTime"){
+        /*if(name === "StartTime" || name==="EndTime"){
             let formattedDate = new Date(value);
             value = formattedDate;
-        }
+        }*/
         
         let selectedEventTemp = this.state.selectedEvent;
         selectedEventTemp[name] = value;
@@ -253,7 +313,7 @@ StatusParent: 1
         this.fetchDataTeachings(this.state.parentID, target.value);
     }
     
-    postAppointmentAccept(selectedEvent){
+    postAppointmentChange(selectedEvent){
 
         var _this = this;
         var request = selectedEvent;
@@ -315,7 +375,20 @@ StatusParent: 1
     refreshEvents(){
         console.log("refresh");
         if(this.props.teacherID){
-            this.props.loadTeacherEvents();
+            this.props.loadTeacherEvents()
+                .then(() => {
+                    //remove old data
+                    //$('#calendar').fullCalendar('removeEvents');
+                     
+                    //Getting new event json data
+                    //$("#calendar").fullCalendar('addEventSource', this.state.eventList);
+                    //Updating new events
+                    //$('#calendar').fullCalendar('rerenderEvents');
+                    //getting latest Events
+                    //$('#calendar').fullCalendar( 'refetchEvents' );
+                    //getting latest Resources
+                    //$('#calendar').fullCalendar( 'refetchResources' );
+                });
         } else if(this.props.parentID){
             this.props.loadParentEvents();
         }
@@ -336,7 +409,28 @@ StatusParent: 1
     //this was created because there was a "this" misunderstanding with fullCalendar
     updateSelectedEvent(calEvent){
         var originalEvent = calEvent && calEvent.originalEvent ? calEvent.originalEvent : {};
-        this.setState({selectedEvent: originalEvent});
+        var premiseEventPartecipant;
+        var _this = this;
+
+        if(this.state.teacherID){
+            premiseEventPartecipant = this.fetchDataPersonalDataParent(originalEvent.ParentID);
+        }
+        if(this.state.parentID){
+            premiseEventPartecipant = this.fetchDataPersonalDataTeacher(originalEvent.TeacherID);
+        }
+        
+        premiseEventPartecipant.then(function(){
+            _this.setState((prevState, props) => {return {selectedEvent: originalEvent} });
+        });
+        //this.setState({selectedEvent: originalEvent});
+    }
+
+    newEvent(){
+        this.setState({selectedEvent: {} });
+    }
+
+    callBackRefreshEvents(eventList){
+        return eventList;
     }
                 
 }

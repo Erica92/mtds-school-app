@@ -3,6 +3,7 @@ import BaseTile from './BaseTiles';
 import {SectionTitleTile, TileHeader} from './BaseTiles';
 import {TableRow, Spinner} from './BaseComponents';
 import {InputText} from '../components/InputComponents';
+import * as Utils from '../utils/Utils';
 
 export function PaymentListComponent(props){
 
@@ -48,7 +49,7 @@ export function PaymentForm(props){
             <div className="input-group">
                 <label htmlFor="Circuit">Circuit</label>
                 <select name="Circuit" onChange={props.handleInputChange}>
-                    <option value="">-</option>
+                    {Utils.EMPTY_SELECT}
                     <option value="Visa">Visa</option>
                     <option value="Mastercard">Mastercard</option>
                     <option value="VisaElectron">VisaElectron</option>

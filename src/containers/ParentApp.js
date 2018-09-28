@@ -30,10 +30,11 @@ export default class ParentApp extends React.Component {
             prevPageState: ["HomePage"]
         }
         
-        this.menuList = [{linkLabel: "Personal Data", linkName:"ParentPersonalDataPage", icon:""},
-                          {linkLabel: "Appointments", linkName:"AppointmentsPage", icon:""},
-                          {linkLabel: "Payments", linkName:"PaymentsPage", icon:""},
-                          {linkLabel: "Logout", linkName:"#", icon:""}];
+        this.menuList = [{linkLabel: "Home Page", linkName:"HomePage", icon:""},
+                        {linkLabel: "Personal Data", linkName:"ParentPersonalDataPage", icon:""},
+                        {linkLabel: "Appointments", linkName:"AppointmentsPage", icon:""},
+                        {linkLabel: "Payments", linkName:"PaymentsPage", icon:""},
+                        {linkLabel: "Logout", linkName:"#", icon:""}];
         
         Utils.goToPage = Utils.goToPage.bind(this);
         Utils.goToPrevPage = Utils.goToPrevPage.bind(this);
