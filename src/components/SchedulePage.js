@@ -5,6 +5,7 @@ import {TileHeader} from './BaseTiles';
 import './BaseStyle.css';
 import * as CONSTANTS from '../api/apiUtils';
 import * as Utils from '../utils/Utils';
+import * as TeacherAPI from '../api/teacherAPI';
 
 export default class SchedulePage extends React.Component {
     constructor(props) {
@@ -16,10 +17,12 @@ export default class SchedulePage extends React.Component {
             teacher: this.props.teacher,
             selectedClass: this.props.selectedClass
         }
+
+        this.fetchDataSchedule = TeacherAPI.fetchDataSchedule.bind(this);
     }
     
     componentDidMount(){
-        this.fetchDataSchedule(this.state.teacher, this.state.selectedClass.ClassID, "week");
+        this.fetchDataSchedule(this.state.teacher,"week", this.state.selectedClass.ClassID);
         console.log("componentDidMount!!!");
     }
     
@@ -65,14 +68,5 @@ export default class SchedulePage extends React.Component {
         );
     }
 
-    fetchDataSchedule(teacherID, classID, scope){
-        fetch(CONSTANTS.HOST+"/api/v1/teacher/agenda?id="+teacherID+"&scope="+scope+"&class="+classID)
-            .then(response => response.json())
-            .then( (result) => this.setState({
-                isLoading: false,
-                scheduleList: result
-            })
-        );
-    }
 
 }

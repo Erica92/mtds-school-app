@@ -4,6 +4,7 @@ import {SectionTitleTile} from './BaseTiles';
 import {SquareTile} from './BaseTiles';
 import * as CONSTANTS from '../api/apiUtils';
 import StudentListComponent from './StudentListComponent';
+import * as TeacherAPI from '../api/teacherAPI';
 
 export default class ClassDetailsPage extends React.Component {
     
@@ -17,6 +18,8 @@ export default class ClassDetailsPage extends React.Component {
             },
             classDetails: this.props.selectedClass
         }
+
+        this.fetchDataStudentClass = TeacherAPI.fetchDataStudentClass.bind(this);
     }
     
     componentDidMount(){
@@ -32,7 +35,8 @@ export default class ClassDetailsPage extends React.Component {
                     <SquareTile title="Program" onClick={()=>this.props.goToPage("ProgramPage")} />
                     <SquareTile title="Schedule" onClick={()=>this.props.goToPage("SchedulePage")} />
                     <SquareTile title="Grades" onClick={()=>this.props.goToPage("GradesPage")} />
-                    <StudentListComponent studentList={this.state.studentClassList.data} onClickElem={this.props.goToPage} />
+                    <StudentListComponent studentList={this.state.studentClassList} 
+                        onClickElem={() => {}} callBackFn={() => {}} />
                 </div>
             </div>
         );
@@ -49,20 +53,6 @@ export default class ClassDetailsPage extends React.Component {
             })
         );
     }
-
-    fetchDataStudentClass(classID){
-        fetch(CONSTANTS.HOST+"/api/v1/class/students?class="+classID)
-            .then(response => response.json())
-            .then( (result) => this.setState({
-                studentClassList: {
-                    data: result,
-                    isLoading: false
-                }
-            })
-        );
-    }
-
-
 
     //http://localhost:8080/api/v1/teacher/agenda?id=T1&scope=day&class=C1
     //http://localhost:8080/api/v1/teacher/grades?id=T5&class=C5&subject=SubjectName5

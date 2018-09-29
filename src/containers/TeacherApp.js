@@ -89,17 +89,20 @@ class TeacherApp extends React.Component {
 
     
     fetchDataClassesList(teacherID){
-        fetch("http://localhost:8080/api/v1/teacher/classes?id="+teacherID)
+
+        var _this = this;
+        fetch("http://localhost:8080/api/v1/teacher/"+teacherID+"/classes")
             .then(response => response.json())
-            .then( (result) => this.setState({
-                isLoading: false,
-                classList: result
-            })
-        );
+            .then( (result) => result.map((elem) => elem.TeachClass))
+            .then( (resultList) => this.setState({
+                    isLoading: false,
+                    classList: resultList
+                })
+            );
     }
     
     fetchDataNotifications(){
-        fetch("http://localhost:8080/api/v1/teacher/notifications?id="+this.state.teacherID)
+        fetch("http://localhost:8080/api/v1/teacher/"+this.state.teacherID+"/notifications")
             .then(response => response.json())
             .then( (result) => this.setState({
                 isLoading: false,
@@ -111,7 +114,7 @@ class TeacherApp extends React.Component {
     }
     
     fetchDataSchedule(teacherID, scope){
-        fetch(CONSTANTS.HOST+"/api/v1/teacher/agenda?id="+teacherID+"&scope="+scope)
+        fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/agenda?scope="+scope)
             .then(response => response.json())
             .then( (result) => ( result == null )? 
                  this.setState({isLoading: false, schedule: []})
@@ -121,7 +124,7 @@ class TeacherApp extends React.Component {
     }
     
     fetchDataAppointments(teacherID, scope){
-        fetch(CONSTANTS.HOST+"/api/v1/teacher/appointments?id="+teacherID+"&scope="+scope)
+        fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/appointments?scope="+scope)
             .then(response => response.json())
             .then( (result) => this.setState({
                 isLoading: false,
@@ -135,7 +138,7 @@ class TeacherApp extends React.Component {
     
     render(){
         const {isLoading, news, classList, notifications} = this.state;
-        console.log("Rendering App - classList length"+classList.length+" state:"+this.state.pageState);
+        //console.log("Rendering App - classList length"+classList.length+" state:"+this.state.pageState);
         
         var componentToRender = null;
         if(isLoading){
