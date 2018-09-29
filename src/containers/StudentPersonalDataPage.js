@@ -28,7 +28,7 @@ export default class StudentPersonalDataPage extends React.Component {
     
     componentDidMount(){
         console.log("componentDidMount!!!");
-        this.fetchDataPersonalDataStudent(this.state.student.Username)
+        this.fetchDataPersonalDataStudent(this.props.parent, this.state.student.Username)
             .then(() => {         
             let studentOrig = Object.assign({}, this.state.studentInfo);
             

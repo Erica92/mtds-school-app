@@ -1,8 +1,10 @@
 import * as CONSTANTS from './apiUtils';
 import * as Modals from '../components/ModalComponents';
 
+const PARENT_BASE_ENDPOINT = "/api/v1/parent/";
+
 export function fetchDataNotifications(parentID){
-    return fetch(CONSTANTS.HOST+"/api/v1/parent/notifications?id="+parentID)
+    return fetch(CONSTANTS.HOST+"/api/v1/parent/"+parentID+"/notifications")
         .then(response => response.json())
         .then( (result) => this.setState({
             isLoading: false,
@@ -12,34 +14,36 @@ export function fetchDataNotifications(parentID){
 }
 
 export function fetchDataParentStudents(parentID){
-    return fetch(CONSTANTS.HOST+"/api/v1/parent/students?id="+parentID)
+    return fetch(CONSTANTS.HOST+"/api/v1/parent/"+parentID+"/students")
         .then(response => response.json())
-        .then( (result) => this.setState({
+        .then((result) => result.map((elem) => elem.Student))
+        .then( (resultList) => this.setState({
             isLoading: false,
-            studentList: result
+            studentList: resultList
         })
     );
 }
 
 export function fetchDataParentAppointments(parentID, scope){
 
-    var endpoint = CONSTANTS.HOST+"/api/v1/parent/appointments?id="+parentID;
+    var endpoint = CONSTANTS.HOST+"/api/v1/parent/"+parentID+"/appointments";
 
     if(scope){
-        endpoint += "&scope="+scope;
+        endpoint += "?scope="+scope;
     }
 
     return fetch(endpoint)
         .then(response => response.json())
-        .then( (result) => this.setState({
+        .then((result) => result.map((elem) => elem.Appointment))
+        .then( (resultList) => this.setState({
             isLoading: false,
-            appointmentsList: result
+            appointmentsList: resultList
         })
     );
 }
 
 export function fetchDataPersonalDataParent(username){
-    return fetch(CONSTANTS.HOST+"/api/v1/parent/info?id="+username)
+    return fetch(CONSTANTS.HOST+"/api/v1/parent/"+username+"/info")
         .then(response => response.json())
         .then( (result) => this.setState({
             parentInfo: result,
@@ -48,8 +52,8 @@ export function fetchDataPersonalDataParent(username){
     );
 }
 
-export function fetchDataPersonalDataStudent(username){
-    return fetch(CONSTANTS.HOST+"/api/v1/student/info?id="+username)
+export function fetchDataPersonalDataStudent(username,studentID){
+    return fetch(CONSTANTS.HOST+"/api/v1/parent/"+username+"/students/"+studentID)
         .then(response => response.json())
         .then( (result) => this.setState({
             studentInfo: result,
@@ -60,10 +64,10 @@ export function fetchDataPersonalDataStudent(username){
 
 
 //http://localhost:8080/api/v1/parent/students/grades?id=P1&semester=2
-export function fetchDataStudentGrades(parentID, studentID){
+export function fetchDataStudentGrades(parentID, studentID, semester){
     
-    let endpoint = CONSTANTS.HOST+"/api/v1/parent/students/grades?id="+parentID;
-    if(studentID) endpoint += "&studentid="+studentID;
+    let endpoint = CONSTANTS.HOST+"/api/v1/parent/"+parentID+"/students/"+studentID+"/grades";
+    if(semester) endpoint += "?semester="+semester;
     
     return fetch(endpoint)
         .then(response => response.json())
@@ -83,25 +87,26 @@ export function fetchDataStudentGrades(parentID, studentID){
 }
 
 export function fetchDataPayment(username, status){
-    let endpoint = CONSTANTS.HOST+"/api/v1/parent/payments?id="+username;
+    let endpoint = CONSTANTS.HOST+"/api/v1/parent/"+username+"/payments";
     if(status){
-        endpoint += "&status="+status;
+        endpoint += "?status="+status;
     }
 
     var outerThis = this;
     
     return fetch(endpoint)
         .then(response => response.json())
-        .then(function(result){
+        .then((result) => result.map((elem) => elem.Payment))
+        .then(function(resultList){
             console.log("nella fun");
             if(status == 2){
                 outerThis.setState({
-                    paymentListHistory: result,
+                    paymentListHistory: resultList,
                     isLoading: false
                 });
             } else if(status == 1){
                 outerThis.setState({
-                    paymentList: result,
+                    paymentList: resultList,
                     isLoading: false
                 });
             }
@@ -166,7 +171,7 @@ export function postParentPayment(selectedPayment, cardInfo, goToPage){
     }
 
 export function fetchDataTeachings(parentID, studentID){
-    return fetch(CONSTANTS.HOST+"/api/v1/parent/teachings?id="+parentID+"&student="+studentID)
+    return fetch(CONSTANTS.HOST+"/api/v1/parent/"+parentID+"/students/"+studentID+"/subjects")
         .then(response => response.json())
         .then( (result) => this.setState({
             teachings: result,
