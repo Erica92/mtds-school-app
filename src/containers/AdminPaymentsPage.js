@@ -1,11 +1,5 @@
 import React from 'react';
 import {Spinner} from '../components/BaseComponents';
-import {SectionTitleTile} from '../components/BaseTiles';
-import AdminClassesContent from "../components/AdminClassesContent";
-import StudentListComponent from '../components/StudentListComponent';
-import CreateStudentDataPage from '../containers/CreateStudentDataPage';
-import StudentPersonalDataPage from '../containers/StudentPersonalDataPage';
-import StudentDetailsPage from "../containers/StudentDetailsPage";
 
 import * as ApiCalls from "../api/adminAPI";
 import * as Utils from "../utils/Utils";
@@ -38,12 +32,6 @@ export default class AdminPaymentsPage extends React.Component {
             prevPageState: ["CreatePaymentsPage"]
         };
 
-        this.goToPage = Utils.goToPage.bind(this);
-        this.goToPrevPage = Utils.goToPrevPage.bind(this);
-        this.selectClass = this.selectClass.bind(this);
-        this.selectStudent = this.selectStudent.bind(this);
-
-
         this.fetchDataClasses = ApiCalls.fetchDataClasses.bind(this);
         this.fetchDataStudentClass = ApiCalls.fetchDataStudentClass.bind(this);
         this.postcreatePayment = ApiCalls.postcreatePayment.bind(this);
@@ -65,17 +53,6 @@ export default class AdminPaymentsPage extends React.Component {
         ])
     }
 
-    selectStudent(student){
-        this.setState({selectedStudent: student});
-    }
-
-
-
-    selectClass(selectedElem){
-        this.setState({ selectedClass: selectedElem});
-        this.fetchDataStudentClass(selectedElem.ClassID);
-
-    }
 
     loadStudentInClass(event) {
         const target = event.target;
@@ -115,31 +92,8 @@ export default class AdminPaymentsPage extends React.Component {
         if(isLoading){
             componentToRender = (<Spinner />);
         } else {
-            if(this.state.pageState === "AdminClassesContent"){
-                componentToRender = (<AdminClassesContent classList={classList} goToPage={this.goToPage} goToPrevPage={this.props.goToPrevPage}
-                                                          selectClass={this.selectClass}/>);
-            }
-            else if(this.state.pageState === "ClassPage"){
-                if(this.state.studentClassList.isLoading){
-                    componentToRender = (<Spinner />);
-                }else{
-                    componentToRender = (
-                        <div className='app-content'>
-                            <SectionTitleTile title="Student Page" goToPrevPage={this.props.goToPrevPage} />
-                            <button className="right-button" onClick={() => this.goToPage("CreatePaymentsPage")} >Create Student</button>
-                            <StudentListComponent studentList={this.state.studentClassList.data}
-                                                  onClickElem={this.selectStudent}
-                                                  callBackFn={() => this.goToPage("StudentDetailsPage")}/>
-                        </div>
-                    );
-                }
-            } else if(this.state.pageState === "StudentDetailsPage"){
-                componentToRender = (
-                    <StudentDetailsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
-                                        selectedStudent={this.state.selectedStudent} parentID={''} />
-                );
-            }else if(this.state.pageState === "CreatePaymentsPage"){
-                componentToRender = (<CreatePaymentsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
+            if(this.state.pageState === "CreatePaymentsPage"){
+                componentToRender = (<CreatePaymentsPage goToPage={this.props.goToPage} goToPrevPage={this.props.goToPrevPage}
                          studentClassList = {this.state.studentClassList.data} classList={classList}
                          loadStudentInClass = {(event) => this.loadStudentInClass(event)}
                             payment={this.state.createdPayment}
@@ -149,9 +103,6 @@ export default class AdminPaymentsPage extends React.Component {
 
 
 
-            }else if(this.state.pageState === "StudentPersonalDataPage"){
-                componentToRender = (<StudentPersonalDataPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
-                                                              student={this.state.selectedStudent} />);
             }
 
         }

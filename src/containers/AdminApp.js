@@ -21,6 +21,7 @@ export default class AdminApp extends React.Component {
         super(props);
 
         this.state = {
+            adminID: "A1",
             pageState: "HomePage",
             prevPageState: ["HomePage"],
             newNotification: {}
@@ -49,14 +50,14 @@ export default class AdminApp extends React.Component {
                 componentToRender = (<AdminDashboard goToPage={this.goToPage} />);
             } else if(this.state.pageState === "AdminStudentsPage"){
                 componentToRender = (<AdminStudentsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
-                                                       selectedClass={this.state.selectedClass} />);
+                                                       selectedClass={this.state.selectedClass} adminID={this.state.adminID} />);
             } else if(this.state.pageState === "AdminNotificationsPage"){
                 componentToRender = (<NotificationForm goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
                                                         handleSubmit={this.handleSubmitNotification}
                                                         handleInputChange={this.handleInputChangeNotification} />);
             }
             else if(this.state.pageState === "AdminPaymentsPage"){
-                componentToRender = (<AdminPaymentsPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
+                componentToRender = (<AdminPaymentsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
                                                        selectedClass={this.state.selectedClass} />);
             }/* else if(this.state.pageState === "AdminNotificationsPage"){
                 componentToRender = (<ClassDetailsPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}

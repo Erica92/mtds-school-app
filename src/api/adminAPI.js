@@ -14,7 +14,7 @@ export function fetchDataNotifications(){
 }
 
 export function fetchDataClasses(){
-    fetch(CONSTANTS.HOST+"/api/v1/admin/classes")
+    fetch(CONSTANTS.HOST+"/api/v1/classes/")
         .then(response => response.json())
         .then( (result) => this.setState({
             classList: result,
@@ -25,11 +25,12 @@ export function fetchDataClasses(){
 
 
 export function fetchDataStudentClass(classID){
-    fetch(CONSTANTS.HOST+"/api/v1/class/students?class="+classID)
+    fetch(CONSTANTS.HOST+"/api/v1/classes/"+classID+"/students")
         .then(response => response.json())
-        .then( (result) => this.setState({
+        .then((result) => result.map((elem) => elem.Student))
+        .then( (resultList) => this.setState({
                 studentClassList: {
-                    data: result,
+                    data: resultList,
                     isLoading: false
                 }
             })

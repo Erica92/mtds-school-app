@@ -66,24 +66,52 @@ export function fetchDataPersonalDataStudent(username,studentID){
 //http://localhost:8080/api/v1/parent/students/grades?id=P1&semester=2
 export function fetchDataStudentGrades(parentID, studentID, semester){
     
-    let endpoint = CONSTANTS.HOST+"/api/v1/parent/"+parentID+"/students/"+studentID+"/grades";
+    let userType;
+
+    let endpoint;
+    if(parentID){
+        userType = "parent";
+        endpoint = CONSTANTS.HOST+"/api/v1/parent/"+parentID+"/students/"+studentID+"/grades";
+    } else {
+        userType = "admin";
+        endpoint = CONSTANTS.HOST+"/api/v1/student/"+studentID+"/grades";
+    }
     if(semester) endpoint += "?semester="+semester;
     
-    return fetch(endpoint)
-        .then(response => response.json())
-        .then( (result) => 
-              {if(result && result.length > 0){
-                this.setState({
-                    isLoading: false,
-                    gradesList: result[0].SubjectGrades
-                })
-            } else {
-                this.setState({
-                    isLoading: false,
-                    gradesList: []
-                })
-            }}
-    );
+    if(userType === "parent")
+    {
+        return fetch(endpoint)
+            .then(response => response.json())
+            .then( (result) => 
+                {if(result && result.length > 0){
+                    this.setState({
+                        isLoading: false,
+                        gradesList: result[0].SubjectGrades
+                    })
+                } else {
+                    this.setState({
+                        isLoading: false,
+                        gradesList: []
+                    })
+                }}
+        );
+    } else {
+        return fetch(endpoint)
+            .then(response => response.json())
+            .then( (result) => 
+                {if(result && result.length > 0){
+                    this.setState({
+                        isLoading: false,
+                        gradesList: []//result[0].SubjectGrades
+                    })
+                } else {
+                    this.setState({
+                        isLoading: false,
+                        gradesList: []
+                    })
+                }}
+        );
+    }
 }
 
 export function fetchDataPayment(username, status){
@@ -173,8 +201,9 @@ export function postParentPayment(selectedPayment, cardInfo, goToPage){
 export function fetchDataTeachings(parentID, studentID){
     return fetch(CONSTANTS.HOST+"/api/v1/parent/"+parentID+"/students/"+studentID+"/subjects")
         .then(response => response.json())
-        .then( (result) => this.setState({
-            teachings: result,
+        .then((result) => result.map((elem) => elem.TeachClass))
+        .then( (resultList) => this.setState({
+            teachings: resultList,
             isLoading: false
         })
     );

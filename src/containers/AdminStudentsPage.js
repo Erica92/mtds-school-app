@@ -16,6 +16,7 @@ export default class AdminStudentsPage extends React.Component {
         super(props);
         
         this.state = {
+            adminID: this.props.adminID,
             isLoading: true,
             classList : [],
             selectedClass : null,
@@ -108,7 +109,7 @@ export default class AdminStudentsPage extends React.Component {
 
     getFetchAll(){
         return Promise.all([
-            this.fetchDataClasses(this.state.parentID),
+            this.fetchDataClasses(),
         ])
     }
 
