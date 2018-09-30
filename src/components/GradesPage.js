@@ -62,7 +62,7 @@ export default class GradesPage extends React.Component {
         
         console.log(data);
         
-        fetch(CONSTANTS.HOST+"/api/v1/teacher/grades", {
+        fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/grades", {
             method: "POST",
             mode: 'cors',
             headers: {
@@ -70,15 +70,21 @@ export default class GradesPage extends React.Component {
               'Content-Type': 'application/json'
             },
             body: data
-        }).then((response) => response.json())
-            .then((jsonRes) => {
+        }).then(function(response) {
+            let jsonRes = response.json()
+            if(response.ok){
+                _this.setState({
+                    resultMessage: {
+                        code: response.status,
+                        message: "Grade successfully added"
+                    },
+                });
+                _this.fetchDataStudentGrades(teacherID, classID, subject);
+            } else {
                 _this.setState({resultMessage: jsonRes});
-                Modals.closeModals("singleGradeModal");
-                Modals.openModal("resultModal");
-
-                if(_this.state.resultMessage.code == "200"){
-                    _this.fetchDataStudentGrades(teacherID, classID, subject);
-                }
+            }
+            Modals.closeModals("singleGradeModal");
+            Modals.openModal("resultModal");
         });
         
         /*.then((res) => res.json())

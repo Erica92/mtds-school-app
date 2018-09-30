@@ -107,7 +107,7 @@ export default class TeacherPersonalDataPage extends React.Component {
 
         console.log(data);
         
-        fetch(CONSTANTS.HOST+"/api/v1/teacher/info", {
+        fetch(CONSTANTS.HOST+"/api/v1/teacher/"+this.state.teacherID+"/info", {
             method: "POST",
             mode: 'cors',
             headers: {
@@ -115,11 +115,20 @@ export default class TeacherPersonalDataPage extends React.Component {
               'Content-Type': 'application/json'
             },
             body: data
-        }).then((response) => response.json())
-            .then((jsonRes) => {
+        }).then(function(response) { 
+            let jsonRes = response.json();
+            if(response.ok){
+                _this.setState({
+                    resultMessage: {
+                        code: response.status,
+                        message: "Personal Info updated successfully"
+                    },
+                    teacherInfo: jsonRes
+                });
+            } else {
                 _this.setState({resultMessage: jsonRes});
-                Modals.openModal("resultModal");
-                _this.fetchDataPersonalDataTeacher(this.state.teacherID);
+            }
+            Modals.openModal("resultModal");
         });
     }
     

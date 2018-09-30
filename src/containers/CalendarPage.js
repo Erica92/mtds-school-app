@@ -151,7 +151,7 @@ export default class CalendarPage extends React.Component {
     }
     
     loadParentEvents(){
-        this.fetchDataParentAppointments(this.props.parentID)
+        return (this.fetchDataParentAppointments(this.props.parentID)
             .then( () => {
             
                 let eventList = this.makeCalendarEventList(this.state.appointmentsList);
@@ -160,7 +160,7 @@ export default class CalendarPage extends React.Component {
                     allLoaded: true,
                     eventList: eventList
                 });
-        });
+        }));
     }
 
     loadTeacherEvents(){

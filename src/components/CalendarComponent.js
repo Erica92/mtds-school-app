@@ -125,17 +125,19 @@ export default class Calendar extends React.Component {
 
     componentDidUpdate() {
         var _this = this;
+        
+        
         //$('#calendar').fullCalendar( 'refetchEvents' );
-                            //remove old data
-        $('#calendar').fullCalendar('removeEvents');
-                     
+/*                            //remove old data
+        $('#calendar').fullCalendar('removeEvents');                     
                     //Getting new event json data
         $("#calendar").fullCalendar('addEventSource', this.state.eventList);
                     //Updating new events
         $('#calendar').fullCalendar('rerenderEvents');
                     //getting latest Events
         $('#calendar').fullCalendar( 'refetchEvents' );
-
+*/
+        
         //$('#calendar').fullCalendar( 'refetchEvents' );
         /*$('#calendar').fullCalendar('destroy');
 
@@ -207,7 +209,11 @@ export default class Calendar extends React.Component {
         selectedEventTmp["ParentID"] = (this.state.parentID ? this.state.parentID : '');
         selectedEventTmp.Fullday = ( selectedEventTmp.Fullday ? selectedEventTmp.Fullday : false );
         //selectedEventTmp["StudentID"] = '';
-        
+        selectedEventTmp.Status = 0,
+        selectedEventTmp.StatusTeacher = (this.state.teacherID ? 1 : 0 );
+        selectedEventTmp.StatusParent =  (this.state.parentID ? 1 : 0 );
+        selectedEventTmp.AppointmentID = 0,
+
         selectedEventTmp.StartTime = new Date(selectedEventTmp.StartTime);
         selectedEventTmp.EndTime = new Date(selectedEventTmp.EndTime);
 
@@ -320,21 +326,35 @@ StatusParent: 1
         var data = JSON.stringify(request);
 
         var endpoint = CONSTANTS.HOST;
-        endpoint += "/api/v1/parent/appointments";
+        if(this.state.parentID){
+            endpoint += "/api/v1/parent/"+this.state.parentID+"/appointments";
+        } else if(this.state.teacherID){
+            endpoint += "/api/v1/teacher/"+this.state.teacherID+"/appointments";
+        }
 
         fetch(endpoint, {
-            method: "PUT",
+            method: "POST",
             mode: 'cors',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
             body: data
-        }).then((response) => response.json())
-            .then((jsonRes) => {
+        }).then(function(response){
+            let jsonRes = response.json()
+
+            if(response.ok){
+                _this.setState({
+                    resultMessage: {
+                        code: response.status,
+                        message: 'Appointment updated successfully'
+                    }
+                });
+            } else {
                 _this.setState({resultMessage: jsonRes});
-                Modals.closeModals("viewEventModal");
-                Modals.openModal("resultModal");
+            }
+            Modals.closeModals("viewEventModal");
+            Modals.openModal("resultModal");
         });
     }
 
@@ -348,7 +368,9 @@ StatusParent: 1
         console.log(data);
 
         var endpoint = CONSTANTS.HOST;
-        endpoint = (this.state.teacherID ? endpoint+"/api/v1/teacher/appointment" : endpoint+"/api/v1/parent/appointment")
+        endpoint = (this.state.teacherID ? 
+            endpoint+"/api/v1/teacher/"+this.state.teacherID+"/appointments" 
+            : endpoint+"/api/v1/parent/"+this.setState.parentID+"/appointments")
         
         fetch(endpoint, {
             method: "POST",
@@ -358,13 +380,22 @@ StatusParent: 1
               'Content-Type': 'application/json'
             },
             body: data
-        }).then((response) => response.json())
-            .then((jsonRes) => {
+        }).then(function(response){
+            let jsonRes = response.json()
+            if(response.ok){
+                _this.setState({
+                    resultMessage: {
+                        code: response.status,
+                        message: "Appointment created successfully"
+                    }
+                });
+            } else {
                 _this.setState({resultMessage: jsonRes});
-                Modals.closeModals("viewEventModal");
-                Modals.openModal("resultModal");
-                //eventually create a notification here
-        });
+            }
+
+            Modals.closeModals("viewEventModal");
+            Modals.openModal("resultModal");
+        })
         
         /*.then((res) => res.json())
             .then((data) =>  console.log(data))
@@ -378,32 +409,45 @@ StatusParent: 1
             this.props.loadTeacherEvents()
                 .then(() => {
                     //remove old data
-                    //$('#calendar').fullCalendar('removeEvents');
+                    $('#calendar').fullCalendar('removeEvents');
                      
                     //Getting new event json data
-                    //$("#calendar").fullCalendar('addEventSource', this.state.eventList);
+                    $("#calendar").fullCalendar('addEventSource', this.props.eventList);
                     //Updating new events
-                    //$('#calendar').fullCalendar('rerenderEvents');
+                    $('#calendar').fullCalendar('rerenderEvents');
                     //getting latest Events
                     //$('#calendar').fullCalendar( 'refetchEvents' );
                     //getting latest Resources
                     //$('#calendar').fullCalendar( 'refetchResources' );
                 });
         } else if(this.props.parentID){
-            this.props.loadParentEvents();
+            this.props.loadParentEvents()
+                .then(() => {
+                    //remove old data
+                    $('#calendar').fullCalendar('removeEvents');
+                     
+                    //Getting new event json data
+                    $("#calendar").fullCalendar('addEventSource', this.props.eventList);
+                    //Updating new events
+                    $('#calendar').fullCalendar('rerenderEvents');
+                });
         }
-        
+        /*
        //remove old data
         $('#calendar').fullCalendar('removeEvents');
-         
+        
         //Getting new event json data
         $("#calendar").fullCalendar('addEventSource', this.state.eventList);
+        
         //Updating new events
         $('#calendar').fullCalendar('rerenderEvents');
+
+        
         //getting latest Events
         $('#fullCalendar').fullCalendar( 'refetchEvents' );
         //getting latest Resources
         //$('#calendar').fullCalendar( 'refetchResources' );
+        */
     }
 
     //this was created because there was a "this" misunderstanding with fullCalendar
