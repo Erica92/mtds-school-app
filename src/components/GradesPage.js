@@ -55,7 +55,8 @@ export default class GradesPage extends React.Component {
         //var form = new FormData(document.getElementById('DataForm'));
         var array = new Array();
         array.push(gradeMod);
-        var request = {Grades: array}
+        //var request = {Grades: array}
+        var request = array;
         var data = JSON.stringify(request);
 
         var _this = this;
