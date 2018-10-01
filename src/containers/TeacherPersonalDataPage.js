@@ -107,7 +107,7 @@ export default class TeacherPersonalDataPage extends React.Component {
 
         console.log(data);
         
-        fetch(CONSTANTS.HOST+"/api/v1/teacher/"+this.state.teacherID+"/info", {
+        var premResponse = fetch(CONSTANTS.HOST+"/api/v1/teacher/"+this.state.teacherID+"/info", {
             method: "POST",
             mode: 'cors',
             headers: {
@@ -115,8 +115,11 @@ export default class TeacherPersonalDataPage extends React.Component {
               'Content-Type': 'application/json'
             },
             body: data
-        }).then(function(response) { 
-            let jsonRes = response.json();
+        });
+
+        var premJsonRes = premResponse.then((response) => response.json());
+
+        Promise.all([premResponse,premJsonRes]).then(function([response, jsonRes]) { 
             if(response.ok){
                 _this.setState({
                     resultMessage: {

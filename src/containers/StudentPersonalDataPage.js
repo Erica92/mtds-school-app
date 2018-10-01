@@ -18,7 +18,7 @@ export default class StudentPersonalDataPage extends React.Component {
             studentInfo: {},
             studentInfoMod: {},
             isLoading: true,
-            modificationResult: null
+            resultMessage: {}
         }
         
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -93,7 +93,7 @@ Status: "1"
                             <input className="button-base cancel-button" type="button" value="Cancel" onClick={() => this.cancelChanges()} />
                         </div>
                     </form>
-                    <ModalResult text={this.state.modificationResult} buttonText="OK" />
+                    <ModalResult text={this.state.resultMessage.message} buttonText="OK" />
                 </div>
                 
 
@@ -104,10 +104,18 @@ Status: "1"
     postStudentInfo(){
         //var form = new FormData(document.getElementById('DataForm'));
         var data = JSON.stringify(this.state.studentInfoMod);
+        var _this = this;
         
-        console.log(data);
-        
-        fetch(CONSTANTS.HOST+"/api/v1/student/info", {
+        let endpoint;
+        if(this.props.parent){
+            endpoint = CONSTANTS.HOST+"/api/v1/parent/"+this.props.parent+"/students/"+this.state.student.Username;
+        } else {
+            endpoint = CONSTANTS.HOST+"/api/v1/student/"+this.state.student.Username+"/info";
+        }
+
+        var newState;
+
+        fetch(endpoint, {
             method: "POST",
             mode: 'cors',
             headers: {
@@ -115,28 +123,29 @@ Status: "1"
               'Content-Type': 'application/json'
             },
             body: data
-        }).then((res) => res.json())
-            .then((data) => {
-            console.log("data:"+data);
-            let message = "";
-            if(data.code == 200){
-                message = "Personal Data correctly updated";
+        }).then(function(res){
+            let data = res.json();
+
+            if(res.ok){
+                let studentOrig = Object.assign({}, _this.state.studentInfoMod);
+
+                newState = {
+                    resultMessage: {
+                        code: res.status,
+                        message: "Personal Data correctly updated"
+                    },
+                    studentInfo: studentOrig,
+                };
             } else {
-                message = "Sorry, an error occurred";
-                console.log("post error:"+data.message);
+                newState = {
+                    resultMessage: data
+                };
             }
-            
-            this.setState({
-                modificationResult: message
-            });
+
             Modals.openModal("resultModal");
-            
-            this.fetchDataPersonalDataStudent(this.state.student.Username)
-                .then(() => {         
-                    let studentOrig = Object.assign({}, this.state.studentInfo);
-                    this.setState({studentInfoMod: studentOrig});
-            })
-        });/*.then((res) => res.json())
+        }).then(() => this.setState(newState));
+        
+        /*.then((res) => res.json())
             .then((data) =>  console.log(data))
             .catch((err)=>console.log(err))*/
     }

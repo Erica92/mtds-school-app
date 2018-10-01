@@ -157,7 +157,7 @@ function setStatePaymentList(result, status){
     return stateToReturn;
 }
 
-export function postParentPayment(selectedPayment, cardInfo, goToPage){
+export function postParentPayment(selectedPayment, cardInfo, parentID, goToPage){
         //var form = new FormData(document.getElementById('DataForm'));
         
         var paymentInfo = {
@@ -169,7 +169,7 @@ export function postParentPayment(selectedPayment, cardInfo, goToPage){
         
         console.log(data);
         
-        fetch(CONSTANTS.HOST+"/api/v1/parent/payments", {
+        var premResponse = fetch(CONSTANTS.HOST+"/api/v1/parent/"+parentID+"/payments", {
             method: "POST",
             mode: 'cors',
             headers: {
@@ -177,14 +177,25 @@ export function postParentPayment(selectedPayment, cardInfo, goToPage){
               'Content-Type': 'application/json'
             },
             body: data
-        }).then((res) => res.json())
-            .then((data) => {
-            console.log("data:"+data);
-            
-            this.setState({
-                paymentResult: data
-            });
+        });
+        
+        var premJsonRes = premResponse.then((res) => res.json());
 
+        Promise.all([premResponse,premJsonRes]).then(([response,data]) => {
+            
+            if(response.ok){
+                this.setState({
+                    paymentResult: {
+                        code: response.status,
+                        message: 'Payment saccessfull'
+                    }
+                });
+            } else {
+                this.setState({
+                    paymentResult: data
+                });
+            }
+            
             Modals.openModal("resultModal");
 
             /*
