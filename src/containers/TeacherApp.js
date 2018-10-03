@@ -19,7 +19,7 @@ class TeacherApp extends React.Component {
         
         this.state = {
             isLoading: true,
-            teacherID: "T1",
+            teacherID: this.props.user.username,
             news: [],
             classList : [],
             selectedClass : null,

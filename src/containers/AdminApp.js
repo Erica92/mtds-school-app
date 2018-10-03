@@ -21,7 +21,7 @@ export default class AdminApp extends React.Component {
         super(props);
 
         this.state = {
-            adminID: "A1",
+            adminID: this.props.user.username,
             pageState: "HomePage",
             prevPageState: ["HomePage"],
             newNotification: {}

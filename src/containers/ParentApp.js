@@ -19,7 +19,7 @@ export default class ParentApp extends React.Component {
         super(props);
         
         this.state = {
-            parentID: "P1",
+            parentID: this.props.user.username,
             isLoading: true,
             allLoaded: false,
             notificationList: [],           
