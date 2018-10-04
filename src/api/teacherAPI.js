@@ -1,7 +1,7 @@
 import * as CONSTANTS from './apiUtils';
 
 export function fetchDataTeacherAppointments(teacherID){
-    return fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/appointments")
+    return fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/appointments", {headers:this.AUTH_HEADERS, credentials: 'include',})
         .then(response => response.json())
         .then((result) => result.map((elem) => elem.Appointment))
         .then( (resultList) => this.setState({
@@ -22,7 +22,7 @@ export function fetchDataSchedule(teacherID, scope, classId){
     }
     endpoint += params;
 
-    return fetch(endpoint)
+    return fetch(endpoint, {headers:this.AUTH_HEADERS, credentials: 'include',})
         .then(response => response.json())
         .then( (result) => this.setState({
             scheduleList: result,
@@ -32,7 +32,7 @@ export function fetchDataSchedule(teacherID, scope, classId){
 };
 
 export function fetchDataStudentClass(classID){
-    fetch(CONSTANTS.HOST+"/api/v1/classes/"+classID+"/students")
+    fetch(CONSTANTS.HOST+"/api/v1/classes/"+classID+"/students", {headers:this.AUTH_HEADERS, credentials: 'include',})
         .then(response => response.json())
         .then( (result) => result.map((student) => student.Student))
         .then((studentList) => this.setState({
@@ -45,7 +45,7 @@ export function fetchDataStudentClass(classID){
 
 
 export function fetchDataStudentGrades(teacherID, classID, subject){
-    fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/classes/"+classID+"/grades?subject="+subject+"&object=student")
+    fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/classes/"+classID+"/grades?subject="+subject+"&object=student", {headers:this.AUTH_HEADERS, credentials: 'include',})
         .then(response => response.json())
         .then( (result) => this.setState({
             studentsGradesList: {
@@ -57,7 +57,7 @@ export function fetchDataStudentGrades(teacherID, classID, subject){
 }
 
 export function fetchDataPersonalDataTeacher(username){
-    return (fetch(CONSTANTS.HOST+"/api/v1/teacher/"+username+"/info")
+    return (fetch(CONSTANTS.HOST+"/api/v1/teacher/"+username+"/info", {headers:this.AUTH_HEADERS, credentials: 'include',})
         .then(response => response.json())
         .then( (result) => this.setState({
             teacherInfo: result,

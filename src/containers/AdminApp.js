@@ -21,7 +21,9 @@ export default class AdminApp extends React.Component {
         super(props);
 
         this.state = {
-            adminID: this.props.user.username,
+            adminID: this.props.user.Username,
+            authenticatedUser: this.props.user,
+            token: this.props.token,
             pageState: "HomePage",
             prevPageState: ["HomePage"],
             newNotification: {}
@@ -33,6 +35,7 @@ export default class AdminApp extends React.Component {
             {linkLabel: "Accounts", linkName:"AdminAccountsPage", icon:""},
             {linkLabel: "Logout", linkName:"#", icon:""}];
 
+        this.AUTH_HEADERS = CONSTANTS.getSecurityHeaders(this.state.authenticatedUser, this.state.token);
 
         this.goToPage = Utils.goToPage.bind(this);
         this.goToPrevPage = Utils.goToPrevPage.bind(this);

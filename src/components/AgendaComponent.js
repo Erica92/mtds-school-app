@@ -12,15 +12,15 @@ export default function AgendaComponent(props) {
     console.log("scheduleList"+scheduleList);
     
     for(var i = 0; i < scheduleList.length; i++){
-        console.log("i: "+scheduleList[i].TeachClass.TeacherID);
-        let teachClass = scheduleList[i].TeachClass;
+        console.log("i: "+scheduleList[i].TeachClassWithLink.TeacherID);
+        let teachClass = scheduleList[i].TeachClassWithLink;
         let rowsSchedule = scheduleList[i].Schedule.map(elem => (
             <div>
                 <span>{Utils.formatTimeFromJSON(elem.StartTime)}</span>
                 <span>{Utils.formatTimeFromJSON(elem.EndTime)}</span>
                 <span>Lesson</span>
-                <span>Class {teachClass.ClassID}</span>
-                <span>{teachClass.Subject}</span>
+                <span>Class {teachClass.TeachClass.ClassID}</span>
+                <span>{teachClass.TeachClass.Subject}</span>
             </div>
         ));
         agendaList = agendaList.concat(rowsSchedule);

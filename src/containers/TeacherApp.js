@@ -19,7 +19,9 @@ class TeacherApp extends React.Component {
         
         this.state = {
             isLoading: true,
-            teacherID: this.props.user.username,
+            teacherID: this.props.user.Username,
+            authenticatedUser: this.props.user,
+            token: this.props.token,
             news: [],
             classList : [],
             selectedClass : null,
@@ -35,6 +37,8 @@ class TeacherApp extends React.Component {
                          {linkLabel: "Calendar", linkName:"CalendarPage", icon:""},
                           {linkLabel: "Logout", linkName:"#", icon:""}];
         
+        this.AUTH_HEADERS = CONSTANTS.getSecurityHeaders(this.state.authenticatedUser, this.state.token);
+
         this.goToPage = this.goToPage.bind(this);
         this.goToPrevPage = this.goToPrevPage.bind(this);
         Utils.cleanPageHistory = Utils.cleanPageHistory.bind(this);
@@ -91,7 +95,7 @@ class TeacherApp extends React.Component {
     fetchDataClassesList(teacherID){
 
         var _this = this;
-        fetch("http://localhost:8080/api/v1/teacher/"+teacherID+"/classes")
+        fetch("http://localhost:8080/api/v1/teacher/"+teacherID+"/classes", {headers:this.AUTH_HEADERS, credentials: 'include'})
             .then(response => response.json())
             .then( (result) => result.map((elem) => elem.TeachClass))
             .then( (resultList) => this.setState({
@@ -102,7 +106,7 @@ class TeacherApp extends React.Component {
     }
     
     fetchDataNotifications(){
-        fetch("http://localhost:8080/api/v1/teacher/"+this.state.teacherID+"/notifications")
+        fetch("http://localhost:8080/api/v1/teacher/"+this.state.teacherID+"/notifications", {headers:this.AUTH_HEADERS, credentials: 'include'})
             .then(response => response.json())
             .then( (result) => this.setState({
                 isLoading: false,
@@ -114,7 +118,7 @@ class TeacherApp extends React.Component {
     }
     
     fetchDataSchedule(teacherID, scope){
-        fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/agenda?scope="+scope)
+        fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/agenda?scope="+scope, {headers:this.AUTH_HEADERS, credentials: 'include'})
             .then(response => response.json())
             .then( (result) => ( result == null )? 
                  this.setState({isLoading: false, schedule: []})
@@ -124,7 +128,7 @@ class TeacherApp extends React.Component {
     }
     
     fetchDataAppointments(teacherID, scope){
-        fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/appointments?scope="+scope)
+        fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/appointments?scope="+scope, {headers:this.AUTH_HEADERS, credentials: 'include'})
             .then(response => response.json())
             .then( (result) => this.setState({
                 isLoading: false,

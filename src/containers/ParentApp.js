@@ -19,7 +19,9 @@ export default class ParentApp extends React.Component {
         super(props);
         
         this.state = {
-            parentID: this.props.user.username,
+            parentID: this.props.user.Username,
+            authenticatedUser: this.props.user,
+            token: this.props.token,
             isLoading: true,
             allLoaded: false,
             notificationList: [],           
@@ -36,6 +38,8 @@ export default class ParentApp extends React.Component {
                         {linkLabel: "Payments", linkName:"PaymentsPage", icon:""},
                         {linkLabel: "Logout", linkName:"#", icon:""}];
         
+        this.AUTH_HEADERS = CONSTANTS.getSecurityHeaders(this.state.authenticatedUser, this.state.token);
+
         Utils.goToPage = Utils.goToPage.bind(this);
         Utils.goToPrevPage = Utils.goToPrevPage.bind(this);
         Utils.cleanPageHistory = Utils.cleanPageHistory.bind(this);

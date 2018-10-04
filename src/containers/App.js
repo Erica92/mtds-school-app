@@ -18,6 +18,7 @@ export default class App extends React.Component {
         
         this.state = {
             authenticatedUser: null,
+            token: null,
             authenticated: false,
             username: "",
             password: "",
@@ -105,9 +106,9 @@ export default class App extends React.Component {
             <Switch>
                 <Route exact path="/" component={HomePage}/>
                 <Route exact path="/login" render={ () => (!authenticated ? componentToRender : this.redirectToPortal())}/>
-                <Route exact path="/teacherPortal" render={() => (this.isLoggedIn() ? <TeacherApp user={this.state.authenticatedUser} /> : <Redirect to="/login"/>)} />
-                <Route exact path="/parentPortal" render={() => (this.isLoggedIn() ? <ParentApp user={this.state.authenticatedUser} /> : <Redirect to="/login"/>)} />
-                <Route exact path="/adminPortal" render={() => (this.isLoggedIn() ? <AdminApp user={this.state.authenticatedUser} /> : <Redirect to="/login"/>)} />
+                <Route exact path="/teacherPortal" render={() => (this.isLoggedIn() ? <TeacherApp user={this.state.authenticatedUser} token={this.state.token} /> : <Redirect to="/login"/>)} />
+                <Route exact path="/parentPortal" render={() => (this.isLoggedIn() ? <ParentApp user={this.state.authenticatedUser} token={this.state.token} /> : <Redirect to="/login"/>)} />
+                <Route exact path="/adminPortal" render={() => (this.isLoggedIn() ? <AdminApp user={this.state.authenticatedUser} token={this.state.token} /> : <Redirect to="/login"/>)} />
                 <Route component={NoMatchPage}/>
             </Switch>
         );
@@ -139,7 +140,7 @@ export default class App extends React.Component {
     }
 
     fetchDataToken(){
-        return fetch(CONSTANTS.HOST+"/protected", {credentials: 'include'});
+        return fetch(CONSTANTS.HOST+"/api/v1/protected", {credentials: 'include'});
     };
   
     fetchDataLogin(token){
