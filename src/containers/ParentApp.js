@@ -49,11 +49,31 @@ export default class ParentApp extends React.Component {
         this.fetchDataNotifications = ApiCalls.fetchDataNotifications.bind(this);
         this.fetchDataParentStudents = ApiCalls.fetchDataParentStudents.bind(this);
         this.fetchDataParentAppointments = ApiCalls.fetchDataParentAppointments.bind(this);
+        this.fetchDataPersonalDataParent = ApiCalls.fetchDataPersonalDataParent.bind(this);
         
     }
     
     componentDidMount(){
         this.getFetchAll().then(() => this.setState({allLoaded: true}));
+
+        this.fetchDataPersonalDataParent(this.state.parentID).then(() => {
+            var ruolo = "";
+            var tipoUtente = this.state.authenticatedUser.Type;
+            if(tipoUtente == 0){
+                ruolo = "admin";
+            } else if(tipoUtente == 1){
+                ruolo = "teacher";
+            } else if(tipoUtente == 2){
+                ruolo = "parent";
+            }
+            var newUser = {
+                fullName: this.state.parentInfo.FirstName + " "+ this.state.parentInfo.LastName,
+                avatarUrl: 'http://www.ravisahaus.com/assets/ui/mercedes-benz/img/ui/social-icons/instagram-square-gray.png',
+                role: ruolo
+            }
+
+            this.setState({parentInfo: newUser});
+        });
     }
     
     render(){
@@ -70,19 +90,19 @@ export default class ParentApp extends React.Component {
                                         goToPage={Utils.goToPage} />);
             } else if(this.state.pageState === "StudentDetailsPage"){
                 componentToRender = (<StudentDetailsPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
-                                        selectedStudent={this.state.selectedStudent} parentID={this.state.parentID} />);
+                                        selectedStudent={this.state.selectedStudent} parentID={this.state.parentID} authHeaders={this.AUTH_HEADERS} />);
             } else if(this.state.pageState === "ParentPersonalDataPage"){
                 componentToRender = (<ParentPersonalDataPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
-                                        parentID={this.state.parentID} />);
+                                        parentID={this.state.parentID} authHeaders={this.AUTH_HEADERS} />);
             } else if(this.state.pageState === "StudentPersonalDataPage"){
                 componentToRender = (<StudentPersonalDataPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
-                                        student={this.state.selectedStudent} parent={this.state.parentID} />);
+                                        student={this.state.selectedStudent} parent={this.state.parentID} authHeaders={this.AUTH_HEADERS} />);
             } else if(this.state.pageState === "AppointmentsPage"){
                 componentToRender = (<CalendarPage parentID={this.state.parentID} date={new Date()}
-                                     classList={this.state.classList} parentStudentList={this.state.studentList} />);
+                                     classList={this.state.classList} parentStudentList={this.state.studentList} authHeaders={this.AUTH_HEADERS} />);
             } else if(this.state.pageState === "PaymentsPage"){
                 componentToRender = (<PaymentPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
-                                        parentID={this.state.parentID} />);
+                                        parentID={this.state.parentID} authHeaders={this.AUTH_HEADERS} />);
             } 
                           
                                      
@@ -91,7 +111,7 @@ export default class ParentApp extends React.Component {
         return (
             <div>
                 <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" 
-                                     user={user1} menuList={this.menuList}    
+                                     user={this.state.parentInfo} menuList={this.menuList}    
                                      goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage} cleanPageHistory={Utils.cleanPageHistory}
                                      onClickToggle={function(){}} />
                 {componentToRender} 
@@ -113,11 +133,4 @@ export default class ParentApp extends React.Component {
     }
 
 }
-        
-var user1 = {
-    name: 'Mario',
-    surname: 'Rossi',
-    avatarUrl: 'http://www.ravisahaus.com/assets/ui/mercedes-benz/img/ui/social-icons/instagram-square-gray.png',
-    role: 'parent',
-    fullName: 'Luigi Bianchi'
-}
+

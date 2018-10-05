@@ -79,7 +79,7 @@ export default class CalendarPage extends React.Component {
                         teacherID={this.state.teacherID} parentID={this.state.parentID} 
                         parentStudentList={this.state.studentList} 
                         loadTeacherEvents={this.loadTeacherEvents}
-                        loadParentEvents={this.loadParentEvents} />);
+                        loadParentEvents={this.loadParentEvents} authHeaders={this.props.authHeaders} />);
         } else {
             toRender = <Spinner />                    
         }

@@ -77,15 +77,16 @@ export default class ParentPersonalDataPage extends React.Component {
         //var form = new FormData(document.getElementById('DataForm'));
         var data = JSON.stringify(this.state.parentInfoMod);
         
+        var headers = this.props.authHeaders;
+        headers['Accept'] = 'application/json';
+        headers['Content-Type'] = 'application/json';
         console.log(data);
         
         fetch(CONSTANTS.HOST+"/api/v1/parent/info", {
-            method: "POST",
+            method: "PUT",
             mode: 'cors',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
+            headers: headers,
+            credentials: 'include',
             body: data
         }).then((res) => res.json())
             .then((data) => {

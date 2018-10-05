@@ -96,15 +96,16 @@ Status: "1"
 
         var data = JSON.stringify(studentInfoModCorrected);
         
+        var headers = this.props.authHeaders;
+        headers['Accept'] = 'application/json';
+        headers['Content-Type'] = 'application/json';
         console.log(data);
         
-        fetch(CONSTANTS.HOST+"/api/v1/student/info", {
+        fetch(CONSTANTS.HOST+"/api/v1/admin/"+this.props.adminID+"/students", {
             method: "POST",
             mode: 'cors',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
+            headers: headers,
+            credentials: 'include',
             body: data
         }).then((res) => res.json())
             .then((data) => {

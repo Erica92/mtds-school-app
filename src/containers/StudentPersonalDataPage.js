@@ -110,18 +110,20 @@ Status: "1"
         if(this.props.parent){
             endpoint = CONSTANTS.HOST+"/api/v1/parent/"+this.props.parent+"/students/"+this.state.student.Username;
         } else {
-            endpoint = CONSTANTS.HOST+"/api/v1/student/"+this.state.student.Username+"/info";
+            endpoint = CONSTANTS.HOST+"/api/v1/admin/"+this.props.adminID+"/"+this.state.student.Username;
         }
 
         var newState;
 
+        var headers = this.props.authHeaders;
+        headers['Accept'] = 'application/json';
+        headers['Content-Type'] = 'application/json';
+
         fetch(endpoint, {
-            method: "POST",
+            method: "PUT",
             mode: 'cors',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
+            headers: headers,
+            credentials: 'include',
             body: data
         }).then(function(res){
             let data = res.json();

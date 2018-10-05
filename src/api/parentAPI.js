@@ -157,7 +157,7 @@ function setStatePaymentList(result, status){
     return stateToReturn;
 }
 
-export function postParentPayment(selectedPayment, cardInfo, parentID, goToPage){
+export function postParentPayment(selectedPayment, cardInfo, parentID, headers, goToPage){
         //var form = new FormData(document.getElementById('DataForm'));
         
         var paymentInfo = {
@@ -167,15 +167,16 @@ export function postParentPayment(selectedPayment, cardInfo, parentID, goToPage)
 
         var data = JSON.stringify(paymentInfo);
         
+        var headers = this.props.authHeaders;
+        headers['Accept'] = 'application/json';
+        headers['Content-Type'] = 'application/json';
         console.log(data);
         
         var premResponse = fetch(CONSTANTS.HOST+"/api/v1/parent/"+parentID+"/payments", {
-            method: "POST",
+            method: "PUT",
             mode: 'cors',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
+            headers: headers,
+            credentials: 'include',
             body: data
         });
         

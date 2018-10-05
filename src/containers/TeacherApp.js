@@ -9,6 +9,7 @@ import SchedulePage from '../components/SchedulePage';
 import TeacherPersonalDataPage from './TeacherPersonalDataPage';
 import ProgramPage from './ProgramPage';
 import CalendarPage from './CalendarPage';
+import * as ApiCalls from '../api/teacherAPI';
 import * as Utils from '../utils/Utils';
 import * as CONSTANTS from '../api/apiUtils';
 
@@ -42,6 +43,7 @@ class TeacherApp extends React.Component {
         this.goToPage = this.goToPage.bind(this);
         this.goToPrevPage = this.goToPrevPage.bind(this);
         Utils.cleanPageHistory = Utils.cleanPageHistory.bind(this);
+        this.fetchDataPersonalDataTeacher = ApiCalls.fetchDataPersonalDataTeacher.bind(this);
 
         this.selectClass = this.selectClass.bind(this);
     }
@@ -52,6 +54,24 @@ class TeacherApp extends React.Component {
         this.fetchDataNotifications();
         this.fetchDataSchedule(this.state.teacherID, "day");
         this.fetchDataAppointments(this.state.teacherID, "day");
+        this.fetchDataPersonalDataTeacher(this.state.teacherID).then(() => {
+            var ruolo = "";
+            var tipoUtente = this.state.authenticatedUser.Type;
+            if(tipoUtente == 0){
+                ruolo = "admin";
+            } else if(tipoUtente == 1){
+                ruolo = "teacher";
+            } else if(tipoUtente == 2){
+                ruolo = "parent";
+            }
+            var newUser = {
+                fullName: this.state.teacherInfo.FirstName + " "+ this.state.teacherInfo.LastName,
+                avatarUrl: 'http://www.ravisahaus.com/assets/ui/mercedes-benz/img/ui/social-icons/instagram-square-gray.png',
+                role: ruolo
+            }
+
+            this.setState({teacherInfo: newUser});
+        });
         //getClassesList(this.setState);
         console.log("componentDidMount!!!");
         
@@ -155,22 +175,22 @@ class TeacherApp extends React.Component {
                                      selectClass={this.selectClass} />);
             } else if(this.state.pageState === "ClassPage"){
                 componentToRender = (<ClassDetailsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
-                                     selectedClass={this.state.selectedClass} />);
+                                     selectedClass={this.state.selectedClass} authHeaders={this.AUTH_HEADERS} />);
             } else if(this.state.pageState === "GradesPage"){
                 componentToRender = (<GradesPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
-                                     selectedClass={this.state.selectedClass} teacher={this.state.teacherID} />);
+                                     selectedClass={this.state.selectedClass} teacher={this.state.teacherID} authHeaders={this.AUTH_HEADERS} />);
             } else if(this.state.pageState === "SchedulePage"){
                 componentToRender = (<SchedulePage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
-                                     selectedClass={this.state.selectedClass} teacher={this.state.teacherID} />);
+                                     selectedClass={this.state.selectedClass} teacher={this.state.teacherID} authHeaders={this.AUTH_HEADERS} />);
             } else if(this.state.pageState === "PersonalDataPage"){
                 componentToRender = (<TeacherPersonalDataPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
-                                     teacherID={this.state.teacherID} />);
+                                     teacherID={this.state.teacherID} authHeaders={this.AUTH_HEADERS} />);
             } else if(this.state.pageState === "ProgramPage"){
                 componentToRender = (<ProgramPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
-                                     classDetails={this.state.selectedClass} />);
+                                     classDetails={this.state.selectedClass} authHeaders={this.AUTH_HEADERS} />);
             } else if(this.state.pageState === "CalendarPage"){
                 componentToRender = (<CalendarPage teacherID={this.state.teacherID} date={new Date()}
-                                     classList={this.state.classList} />);
+                                     classList={this.state.classList} authHeaders={this.AUTH_HEADERS} />);
             }
         }
         
@@ -179,7 +199,7 @@ class TeacherApp extends React.Component {
         return (
             <div>
                 <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png" 
-                                     user={user1} menuList={this.menuList}
+                                     user={this.state.teacherInfo} menuList={this.menuList}
                                      goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} cleanPageHistory={Utils.cleanPageHistory}
                                      onClickToggle={function(){}} />
                 {componentToRender} 
@@ -190,13 +210,4 @@ class TeacherApp extends React.Component {
 
 export default TeacherApp;
 
-//to delete mock
-
-var user1 = {
-    name: 'Mario',
-    surname: 'Rossi',
-    avatarUrl: 'http://www.ravisahaus.com/assets/ui/mercedes-benz/img/ui/social-icons/instagram-square-gray.png',
-    role: 'teacher',
-    fullName: 'Mario Rossi'
-}
 

@@ -106,7 +106,7 @@ export default class PaymentPage extends React.Component {
         //TODO
         /*this.state.cardInfo;
         this.state.selectedPayment;*/
-        this.postParentPayment(this.state.selectedPayment, this.state.cardInfo, this.state.parentID);
+        this.postParentPayment(this.state.selectedPayment, this.state.cardInfo, this.state.parentID, this.props.authHeaders);
     }
 
     cancelChanges(){

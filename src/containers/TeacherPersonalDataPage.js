@@ -105,15 +105,16 @@ export default class TeacherPersonalDataPage extends React.Component {
         var data = JSON.stringify(this.state.teacherInfoMod);
         var _this = this;
 
+        var headers = this.props.authHeaders;
+        headers['Accept'] = 'application/json';
+        headers['Content-Type'] = 'application/json';
         console.log(data);
         
         var premResponse = fetch(CONSTANTS.HOST+"/api/v1/teacher/"+this.state.teacherID+"/info", {
-            method: "POST",
+            method: "PUT",
             mode: 'cors',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
+            headers: headers,
+            credentials: 'include',
             body: data
         });
 

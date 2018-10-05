@@ -60,16 +60,17 @@ export default class GradesPage extends React.Component {
         var data = JSON.stringify(request);
 
         var _this = this;
-        
+
+        var headers = this.props.authHeaders;
+        headers['Accept'] = 'application/json';
+        headers['Content-Type'] = 'application/json';
         console.log(data);
         
         fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/grades", {
             method: "POST",
             mode: 'cors',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
+            headers: headers,
+            credentials: 'include',
             body: data
         }).then(function(response) {
             let jsonRes = response.json()

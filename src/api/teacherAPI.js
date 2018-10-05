@@ -1,7 +1,7 @@
 import * as CONSTANTS from './apiUtils';
 
 export function fetchDataTeacherAppointments(teacherID){
-    return fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/appointments", {headers:this.AUTH_HEADERS, credentials: 'include',})
+    return fetch(CONSTANTS.HOST+"/api/v1/teacher/"+teacherID+"/appointments", {headers:this.AUTH_HEADERS, credentials: 'include'})
         .then(response => response.json())
         .then((result) => result.map((elem) => elem.Appointment))
         .then( (resultList) => this.setState({

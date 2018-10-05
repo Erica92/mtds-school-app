@@ -99,7 +99,7 @@ export default class AdminPaymentsPage extends React.Component {
                             payment={this.state.createdPayment}
                             handleInputChange = {(event) => this.handleInputChange(event) }
                             handleSubmit = {(event) => this.handleSubmit(event) }
-                            modificationResult = {this.state.modificationResult} />);
+                            modificationResult = {this.state.modificationResult} authHeaders={this.props.authHeaders} />);
 
 
 
@@ -120,13 +120,3 @@ export default class AdminPaymentsPage extends React.Component {
 
 }
 
-
-//to delete mock
-
-var user1 = {
-    name: 'Mario',
-    surname: 'Rossi',
-    avatarUrl: 'http://www.ravisahaus.com/assets/ui/mercedes-benz/img/ui/social-icons/instagram-square-gray.png',
-    role: 'teacher',
-    fullName: 'Mario Rossi'
-}

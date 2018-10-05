@@ -47,26 +47,25 @@ export function postcreatePayment(paymentInfo_studentID,paymentInfo_Amount,payme
 
     }
 
+    var headers = this.props.authHeaders;
+    headers['Accept'] = 'application/json';
+    headers['Content-Type'] = 'application/json';
     var data = JSON.stringify(creatingPayment);
 
     console.log(data);
 
-    fetch(CONSTANTS.HOST+"/api/v1/admin/payment", {
+    fetch(CONSTANTS.HOST+"/api/v1/admin/"+this.props.adminID+"/payments", {
         method: "POST",
         mode: 'cors',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+        headers: headers,
+        credentials: 'include',
         body: data
-    }).then((res) => res.json())
-        .then((data) => {
+    }).then((res) => {
             let message = "";
-            if(data.code == 200){
+            if(res.ok){
                 message = "Payment correctly uploaded";
             } else {
                 message = "Sorry, an error occurred";
-                console.log("post error:"+data.message);
             }
 
             this.setState({

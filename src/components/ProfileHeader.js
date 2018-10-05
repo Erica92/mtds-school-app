@@ -10,11 +10,11 @@ function ProfileHeader(props){
         <div className="dropdown">
             <div className="profile-header" onClick={ () => props.onClickToggle() }>
                 <div className="profile-header-sx">
-                    <Avatar avatarUrl={props.user.avatarUrl} />	
+                    <Avatar avatarUrl={props.user ? props.user.avatarUrl : ""} />	
                 </div>
                 <div className="profile-header-dx">
-                    <BlockTitle text={props.user.fullName} />
-                    <BlockDescription text={props.user.role} />
+                    <BlockTitle text={props.user ? props.user.fullName : ""} />
+                    <BlockDescription text={props.user ? props.user.role : ""} />
                 </div>
             </div>
             <div className="dropdown-content">

@@ -13,7 +13,9 @@ import * as CONSTANTS from '../api/apiUtils';
 import * as Utils from '../utils/Utils';
 import AdminStudentsPage from "./AdminStudentsPage";
 import AdminPaymentsPage from "./AdminPaymentsPage";
-import NotificationForm from "../components/NotificationForm"
+import NotificationForm from "../components/NotificationForm";
+import {ModalResult} from "../components/ModalComponents";
+import * as Modals from "../components/ModalComponents";
 
 export default class AdminApp extends React.Component {
 
@@ -44,6 +46,24 @@ export default class AdminApp extends React.Component {
 
     }
 
+    componentDidMount(){
+        var ruolo = "";
+        var tipoUtente = this.state.authenticatedUser.Type;
+        if(tipoUtente == 0){
+            ruolo = "admin";
+        } else if(tipoUtente == 1){
+            ruolo = "teacher";
+        } else if(tipoUtente == 2){
+            ruolo = "parent";
+        }
+        var newUser = {
+            fullName: "Admin "+ this.state.authenticatedUser.Username,
+            avatarUrl: 'http://www.ravisahaus.com/assets/ui/mercedes-benz/img/ui/social-icons/instagram-square-gray.png',
+            role: ruolo
+        }
+
+        this.setState({user: newUser});
+    }
 
     render(){
 
@@ -53,15 +73,15 @@ export default class AdminApp extends React.Component {
                 componentToRender = (<AdminDashboard goToPage={this.goToPage} />);
             } else if(this.state.pageState === "AdminStudentsPage"){
                 componentToRender = (<AdminStudentsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
-                                                       selectedClass={this.state.selectedClass} adminID={this.state.adminID} />);
+                                                       selectedClass={this.state.selectedClass} adminID={this.state.adminID} authHeaders={this.AUTH_HEADERS} />);
             } else if(this.state.pageState === "AdminNotificationsPage"){
                 componentToRender = (<NotificationForm goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} 
-                                                        handleSubmit={this.handleSubmitNotification}
-                                                        handleInputChange={this.handleInputChangeNotification} />);
+                                                        handleSubmit={this.handleSubmitNotification} adminID={this.state.adminID}
+                                                        handleInputChange={this.handleInputChangeNotification} authHeaders={this.AUTH_HEADERS} />);
             }
             else if(this.state.pageState === "AdminPaymentsPage"){
-                componentToRender = (<AdminPaymentsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
-                                                       selectedClass={this.state.selectedClass} />);
+                componentToRender = (<AdminPaymentsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage} adminID={this.state.adminID}
+                                                       selectedClass={this.state.selectedClass} authHeaders={this.AUTH_HEADERS} />);
             }/* else if(this.state.pageState === "AdminNotificationsPage"){
                 componentToRender = (<ClassDetailsPage goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage}
                                                        selectedClass={this.state.selectedClass} />);
@@ -76,9 +96,10 @@ export default class AdminApp extends React.Component {
         return (
             <div>
                 <AppHeader brand="https://mox.polimi.it/wp-content/themes/responsive_child/images/LogoPolitecnicoUfficiale.png"
-                           user={user1} menuList={this.menuList}
+                           user={this.state.user} menuList={this.menuList}
                            goToPage={Utils.goToPage} goToPrevPage={Utils.goToPrevPage} onClickToggle={function(){}} />
                 {componentToRender}
+                <ModalResult text={this.state.notificationResult} buttonText="OK" callBackFn={this.goToPrevPage} />
             </div>
         );
     }
@@ -90,31 +111,30 @@ export default class AdminApp extends React.Component {
 
         var data = JSON.stringify(this.state.newNotification);
         
+        var headers = this.AUTH_HEADERS;
+        headers['Accept'] = 'application/json';
+        headers['Content-Type'] = 'application/json';
         console.log(data);
         
-        fetch(CONSTANTS.HOST+"/api/v1/admin/notification", {
+        fetch(CONSTANTS.HOST+"/api/v1/admin/"+this.state.adminID+"/notifications", {
             method: "POST",
             mode: 'cors',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
+            headers: headers,
+            credentials: 'include',
             body: data
-        }).then((res) => res.json())
-            .then((data) => {
-            console.log("data:"+data);
+        }).then((res) => {
+
             let message = "";
-            if(data.code == 200){
+            if(res.ok){
                 message = "Notification added";
             } else {
                 message = "Sorry, an error occurred";
-                console.log("post error:"+data.message);
             }
-            /*
+            
             this.setState({
-                modificationResult: message
+                notificationResult: message
             });
-            Modals.openModal("resultModal");*/
+            Modals.openModal("resultModal");
             
 
         });
@@ -145,12 +165,4 @@ export default class AdminApp extends React.Component {
 
 
 
-}
-
-var user1 = {
-    name: 'Mario',
-    surname: 'Rossi',
-    avatarUrl: 'http://www.ravisahaus.com/assets/ui/mercedes-benz/img/ui/social-icons/instagram-square-gray.png',
-    role: 'admin',
-    fullName: 'Luigi Bianchi'
 }

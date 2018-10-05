@@ -66,7 +66,7 @@ export default class AdminStudentsPage extends React.Component {
         } else {
             if(this.state.pageState === "AdminClassesContent"){
                 componentToRender = (<AdminClassesContent classList={classList} goToPage={this.goToPage} goToPrevPage={this.props.goToPrevPage}
-                                                          selectClass={this.selectClass}/>);
+                                                          selectClass={this.selectClass} authHeaders={this.props.authHeaders} />);
             }
             else if(this.state.pageState === "ClassPage"){
                 if(this.state.studentClassList.isLoading){
@@ -78,21 +78,21 @@ export default class AdminStudentsPage extends React.Component {
                             <button className="right-button" onClick={() => this.goToPage("CreateStudentDataPage")} >Create Student</button>
                             <StudentListComponent studentList={this.state.studentClassList.data}
                                                                onClickElem={this.selectStudent}
-                                                               callBackFn={() => this.goToPage("StudentDetailsPage")}/>
+                                                               callBackFn={() => this.goToPage("StudentDetailsPage")} authHeaders={this.props.authHeaders}/>
                         </div>
                     );
                 }
             } else if(this.state.pageState === "StudentDetailsPage"){
                 componentToRender = (
                      <StudentDetailsPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
-                                            selectedStudent={this.state.selectedStudent} parentID={''} />
+                                            selectedStudent={this.state.selectedStudent} parentID={''} authHeaders={this.props.authHeaders} />
                 );
             }else if(this.state.pageState === "CreateStudentDataPage"){
                 componentToRender = (<CreateStudentDataPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
-                                                             />);
+                                            authHeaders={this.props.authHeaders} adminID={this.state.adminID} />);
             }else if(this.state.pageState === "StudentPersonalDataPage"){
                 componentToRender = (<StudentPersonalDataPage goToPage={this.goToPage} goToPrevPage={this.goToPrevPage}
-                                                              student={this.state.selectedStudent} />);
+                                                              student={this.state.selectedStudent} authHeaders={this.props.authHeaders} adminID={this.state.adminID}/>);
             }
 
         }

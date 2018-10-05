@@ -327,18 +327,20 @@ StatusParent: 1
 
         var endpoint = CONSTANTS.HOST;
         if(this.state.parentID){
-            endpoint += "/api/v1/parent/"+this.state.parentID+"/appointments";
+            endpoint += "/api/v1/parent/"+this.state.parentID+"/appointments/"+selectedEvent.AppointmentID;
         } else if(this.state.teacherID){
-            endpoint += "/api/v1/teacher/"+this.state.teacherID+"/appointments";
+            endpoint += "/api/v1/teacher/"+this.state.teacherID+"/appointments/"+selectedEvent.AppointmentID;
         }
 
+        var headers = this.props.authHeaders;
+        headers['Accept'] = 'application/json';
+        headers['Content-Type'] = 'application/json';
+
         fetch(endpoint, {
-            method: "POST",
+            method: "PUT",
             mode: 'cors',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
+            headers: headers,
+            credentials: 'include',
             body: data
         }).then(function(response){
             let jsonRes = response.json()
@@ -367,18 +369,20 @@ StatusParent: 1
         
         console.log(data);
 
+        var headers = this.props.authHeaders;
+        headers['Accept'] = 'application/json';
+        headers['Content-Type'] = 'application/json';
+
         var endpoint = CONSTANTS.HOST;
         endpoint = (this.state.teacherID ? 
             endpoint+"/api/v1/teacher/"+this.state.teacherID+"/appointments" 
-            : endpoint+"/api/v1/parent/"+this.setState.parentID+"/appointments")
+            : endpoint+"/api/v1/parent/"+this.state.parentID+"/appointments")
         
         fetch(endpoint, {
             method: "POST",
             mode: 'cors',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
+            headers: headers,
+            credentials: 'include',
             body: data
         }).then(function(response){
             let jsonRes = response.json()
