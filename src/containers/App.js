@@ -10,6 +10,7 @@ import LoginPage from './LoginPage';
 import HomePage from './HomePage';
 import NoMatchPage from './NoMatchPage';
 import * as CONSTANTS from '../api/apiUtils';
+import '../components/BaseStyle.css';
 
 export default class App extends React.Component {
     
@@ -23,7 +24,8 @@ export default class App extends React.Component {
             username: "",
             password: "",
             userType: "",
-            flagAuth: false
+            flagAuth: false,
+            loginFailed: undefined
         }
         
         this.redirectToPortal = this.redirectToPortal.bind(this);
@@ -88,17 +90,30 @@ export default class App extends React.Component {
     }
     
     render(){
-        var componentToRender = (<form onSubmit={this.handleSubmit}>
-            <label>
-              Username:
-              <input type="text" name="username" value={this.state.username} onChange={this.handleChange} />
-            </label>
-            <label>
-              Password:
-              <input type="text" name="password" value={this.state.password} onChange={this.handleChange} />
-            </label>
-            <input type="submit" value="Submit" />
-          </form>
+        var loginFailed = this.state.loginFailed;
+        var componentToRender = (
+        <div>
+            <div className="loginStyle">
+                <form onSubmit={this.handleSubmit}>
+                    <div className="input-block">
+                    <label>Username:</label>
+                    <input className="input-base" type="text" name="username" value={this.state.username} onChange={this.handleChange} />
+                    </div>
+                    <div className="input-block">
+                    <label>Password:</label>
+                    <input className="input-base" type="password" name="password" value={this.state.password} onChange={this.handleChange} />
+                    </div>
+                    <div>
+                    <input className="button-base submit-button login-button" type="submit" value="Login" />
+                    </div>               
+                </form>
+            </div>
+            { loginFailed == true ? 
+                (<div className="login-error-box">
+                    Wrong username or password
+                </div>) : (<div></div>)
+            }
+        </div>
         );
 
         var authenticated = this.state.authenticated;
@@ -169,23 +184,25 @@ export default class App extends React.Component {
             body: data
         })
         .then(response => response.json())
-        .then((jsonRes) => this.setState({
-            authenticatedUser: jsonRes,
-            token: token,
-            authenticated: true
+        .then((jsonRes) => {
+            if(jsonRes.Username){
+                this.setState({
+                    authenticatedUser: jsonRes,
+                    token: token,
+                    authenticated: true,
+                    loginFailed: false
+                });
+            } else {
+                this.setState({
+                    token: token,
+                    authenticated: false,
+                    loginFailed: true
+                });
+            }
         })
-    )
     };
 }
 
-var user1 = {
-    name: 'Mario',
-    surname: 'Rossi',
-    avatarUrl: 'http://www.ravisahaus.com/assets/ui/mercedes-benz/img/ui/social-icons/instagram-square-gray.png',
-    role: 'teacher',
-    fullName: 'Mario Rossi',
-    username: 'T1'
-}
 
 //<Route exact path="/login" render={() =>(!this.state.authenticated ? <LoginPage auth={this.getAuth} /> : <TeacherApp user={this.state.user} /> )}/>
 //<Route exact path="/login" render={props =>(<LoginPage auth={this.getAuth} />)}/>

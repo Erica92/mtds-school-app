@@ -8,7 +8,7 @@ import * as Utils from '../utils/Utils';
 
 export function GradesOverviewTable(props){
     let subjectRow = props.gradesList.map((elem, index) => (
-        <tr key={elem.Subject}>
+        <tr key={elem.Subject} className="grades-overview-row">
             <td onClick={() => props.showSubjectView(index)} className="clickable">{elem.Subject}</td>
             <td></td>
             <td>{elem.GradeSummaries.length > 0 ? Math.round(elem.GradeSummaries[0].Grade * 100) / 100 : "" }</td>

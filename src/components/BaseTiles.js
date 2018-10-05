@@ -17,10 +17,9 @@ export function TileHeader(props){
             <div className="tile-header-title">
                 <span>{props.text}</span>
             </div>
-            <span className="toggle clickable" onClick={() => props.toggleOnClick()} ><img src={props.toggleImg} /></span>
         </div>
     );
-}
+}//<span className="toggle clickable" onClick={() => props.toggleOnClick()} ><img src={props.toggleImg} /></span>
 
 function TileContent(props) {
     return (
@@ -52,9 +51,9 @@ export function SquareTile(props) {
 export function SectionTitleTile(props) {
     return ( 
         <div className="section-title-tile">
-            <span className="clickable" onClick={() => props.goToPrevPage()} >back</span>
-            <div>{props.title}</div>
-            <div>{props.subtitle}</div>
+            <span className="clickable" onClick={() => props.goToPrevPage()} ><img src={require("../images/left-arrow.png")} /></span>
+            <div className="section-title-tile-title">{props.title}</div>
+            <div className="section-title-tile-subtitle">{props.subtitle}</div>
         </div>
     );
 }

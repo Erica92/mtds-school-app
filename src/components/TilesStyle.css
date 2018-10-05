@@ -118,9 +118,23 @@
     vertical-align: middle;
     border-radius: 2px;
     background-color: rgb(33, 150, 243);
+    margin-bottom: 10px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
 .section-title-tile span{
     float: left;
+}
+
+.section-title-tile-title {
+    margin-top: 8px;
+    color: white;
+    font-size: 20px;
+}
+
+.section-title-tile-subtitle {
+    color: white;
+    font-style: italic;
+    font-size: 15px;
 }
 
 .center-cropped {

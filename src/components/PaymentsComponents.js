@@ -3,6 +3,7 @@ import BaseTile from './BaseTiles';
 import {SectionTitleTile, TileHeader} from './BaseTiles';
 import {TableRow, Spinner} from './BaseComponents';
 import {InputText} from '../components/InputComponents';
+import './BaseStyle.css';
 import * as Utils from '../utils/Utils';
 
 export function PaymentListComponent(props){
@@ -12,9 +13,9 @@ export function PaymentListComponent(props){
     if(props.paymentList && props.paymentList.length > 0){
         
         rows = props.paymentList.map( (elem) => (
-            <div key = {elem.PaymentID}>
+            <div key = {elem.PaymentID} className="payment-row">
                 <span>
-                    {elem.StudentID}
+                    Student {elem.StudentID}
                 </span>    
                 <span>
                     {elem.Description}
@@ -23,7 +24,7 @@ export function PaymentListComponent(props){
                     {new Date(elem.Deadline).toLocaleDateString()}
                 </span>
                 <span>
-                    <input className="button-base submit-button" type="button" value="Pay" 
+                    <input className="button-base-small submit-button" type="button" value="Pay" 
                             onClick={() => props.changeView("payment", props.selectPayment(elem))}/>
                 </span>
             </div>
